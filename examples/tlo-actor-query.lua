@@ -1,15 +1,16 @@
--- Search actors with a query
+-- EB tested example: Search actors with a query
+-- tlo-actor-query | snippet | topics: tlos, game, helpers
 --
--- ActorsNear(query, radius) runs one game actor query; its terms are actor members (Type, Level, Health, InCombatMode ...), and EB refuses a query that names a member it has not verified.
+-- What it does:  ActorsNear(query, radius) runs one game actor query; its terms are actor members (Type, Level, Health,
+--                InCombatMode ...), and EB refuses a query that names a member it has not verified.
+-- Tested:        Lists the two high-level NPCs; a query naming a member that is not verified yet answers an empty list.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Lists the two high-level NPCs; a query naming a member that is not verified yet answers an empty list.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        tlo-actor-query
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.addActor({ id = 320, name = "a fixture elder", level = 99, distance = 12 })

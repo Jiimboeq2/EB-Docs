@@ -1,15 +1,15 @@
--- Wait for a condition, with a timeout
+-- EB tested example: Wait for a condition, with a timeout
+-- platform-wait-until | snippet | topics: helpers, game
 --
--- Inside a task, pulse.waitUntil(pred, timeoutMs) checks pred every frame and gives up after the timeout.
+-- What it does:  Inside a task, pulse.waitUntil(pred, timeoutMs) checks pred every frame and gives up after the timeout.
+-- Tested:        The first wait sees the target appear; the second one times out and says so.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The first wait sees the target appear; the second one times out and says so.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.platform, game
--- id:        platform-wait-until
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.addActor({ id = 201, name = "a cave bat", distance = 12 })

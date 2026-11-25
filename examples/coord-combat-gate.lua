@@ -1,15 +1,16 @@
--- Claim before a group cure
+-- EB tested example: Claim before a group cure
+-- coord-combat-gate | snippet | topics: combat, crew
 --
--- needsClaim says which combat casts need a claim; attach wraps an engine's cast so a group cure is claimed first and stands down when another box has it.
+-- What it does:  needsClaim says which combat casts need a claim; attach wraps an engine's cast so a group cure is claimed first
+--                and stands down when another box has it.
+-- Tested:        A group cure needs the "groupcure" claim, a damage art none; the wrapped cast waits, then casts once it wins.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A group cure needs the "groupcure" claim, a damage art none; the wrapped cast waits, then casts once it wins.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.coord.combat_gate, eb.coord.arbiter
--- id:        coord-combat-gate
-
 -- your script
 local gate = require("eb.coord.combat_gate")
 local Arb = require("eb.coord.arbiter")

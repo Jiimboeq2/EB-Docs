@@ -1,15 +1,16 @@
--- Cure a member on cue
+-- EB tested example: Cure a member on cue
+-- fight-cure-on-cue | snippet | topics: fights, combat, crew
 --
--- Group rows carry each member's detriment counts (arcane, noxious, elemental, trauma, cursed); cure the one that needs it, by name, once a tick.
+-- What it does:  Group rows carry each member's detriment counts (arcane, noxious, elemental, trauma, cursed); cure the one that
+--                needs it, by name, once a tick.
+-- Tested:        Only Member2 carries a noxious detriment; the cure goes out on Member2 by name and nobody else.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Only Member2 carries a noxious detriment; the cure goes out on Member2 by name and nobody else.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        fight-cure-on-cue
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

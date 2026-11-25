@@ -1,15 +1,16 @@
--- Never swim where the liquid kills
+-- EB tested example: Never swim where the liquid kills
+-- nav-hazard-lethal | snippet | topics: nav, quests
 --
--- The zones whose liquid kills are a list you can set; swimming in one is a hazard at once, unless the walk says it has to go in (a quest step) with allowLethal.
+-- What it does:  The zones whose liquid kills are a list you can set; swimming in one is a hazard at once, unless the walk says
+--                it has to go in (a quest step) with allowLethal.
+-- Tested:        Swimming in a listed zone is a hazard; the same sample with allowLethal is not; another zone is not.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Swimming in a listed zone is a hazard; the same sample with allowLethal is not; another zone is not.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav_hazard
--- id:        nav-hazard-lethal
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game a walk samples you twice a second)
 local w = DOCS.world()
 

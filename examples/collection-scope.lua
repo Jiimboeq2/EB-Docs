@@ -1,15 +1,18 @@
--- Which collection pieces you still miss
+-- EB tested example: Which collection pieces you still miss
+-- collection-scope | snippet | topics: items, quests
 --
--- eco.collections:journal() reads the journal's collections; scope(rows, word) picks the incomplete ones a word names (an exact category wins, else a name that contains the word; "all" = every incomplete one); missing(word) answers the piece names still needed and the ones that cannot be acted on.
+-- What it does:  eco.collections:journal() reads the journal's collections; scope(rows, word) picks the incomplete ones a word
+--                names (an exact category wins, else a name that contains the word; "all" = every incomplete one); missing(word)
+--                answers the piece names still needed and the ones that cannot be acted on.
+-- Tested:        "fixture isle" is a category (two collections), "feathers" matches a name, "all" gives the three incomplete
+--                ones; the missing pieces are cleaned of their "(...)" tag and the placeholder rows are set aside.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    "fixture isle" is a category (two collections), "feathers" matches a name, "all" gives the three incomplete ones; the missing pieces are cleaned of their "(...)" tag and the placeholder rows are set aside.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.collections, eb.economy
--- id:        collection-scope
-
 -- offline stand-in: the journal's collections page
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({ journal = {

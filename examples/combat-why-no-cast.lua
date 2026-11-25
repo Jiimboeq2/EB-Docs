@@ -1,15 +1,17 @@
--- Why does the engine not cast that?
+-- EB tested example: Why does the engine not cast that?
+-- combat-why-no-cast | snippet | topics: combat, helpers
 --
--- Ask the engine which gate holds each entry of your stack right now - on recast, below its power line, its tag switched off, its target-health window not reached - then send a cast of your own through the engine's one send.
+-- What it does:  Ask the engine which gate holds each entry of your stack right now - on recast, below its power line, its tag
+--                switched off, its target-health window not reached - then send a cast of your own through the engine's one send.
+-- Tested:        Each entry names the gate that holds it (TargetHPBelow, Ready, PowerAbove, Toggled) or "would cast"; the
+--                hand-made decision is sent to the game.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Each entry names the gate that holds it (TargetHPBelow, Ready, PowerAbove, Toggled) or "would cast"; the hand-made decision is sent to the game.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat, eb.combat.combat_util, eb.caststack.jsonstack
--- id:        combat-why-no-cast
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { powerPct = 30 } })
 local FW = require("combat.lib.fightworld")

@@ -1,15 +1,17 @@
--- Plan a trip to another zone
+-- EB tested example: Plan a trip to another zone
+-- nav-travel-plan | snippet | topics: nav, quests
 --
--- eb.nav_travel plans cross-zone trips over the game's own travel network (bells, wizard spires, druid rings): preview the hops, and see the fast-travel map refused.
+-- What it does:  eb.nav_travel plans cross-zone trips over the game's own travel network (bells, wizard spires, druid rings):
+--                preview the hops, and see the fast-travel map refused.
+-- Tested:        The trip to Fixture Port is one bell hop; the preview names it; asking for the fast-travel map is refused with a
+--                reason.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The trip to Fixture Port is one bell hop; the preview names it; asking for the fast-travel map is refused with a reason.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav_travel
--- id:        nav-travel-plan
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the travel data is EB's own)
 local w = DOCS.world()
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

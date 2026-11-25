@@ -1,15 +1,16 @@
--- Cast an ability when it is ready
+-- EB tested example: Cast an ability when it is ready
+-- game-ready-and-cast | snippet | topics: game, combat, helpers
 --
--- AbilityReady(name) says whether an ability can be used now; Cast(name) uses it on your current target. The game records what it was told to cast.
+-- What it does:  AbilityReady(name) says whether an ability can be used now; Cast(name) uses it on your current target. The game
+--                records what it was told to cast.
+-- Tested:        Casts the ready ability on the target and skips the one still on its timer.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Casts the ready ability on the target and skips the one still on its timer.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        game-ready-and-cast
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.addAbility({ id = 5001, name = "Fixture Strike", ready = true })

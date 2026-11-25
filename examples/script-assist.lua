@@ -1,18 +1,19 @@
--- Follow and assist the tank (complete script)
+-- EB tested example: Follow and assist the tank (complete script)
+-- script-assist | complete script | topics: helpers, crew, combat
 --
--- A drop-in script for a box in the crew: it asks EB to follow the tank, then keeps your target on the mob the tank is fighting, so your box's fight goes where the tank's does.
+-- What it does:  A drop-in script for a box in the crew: it asks EB to follow the tank, then keeps your target on the mob the
+--                tank is fighting, so your box's fight goes where the tank's does.
+-- Where it goes: InnerSpace/Scripts/eb_assist.lua (save it as eb_assist.lua)
+-- Run it:        lua eb_assist Tankard follow
+--                endlua eb_assist
+-- Needs:         - EB for InnerSpace running in this session (eb status answers) when you add the word follow
+--                - the tank in your group, named as the game shows it
+--                - a walk EB starts with follow ends when EB stops, or when another walk replaces it
+-- Tested:        EB answers the follow; the target moves to each mob the tank fights and never to one that is not fighting.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_assist.lua
--- run:       lua eb_assist Tankard follow
---            endlua eb_assist
--- needs:     EB for InnerSpace running in this session (eb status answers) when you add the word follow
---            the tank in your group, named as the game shows it
---            a walk EB starts with follow ends when EB stops, or when another walk replaces it
--- expect:    EB answers the follow; the target moves to each mob the tank fights and never to one that is not fighting.
--- verified:  on the offline stand-in for the game
--- id:        script-assist
-
 -- eb_assist.lua - follow the tank and fight what the tank fights.
 --
 --   lua eb_assist Tankard follow     start it: the tank's name, and "follow" to have EB walk after the tank

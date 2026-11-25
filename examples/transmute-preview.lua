@@ -1,15 +1,19 @@
--- Preview what a bulk transmute would take
+-- EB tested example: Preview what a bulk transmute would take
+-- transmute-preview | snippet | topics: items
 --
--- eco.transmute:preview(pick) lists the bag items a run WOULD take and every other item in the bags with the reason it stays: protected, a Master or better scroll, a bound item you did not opt in, an item whose details never read, an item outside the pick's tiers or levels.
+-- What it does:  eco.transmute:preview(pick) lists the bag items a run WOULD take and every other item in the bags with the
+--                reason it stays: protected, a Master or better scroll, a bound item you did not opt in, an item whose details
+--                never read, an item outside the pick's tiers or levels.
+-- Tested:        Of the treasured items up to level 50 only the ring is taken; the other six stay, each with its reason: the
+--                heirloom cape, the master scroll, the unread charm, the personal treasure, and the legendary blade and the
+--                level-70 boots that are outside the pick.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Of the treasured items up to level 50 only the ring is taken; the other six stay, each with its reason: the heirloom cape, the master scroll, the unread charm, the personal treasure, and the legendary blade and the level-70 boots that are outside the pick.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.transmute, eb.economy
--- id:        transmute-preview
-
 -- offline stand-in: a few bag items (rarity = the item's tier word; type Unknown = its details never read)
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({ bags = {

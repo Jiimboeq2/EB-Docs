@@ -1,15 +1,17 @@
--- Restock from the depot with one list for the whole group
+-- EB tested example: Restock from the depot with one list for the whole group
+-- econ-depot-topup | snippet | topics: items, crew
 --
--- A restock row says how many to KEEP in the bags and who it is for; each box takes only its own rows and pulls just the shortfall from the right depot (food, ammo, fuel, harvest). eco.depot:planLines shows the plan, and the brain's restock(list) (or eco.depot:topUp) runs it. It never buys anything.
+-- What it does:  A restock row says how many to KEEP in the bags and who it is for; each box takes only its own rows and pulls
+--                just the shortfall from the right depot (food, ammo, fuel, harvest). eco.depot:planLines shows the plan, and the
+--                brain's restock(list) (or eco.depot:topUp) runs it. It never buys anything.
+-- Tested:        The warden skips the ranger's arrows and pulls 15 bread to reach 20.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The warden skips the ranger's arrows and pulls 15 bread to reach 20.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.depot, eb.economy.vendor
--- id:        econ-depot-topup
-
 -- offline stand-in for the game's windows (in game EB builds the drive)
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world({ bags = { { name = "Fixture Bread", qty = 5 } },

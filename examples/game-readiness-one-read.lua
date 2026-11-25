@@ -1,15 +1,16 @@
--- Ask about many abilities for the price of one read
+-- EB tested example: Ask about many abilities for the price of one read
+-- game-readiness-one-read | snippet | topics: game, perf, combat
 --
--- Every ability you asked about recently is read in ONE batch at the first ask of a frame; the rest of the frame answers from that batch. ReadyStats() shows it.
+-- What it does:  Every ability you asked about recently is read in ONE batch at the first ask of a frame; the rest of the frame
+--                answers from that batch. ReadyStats() shows it.
+-- Tested:        Three readiness asks in a warm frame cost one game read; ReadyStats reports one read and two shared answers.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Three readiness asks in a warm frame cost one game read; ReadyStats reports one read and two shared answers.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        game-readiness-one-read
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.addAbility({ id = 5001, name = "Fixture Strike", ready = true })

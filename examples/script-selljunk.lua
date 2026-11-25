@@ -1,18 +1,20 @@
--- Sell junk at a merchant (complete script)
+-- EB tested example: Sell junk at a merchant (complete script)
+-- script-selljunk | complete script | topics: items, helpers
 --
--- A drop-in script that waits for a merchant window and sells every listed item your bags hold through the window's own rows, once per window. It answers no question it did not cause.
+-- What it does:  A drop-in script that waits for a merchant window and sells every listed item your bags hold through the
+--                window's own rows, once per window. It answers no question it did not cause.
+-- Where it goes: InnerSpace/Scripts/eb_selljunk.lua (save it as eb_selljunk.lua)
+-- Run it:        lua eb_selljunk "Rusty Fixture Blade" "Torn Fixture Pelt"
+--                endlua eb_selljunk
+-- Needs:         - EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
+--                - the exact names of the items to sell (only those are ever sold)
+--                - you open the merchant window yourself (hail the merchant); the script never opens one
+-- Tested:        Sells the whole stack of each listed item in the bags when a window opens, leaves every other item, and sells
+--                again only at the next window.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_selljunk.lua
--- run:       lua eb_selljunk "Rusty Fixture Blade" "Torn Fixture Pelt"
---            endlua eb_selljunk
--- needs:     EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
---            the exact names of the items to sell (only those are ever sold)
---            you open the merchant window yourself (hail the merchant); the script never opens one
--- expect:    Sells the whole stack of each listed item in the bags when a window opens, leaves every other item, and sells again only at the next window.
--- verified:  on the offline stand-in for the game
--- id:        script-selljunk
-
 -- eb_selljunk.lua - sell the items you name, whenever a merchant window is open. Twice a second it checks whether a
 -- merchant window is up; when one opens it reads every listed item's stack and price in ONE read and sells each whole
 -- stack through MerchantWindow.MyInventory["<name>"]:Sell. It sells again only after that window closed and the next

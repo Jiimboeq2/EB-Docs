@@ -1,15 +1,16 @@
--- A group heal waits for enough hurt members
+-- EB tested example: A group heal waits for enough hurt members
+-- combat-group-heal | snippet | topics: combat, crew
 --
--- A group heal entry gated on "2 members under 70%" stays quiet for one scratch and fires once two members are under the line - on the lowest of them.
+-- What it does:  A group heal entry gated on "2 members under 70%" stays quiet for one scratch and fires once two members are
+--                under the line - on the lowest of them.
+-- Tested:        With one member under 70% there is no group heal; with two, it fires on Member2, the lowest.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    With one member under 70% there is no group heal; with two, it fires on Member2, the lowest.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat.heals, eb.combat
--- id:        combat-group-heal
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { healthPct = 95 } })
 local FW = require("combat.lib.fightworld")

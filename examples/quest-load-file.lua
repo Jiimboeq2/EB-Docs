@@ -1,15 +1,16 @@
--- Load a quest pack from its file
+-- EB tested example: Load a quest pack from its file
+-- quest-load-file | snippet | topics: quests, data
 --
--- quests.load(path) reads a pack file as pure data (it may not run code) and hands back a handle to start. A file that is a quest line index, not a quest, still loads, but its run is blocked with what it is.
+-- What it does:  quests.load(path) reads a pack file as pure data (it may not run code) and hands back a handle to start. A file
+--                that is a quest line index, not a quest, still loads, but its run is blocked with what it is.
+-- Tested:        The pack loads with its name and five steps and runs to complete; the line index loads as not runnable.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The pack loads with its name and five steps and runs to complete; the line index loads as not runnable.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.quest
--- id:        quest-load-file
-
 local deps, world = require("quests.lib.questworld").make()
 local quests = require("eb.quest").bind(deps)
 

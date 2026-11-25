@@ -1,15 +1,17 @@
--- What an adornment profile still needs
+-- EB tested example: What an adornment profile still needs
+-- adorn-audit | snippet | topics: items
 --
--- An adornment PROFILE is { <slot> = <adornment name> }. eco.adornments:audit(profile) answers which slots already wear theirs and which still need it - and whether the missing adornment is in your bags.
+-- What it does:  An adornment PROFILE is { <slot> = <adornment name> }. eco.adornments:audit(profile) answers which slots already
+--                wear theirs and which still need it - and whether the missing adornment is in your bags.
+-- Tested:        The chest already wears its rune; the legs' glyph is missing but in the bags; the feet's sigil is missing and
+--                nowhere to be had.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The chest already wears its rune; the legs' glyph is missing but in the bags; the feet's sigil is missing and nowhere to be had.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.adornments, eb.economy
--- id:        adorn-audit
-
 -- offline stand-in: worn gear (one piece already adorned) and one adornment in the bags
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({

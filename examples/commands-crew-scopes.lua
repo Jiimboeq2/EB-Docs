@@ -1,15 +1,15 @@
--- Send a command to the crew
+-- EB tested example: Send a command to the crew
+-- commands-crew-scopes | snippet | topics: commands, crew
 --
--- A leading all / others / to <who> hands the line to the crew relay; the registry decides where it also runs.
+-- What it does:  A leading all / others / to <who> hands the line to the crew relay; the registry decides where it also runs.
+-- Tested:        all runs here and goes out; others only goes out; to is2 runs here only when this box is is2.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    all runs here and goes out; others only goes out; to is2 runs here only when this box is is2.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.registry
--- id:        commands-crew-scopes
-
 -- your script
 local reg = assert(require("eb.registry").default({ root = ".", fresh = true }))
 local ranHere = 0

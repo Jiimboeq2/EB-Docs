@@ -1,18 +1,19 @@
--- Crew status board (complete script)
+-- EB tested example: Crew status board (complete script)
+-- script-crewboard | complete script | topics: crew, helpers, recipes
 --
--- A drop-in script that listens to every EB box's status, prints a board of the crew, and pauses the crew when a box goes quiet (its EB stopped or its game closed) - then resumes when it is back.
+-- What it does:  A drop-in script that listens to every EB box's status, prints a board of the crew, and pauses the crew when a
+--                box goes quiet (its EB stopped or its game closed) - then resumes when it is back.
+-- Where it goes: InnerSpace/Scripts/eb_crewboard.lua (save it as eb_crewboard.lua)
+-- Run it:        lua eb_crewboard 15
+--                endlua eb_crewboard
+-- Needs:         - EB for InnerSpace installed (the script finds EB through Scripts/EBIS/boot.json, as EB's own start does)
+--                - EB running on this box and on the crew's boxes (each box says its status every two seconds)
+-- Tested:        Lists each box with its zone, mode, health and power; pauses the crew when one goes quiet and resumes on its
+--                return.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_crewboard.lua
--- run:       lua eb_crewboard 15
---            endlua eb_crewboard
--- needs:     EB for InnerSpace installed (the script finds EB through Scripts/EBIS/boot.json, as EB's own start does)
---            EB running on this box and on the crew's boxes (each box says its status every two seconds)
--- expect:    Lists each box with its zone, mode, health and power; pauses the crew when one goes quiet and resumes on its return.
--- verified:  on the offline stand-in for the game
--- modules:   eb.relay.wire
--- id:        script-crewboard
-
 -- eb_crewboard.lua - the crew at a glance, and a pause when a box goes quiet.
 --
 --   lua eb_crewboard [seconds]     start it: how long a box may stay quiet before the crew pauses (default 15)

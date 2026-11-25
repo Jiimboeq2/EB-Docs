@@ -1,15 +1,16 @@
--- Stop a quest run at once
+-- EB tested example: Stop a quest run at once
+-- quest-stop-flag | snippet | topics: quests, helpers
 --
--- deps.shouldStop is asked first on every step: when it answers true the step returns blocked, "stopped by request", before touching anything. Because the runner never waits, a stop takes effect on the very next tick.
+-- What it does:  deps.shouldStop is asked first on every step: when it answers true the step returns blocked, "stopped by
+--                request", before touching anything. Because the runner never waits, a stop takes effect on the very next tick.
+-- Tested:        The first tick walks; after the stop flag goes up the next tick is blocked and nothing else moves.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The first tick walks; after the stop flag goes up the next tick is blocked and nothing else moves.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.quest
--- id:        quest-stop-flag
-
 local stop = false
 local deps, world = require("quests.lib.questworld").make()
 deps.shouldStop = function() return stop end              -- e.g. your own "eb stop" handling

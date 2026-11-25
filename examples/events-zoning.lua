@@ -1,15 +1,15 @@
--- React to a zone change
+-- EB tested example: React to a zone change
+-- events-zoning | snippet | topics: events, helpers, nav
 --
--- Subscribe to ZoningStarted and ZoningFinished, and read the new zone only after the load has finished.
+-- What it does:  Subscribe to ZoningStarted and ZoningFinished, and read the new zone only after the load has finished.
+-- Tested:        The handlers see the start and the end of the load, and the zone read after the end is the new zone.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The handlers see the start and the end of the load, and the zone read after the end is the new zone.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.events, game
--- id:        events-zoning
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { zone = "a test hall" } })
 local events = w.events()

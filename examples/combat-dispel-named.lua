@@ -1,15 +1,17 @@
--- Strip a named's buff
+-- EB tested example: Strip a named's buff
+-- combat-dispel-named | snippet | topics: combat, fights
 --
--- engine:dispel strips a mob's beneficial buff on cue with the stack's dispel art. The automatic dispel category also needs the game's "has a buff to strip" read; a script supplies it here, and setDispelOn(false) stops it.
+-- What it does:  engine:dispel strips a mob's beneficial buff on cue with the stack's dispel art. The automatic dispel category
+--                also needs the game's "has a buff to strip" read; a script supplies it here, and setDispelOn(false) stops it.
+-- Tested:        The on-cue dispel goes out at the named; without a dispel art it says so; the automatic category casts the
+--                dispel ahead of the rotation, until it is switched off.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The on-cue dispel goes out at the named; without a dispel art it says so; the automatic category casts the dispel ahead of the rotation, until it is switched off.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat, game
--- id:        combat-dispel-named
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

@@ -1,15 +1,17 @@
--- Record and read the money and item ledger
+-- EB tested example: Record and read the money and item ledger
+-- econ-ledger-feed | snippet | topics: items, data
 --
--- Every sell, deposit, transmute and loot EB does is one ledger line (eco.ledger:add), kept on the PC that wrote it. day(key) sums one day, last12() the last 12 hours, status() is this box's today in one line, and command(words) answers the same words eb ledger takes (status, day <YYYY-MM-DD>, last12, clear <day> | all).
+-- What it does:  Every sell, deposit, transmute and loot EB does is one ledger line (eco.ledger:add), kept on the PC that wrote
+--                it. day(key) sums one day, last12() the last 12 hours, status() is this box's today in one line, and
+--                command(words) answers the same words eb ledger takes (status, day <YYYY-MM-DD>, last12, clear <day> | all).
+-- Tested:        Two sales (4 items) and a deposit (30 ore) are summed for the day; clearing the day removes its file.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Two sales (4 items) and a deposit (30 ore) are summed for the day; clearing the day removes its file.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.ledger, eb.economy.ledgermodel
--- id:        econ-ledger-feed
-
 -- offline stand-in: no files host, so the ledger keeps this session's lines itself
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world()

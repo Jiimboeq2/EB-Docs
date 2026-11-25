@@ -1,15 +1,16 @@
--- Give the followers an order
+-- EB tested example: Give the followers an order
+-- crew-orders | snippet | topics: crew, instances
 --
--- The lead sends an order with crew.order, a follower answers it with crew.onOrder; boxes hear each other.
+-- What it does:  The lead sends an order with crew.order, a follower answers it with crew.onOrder; boxes hear each other.
+-- Tested:        The follower gets the lead's camp order with its arguments and the sender's box id; each box hears the other. A
+--                crew line from a box that has not said who it is waits for that box's state, so each box ticks first.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The follower gets the lead's camp order with its arguments and the sender's box id; each box hears the other. A crew line from a box that has not said who it is waits for that box's state, so each box ticks first.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.app.crew, eb.relay, eb.relay.events
--- id:        crew-orders
-
 -- offline stand-in: an offline relay bus between two boxes and a clock you step
 local bus = require("eb.relay.events").bus()
 local t = { now = 0 }

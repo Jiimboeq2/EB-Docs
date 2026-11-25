@@ -1,15 +1,18 @@
--- See which window actions a drive provides
+-- EB tested example: See which window actions a drive provides
+-- econ-drive-report | snippet | topics: items
 --
--- The economy works through a DRIVE: one table of window actions (bags.items, merchant.sell, depot.withdraw, ...). eb.economy.drive lists every action, checks a drive against the list, and fills the gaps with honest stubs: a missing read answers empty, a missing action answers "blocked" with what it still needs. eco:driveGaps() and eco:driveReport() say the same for a built economy.
+-- What it does:  The economy works through a DRIVE: one table of window actions (bags.items, merchant.sell, depot.withdraw, ...).
+--                eb.economy.drive lists every action, checks a drive against the list, and fills the gaps with honest stubs: a
+--                missing read answers empty, a missing action answers "blocked" with what it still needs. eco:driveGaps() and
+--                eco:driveReport() say the same for a built economy.
+-- Tested:        A two-action drive is reported with the rest missing; a stubbed buy answers blocked with its reason.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A two-action drive is reported with the rest missing; a stubbed buy answers blocked with its reason.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.drive, eb.economy
--- id:        econ-drive-report
-
 -- your script: a drive of your own that only knows the bags
 local Drive = require("eb.economy.drive")
 local mine = {

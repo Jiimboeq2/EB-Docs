@@ -1,15 +1,16 @@
--- Read a crafting skill through the game layer
+-- EB tested example: Read a crafting skill through the game layer
+-- skill-read-live | snippet | topics: items, game
 --
--- The skill reader takes any object with Skill / SkillText / SkillAbsent / TSLevel - the game layer is one. A skill EB cannot read yet answers ok = false with the reason: unknown, never a made-up 0.
+-- What it does:  The skill reader takes any object with Skill / SkillText / SkillAbsent / TSLevel - the game layer is one. A
+--                skill EB cannot read yet answers ok = false with the reason: unknown, never a made-up 0.
+-- Tested:        Tinkering reads 354 of 400 with the cap the levels give; a skill that does not read answers unknown.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Tinkering reads 354 of 400 with the cap the levels give; a skill that does not read answers unknown.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.skills, game
--- id:        skill-read-live
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.self.tsLevel = 90

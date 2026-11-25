@@ -1,15 +1,18 @@
--- The loops' own decisions: an upgrade and a hire
+-- EB tested example: The loops' own decisions: an upgrade and a hire
+-- loop-pickers | snippet | topics: tasks, helpers
 --
--- The chore loops keep their choices in small pure functions you can call yourself: the trainer's next upgrade comes from YOUR priority list (exact name first, then a part of a name, and it never guesses), and the mercenary pick takes the cheapest offer of the role you ask for.
+-- What it does:  The chore loops keep their choices in small pure functions you can call yourself: the trainer's next upgrade
+--                comes from YOUR priority list (exact name first, then a part of a name, and it never guesses), and the mercenary
+--                pick takes the cheapest offer of the role you ask for.
+-- Tested:        The trainer picks the first listed upgrade it may spend on, refuses to pick with no list, and the healer pick is
+--                the cheapest healer.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The trainer picks the first listed upgrade it may spend on, refuses to pick with no list, and the healer pick is the cheapest healer.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.loops.trainer, eb.loops.mercenary
--- id:        loop-pickers
-
 local Trainer = require("eb.loops.trainer")
 local Mercenary = require("eb.loops.mercenary")
 

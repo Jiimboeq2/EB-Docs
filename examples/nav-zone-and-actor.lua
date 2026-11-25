@@ -1,15 +1,16 @@
--- Where am I, and where is that actor
+-- EB tested example: Where am I, and where is that actor
+-- nav-zone-and-actor | snippet | topics: nav, game, helpers
 --
--- eb.zone gives the short zone name the mesh and the travel network are keyed by; eb.actor.locOf finds a named actor's position.
+-- What it does:  eb.zone gives the short zone name the mesh and the travel network are keyed by; eb.actor.locOf finds a named
+--                actor's position.
+-- Tested:        The zone reads fixture_hollow; the lamplighter is found at its place; a name that is not there answers nil.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The zone reads fixture_hollow; the lamplighter is found at its place; a name that is not there answers nil.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.zone, eb.actor
--- id:        nav-zone-and-actor
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow", zoneName = "Fixture Hollow" })

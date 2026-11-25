@@ -1,15 +1,19 @@
--- Add your own route step kind
+-- EB tested example: Add your own route step kind
+-- ic-custom-route-act | snippet | topics: instances, helpers
 --
--- runner.STEP holds the route step handlers by act and runner.ROUTE_ACTS the acts a route file may carry (a step with an act in neither is refused when the file loads). Add one entry to each and a route step with that act loads and runs: here a "ring_gong" step that clicks a gong and waits for the room's door to open. A handler returns ok, a note for the log, and false stops the run with the note as the reason.
+-- What it does:  runner.STEP holds the route step handlers by act and runner.ROUTE_ACTS the acts a route file may carry (a step
+--                with an act in neither is refused when the file loads). Add one entry to each and a route step with that act
+--                loads and runs: here a "ring_gong" step that clicks a gong and waits for the room's door to open. A handler
+--                returns ok, a note for the log, and false stops the run with the note as the reason.
+-- Tested:        The custom step runs between the built-in ones and the lap completes; a gong that is not there stops the run
+--                with the handler's reason.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The custom step runs between the built-in ones and the lap completes; a gong that is not there stops the run with the handler's reason.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        ic-custom-route-act
-
 local IC = require("eb.ic")
 
 -- your script: one entry in each table adds the act (they are shared by every runner: add it once, at start)

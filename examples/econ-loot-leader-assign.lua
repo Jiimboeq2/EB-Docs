@@ -1,15 +1,17 @@
--- Hand drops out from the leader's loot window
+-- EB tested example: Hand drops out from the leader's loot window
+-- econ-loot-leader-assign | snippet | topics: items, crew, loot
 --
--- On a leader window the leading box hands each drop to the member whose quota still wants it and tells that member over the crew relay; what nobody claims follows the rule or the method. eco.loot:setMethod(method) sets the group's method and, on the leader, tells the crew.
+-- What it does:  On a leader window the leading box hands each drop to the member whose quota still wants it and tells that
+--                member over the crew relay; what nobody claims follows the rule or the method. eco.loot:setMethod(method) sets
+--                the group's method and, on the leader, tells the crew.
+-- Tested:        The shard is assigned to Healwell, the crew is told, and the method change reaches everyone.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The shard is assigned to Healwell, the crew is told, and the method change reaches everyone.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.loot
--- id:        econ-loot-leader-assign
-
 -- offline stand-in for the game's windows and the crew (in game EB passes its own)
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world({ corpse = { id = 78, name = "a fixture chest" },

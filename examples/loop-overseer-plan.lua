@@ -1,15 +1,21 @@
--- The overseer's daily pass, and how it picks agents
+-- EB tested example: The overseer's daily pass, and how it picks agents
+-- loop-overseer-plan | snippet | topics: tasks, helpers
 --
--- eb.overseer.plan picks by the game's own rules: the order (rescues, the tutorial, plain missions in list order, then charged ones by name), the skips (the day's allowance, the player's switches) and each party - an agent whose traits the mission likes first, an agent with a trait it dislikes never unless the player's option says so. The overseer goal (eb.loops) runs ONE whole pass a bite per tick over the window driver: open the window, read both lists, turn in what is done, start the plan, shut the window it opened. Buying spends coin: only with params.buy.
+-- What it does:  eb.overseer.plan picks by the game's own rules: the order (rescues, the tutorial, plain missions in list order,
+--                then charged ones by name), the skips (the day's allowance, the player's switches) and each party - an agent
+--                whose traits the mission likes first, an agent with a trait it dislikes never unless the player's option says
+--                so. The overseer goal (eb.loops) runs ONE whole pass a bite per tick over the window driver: open the window,
+--                read both lists, turn in what is done, start the plan, shut the window it opened. Buying spends coin: only with
+--                params.buy.
+-- Tested:        The plain mission goes first with the agent it likes, then the charged one with its own; the agent with the
+--                disliked trait stays home; the pass turns the finished mission in, starts both, buys nothing and ends "done".
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The plain mission goes first with the agent it likes, then the charged one with its own; the agent with the disliked trait stays home; the pass turns the finished mission in, starts both, buys nothing and ends "done".
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.loops.overseer, eb.loops
--- id:        loop-overseer-plan
-
 local Mo = require("eb.overseer.model")
 local Plan = require("eb.overseer.plan")
 local Op = require("eb.overseer.options")

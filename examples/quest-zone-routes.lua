@@ -1,15 +1,18 @@
--- A pack's own way into a zone
+-- EB tested example: A pack's own way into a zone
+-- quest-zone-routes | snippet | topics: quests, nav
 --
--- zone_routes names how this pack gets into a zone: each way is a list of steps run as a sub-sequence when CheckZone needs that zone. A way that fails moves on to the next; only when every written way is spent does CheckZone hand the zone to the zone's allowed transit.
+-- What it does:  zone_routes names how this pack gets into a zone: each way is a list of steps run as a sub-sequence when
+--                CheckZone needs that zone. A way that fails moves on to the next; only when every written way is spent does
+--                CheckZone hand the zone to the zone's allowed transit.
+-- Tested:        The first way's ride fails, the second way (walk to the bell, ring it) is taken, and the pack arrives without a
+--                need_travel.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The first way's ride fails, the second way (walk to the bell, ring it) is taken, and the pack arrives without a need_travel.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.quest
--- id:        quest-zone-routes
-
 local PACK = {
     schema = "eb-quest/1", quest_name = "Fixture Crossing",
     zone_routes = {

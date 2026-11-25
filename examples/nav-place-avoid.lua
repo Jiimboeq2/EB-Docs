@@ -1,15 +1,16 @@
--- Keep every walk out of a bad spot
+-- EB tested example: Keep every walk out of a bad spot
+-- nav-place-avoid | snippet | topics: nav, helpers
 --
--- Blacklist a circle in a zone so routes go round it, greenlight a spot that must stay reachable, and push the circles into the mesh service for one walk - the way a walk does it once, at its start.
+-- What it does:  Blacklist a circle in a zone so routes go round it, greenlight a spot that must stay reachable, and push the
+--                circles into the mesh service for one walk - the way a walk does it once, at its start.
+-- Tested:        Two circles are blacklisted; the one under a greenlight is lifted; one circle reaches the mesh service.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Two circles are blacklisted; the one under a greenlight is lifted; one circle reaches the mesh service.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav_places, eb.navd
--- id:        nav-place-avoid
-
 -- offline stand-in: EB's mesh extension and EB's nav data kept in memory (in game: the mesh store, this PC's files)
 local w = DOCS.world()
 require("nav.lib.ebnav").attach(w, { zone = "fixture_hollow" })

@@ -1,15 +1,17 @@
--- The kill-first list, rules and stragglers
+-- EB tested example: The kill-first list, rules and stragglers
+-- combat-kill-list-rules | snippet | topics: combat, fights, instances
 --
--- Give the engine a kill-first list with a health rule, see how it ranks and filters the mobs in the fight, hold it for a moment, hand it a straggler, and ask for the trash first.
+-- What it does:  Give the engine a kill-first list with a health rule, see how it ranks and filters the mobs in the fight, hold
+--                it for a moment, hand it a straggler, and ask for the trash first.
+-- Tested:        The scout is first on the list but skipped while under 50% health, so the brute is picked; a held list falls
+--                back to the nearest hostile; a straggler is engaged when handed over; trash-first prefers a non-named.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The scout is first on the list but skipped while under 50% health, so the brute is picked; a held list falls back to the nearest hostile; a straggler is engaged when handed over; trash-first prefers a non-named.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat, eb.combat.targeting, eb.combat.overrides
--- id:        combat-kill-list-rules
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

@@ -1,17 +1,18 @@
--- Say when a named spawns (complete script)
+-- EB tested example: Say when a named spawns (complete script)
+-- script-namedwatch | complete script | topics: helpers, crew, events
 --
--- A drop-in script that looks for named mobs around you every second and says each new one in group chat once; with the word pause it also pauses the crew so nobody pulls into it.
+-- What it does:  A drop-in script that looks for named mobs around you every second and says each new one in group chat once;
+--                with the word pause it also pauses the crew so nobody pulls into it.
+-- Where it goes: InnerSpace/Scripts/eb_namedwatch.lua (save it as eb_namedwatch.lua)
+-- Run it:        lua eb_namedwatch 120 pause
+--                endlua eb_namedwatch
+-- Needs:         - EB for InnerSpace running in this session (eb status answers) when you add the word pause
+--                - nothing else: it reads the world around you and talks in group chat
+-- Tested:        Announces a named once per spawn, pauses the crew the first time, and announces it again after a respawn.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_namedwatch.lua
--- run:       lua eb_namedwatch 120 pause
---            endlua eb_namedwatch
--- needs:     EB for InnerSpace running in this session (eb status answers) when you add the word pause
---            nothing else: it reads the world around you and talks in group chat
--- expect:    Announces a named once per spawn, pauses the crew the first time, and announces it again after a respawn.
--- verified:  on the offline stand-in for the game
--- id:        script-namedwatch
-
 -- eb_namedwatch.lua - say when a named spawns.
 --
 --   lua eb_namedwatch [radius] [pause]     start it: how far to look (metres, default 100), and "pause" to pause

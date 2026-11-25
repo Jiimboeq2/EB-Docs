@@ -1,15 +1,19 @@
--- The quest commands from the console
+-- EB tested example: The quest commands from the console
+-- quest-console-commands | snippet | topics: quests, commands
 --
--- Boot EB offline and type the quest commands the way you would in game. eb ql starts a quest line (or one quest) by its name and runs it as EB's goal; eb pl runs a power-level route; eb queue lines them up; eb dialog reads and answers what an NPC shows; eb timer leaves a reminder or runs a line later. With nothing running yet, each one answers at once and says what it would do.
+-- What it does:  Boot EB offline and type the quest commands the way you would in game. eb ql starts a quest line (or one quest)
+--                by its name and runs it as EB's goal; eb pl runs a power-level route; eb queue lines them up; eb dialog reads
+--                and answers what an NPC shows; eb timer leaves a reminder or runs a line later. With nothing running yet, each
+--                one answers at once and says what it would do.
+-- Tested:        eb ql status says no line is running, eb pl status no route, the queue is empty, no conversation is open, and eb
+--                help quest lists the domain.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    eb ql status says no line is running, eb pl status no route, the queue is empty, no conversation is open, and eb help quest lists the domain.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   commands.quest
--- id:        quest-console-commands
-
 -- offline stand-in: the whole of EB for InnerSpace booted by its real boot
 local a = DOCS.app()
 

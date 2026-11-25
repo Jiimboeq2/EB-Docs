@@ -1,15 +1,17 @@
--- Plan a bank deposit before you make it
+-- EB tested example: Plan a bank deposit before you make it
+-- econ-bank-deposit-plan | snippet | topics: items
 --
--- eco.bank:deposit{ which, filter | items | bags | all, page, dry } puts bag items in the personal, shared or guild bank. dry = true answers the plan without moving anything: what would go and what stays, with the reason (a bag, a protected item, an account valuable, info not loaded). A guild deposit needs a page, 1 to 4.
+-- What it does:  eco.bank:deposit{ which, filter | items | bags | all, page, dry } puts bag items in the personal, shared or
+--                guild bank. dry = true answers the plan without moving anything: what would go and what stays, with the reason
+--                (a bag, a protected item, an account valuable, info not loaded). A guild deposit needs a page, 1 to 4.
+-- Tested:        The dry run keeps the bag, the protected charm and the training writ; the real deposit moves the ore.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The dry run keeps the bag, the protected charm and the training writ; the real deposit moves the ore.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.bank, eb.economy.filter
--- id:        econ-bank-deposit-plan
-
 -- offline stand-in for the game's windows (in game EB builds the drive)
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world({ bags = {

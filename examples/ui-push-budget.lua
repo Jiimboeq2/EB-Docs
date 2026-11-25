@@ -1,15 +1,15 @@
--- Cap how often a window's state goes out
+-- EB tested example: Cap how often a window's state goes out
+-- ui-push-budget | snippet | topics: ui, perf
 --
--- ebkit.push_budget gates a window: a change too soon after the last one is held and the newest goes out next.
+-- What it does:  ebkit.push_budget gates a window: a change too soon after the last one is held and the newest goes out next.
+-- Tested:        A panel changing every 50 ms for a second emits at 0, 200, 400, 600 and 800 ms; the rest are held.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A panel changing every 50 ms for a second emits at 0, 200, 400, 600 and 800 ms; the rest are held.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   ebkit.push_budget, ebkit.window
--- id:        ui-push-budget
-
 -- your script
 local W = require("ebkit.window")
 local budget = require("ebkit.push_budget")

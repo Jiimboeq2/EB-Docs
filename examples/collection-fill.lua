@@ -1,15 +1,18 @@
--- Add the collection pieces you already have
+-- EB tested example: Add the collection pieces you already have
+-- collection-fill | snippet | topics: items, helpers
 --
--- eco.collections:fill(word, { depot = true }) adds every missing piece that is in the bags, then takes the rest from the Collectible Depot in reach and adds those. Adding consumes the piece, so only a piece the journal still misses, not already collected and not protected, is ever added.
+-- What it does:  eco.collections:fill(word, { depot = true }) adds every missing piece that is in the bags, then takes the rest
+--                from the Collectible Depot in reach and adds those. Adding consumes the piece, so only a piece the journal still
+--                misses, not already collected and not protected, is ever added.
+-- Tested:        The blue shell is added from the bags, the rib comes from the Collectible Depot and is added, the
+--                already-collected rib and the unread feather stay in the bags.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The blue shell is added from the bags, the rib comes from the Collectible Depot and is added, the already-collected rib and the unread feather stay in the bags.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.collections, eb.economy
--- id:        collection-fill
-
 -- offline stand-in: the journal, three bag items and the Collectible Depot
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({

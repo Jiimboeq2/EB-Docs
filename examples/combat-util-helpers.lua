@@ -1,15 +1,16 @@
--- The engine's small helpers
+-- EB tested example: The engine's small helpers
+-- combat-util-helpers | snippet | topics: combat, helpers
 --
--- require("eb.combat").U holds the pure helpers the engine uses - tag lists, kill time, valid mobs, AE entries, the encounter count, decisions, the lowest member, word matches, ability-line keys and safe optional calls.
+-- What it does:  require("eb.combat").U holds the pure helpers the engine uses - tag lists, kill time, valid mobs, AE entries,
+--                the encounter count, decisions, the lowest member, word matches, ability-line keys and safe optional calls.
+-- Tested:        Each helper answers as the engine reads it.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Each helper answers as the engine reads it.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat, eb.combat.combat_util
--- id:        combat-util-helpers
-
 -- your script (pure Lua: no game needed)
 local U = require("eb.combat").U
 

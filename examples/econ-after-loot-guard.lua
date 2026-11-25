@@ -1,15 +1,17 @@
--- The after-looting guard: destroy only by exact name
+-- EB tested example: The after-looting guard: destroy only by exact name
+-- econ-after-loot-guard | snippet | topics: items, helpers, loot
 --
--- An after-looting rule (destroy, transmute, salvage) acts on an item once it is in your bags. afterBlock(rule, item) says why it would be left alone: a destroy needs the item's exact name, and No-Trade, Heirloom, Lore or attuned items are never destroyed.
+-- What it does:  An after-looting rule (destroy, transmute, salvage) acts on an item once it is in your bags. afterBlock(rule,
+--                item) says why it would be left alone: a destroy needs the item's exact name, and No-Trade, Heirloom, Lore or
+--                attuned items are never destroyed.
+-- Tested:        The exact-name destroy may go; the "contains" destroy and the No-Trade item are left alone with their reasons.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The exact-name destroy may go; the "contains" destroy and the No-Trade item are left alone with their reasons.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.lootrules
--- id:        econ-after-loot-guard
-
 -- your script
 local LR = require("eb.economy.lootrules")
 local d = LR.parse({ rules = {

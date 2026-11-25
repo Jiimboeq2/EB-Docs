@@ -1,15 +1,18 @@
--- Level the Transmuting skill on a stone merchant
+-- EB tested example: Level the Transmuting skill on a stone merchant
+-- transmute-level-skill | snippet | topics: items
 --
--- eco.transmute:levelTransmute(opts) opens the stone merchant, picks the cheapest stone in the currency most stones cost, buys one (answering the purchase question only when it names that stone), transmutes it, and goes again until the skill caps, the bags fill or the currency runs out.
+-- What it does:  eco.transmute:levelTransmute(opts) opens the stone merchant, picks the cheapest stone in the currency most
+--                stones cost, buys one (answering the purchase question only when it names that stone), transmutes it, and goes
+--                again until the skill caps, the bags fill or the currency runs out.
+-- Tested:        One round buys the stone, confirms the purchase for that exact stone, transmutes it and raises the skill from 30
+--                to 31.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    One round buys the stone, confirms the purchase for that exact stone, transmutes it and raises the skill from 30 to 31.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.transmute, eb.economy
--- id:        transmute-level-skill
-
 -- offline stand-in: a stone merchant in reach, 50 marks, and a skill that rises with each transmute
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({ merchant = { name = "a fixture stone merchant" }, currency = { ["fixture marks"] = 50 },

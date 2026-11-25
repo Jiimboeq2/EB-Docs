@@ -1,15 +1,16 @@
--- Pick items from a list with a filter
+-- EB tested example: Pick items from a list with a filter
+-- econ-filter-pick | snippet | topics: items, data
 --
--- filter.pick(list, spec) keeps the items that match every criterion you set (tiers, flags, a level band, a class, a name), and tells you why each other item was skipped. An exclude list is never matched.
+-- What it does:  filter.pick(list, spec) keeps the items that match every criterion you set (tiers, flags, a level band, a class,
+--                a name), and tells you why each other item was skipped. An exclude list is never matched.
+-- Tested:        Picks the two fabled items in the level band, never the excluded one, and says why the rest were skipped.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Picks the two fabled items in the level band, never the excluded one, and says why the rest were skipped.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.filter
--- id:        econ-filter-pick
-
 -- your script: a bag list in EB's item shape (name, tier, level, flags ...)
 local F = require("eb.economy.filter")
 local bags = {

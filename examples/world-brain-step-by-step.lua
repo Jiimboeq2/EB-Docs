@@ -1,15 +1,17 @@
--- Step a brain by hand
+-- EB tested example: Step a brain by hand
+-- world-brain-step-by-step | snippet | topics: combat, helpers
 --
--- Every part of a brain tick on its own: the snapshot, the events it answers, the stuck watch, choosing and driving an interrupt, the goal stack, the resume point and the log - over stand-in subsystems you control.
+-- What it does:  Every part of a brain tick on its own: the snapshot, the events it answers, the stuck watch, choosing and
+--                driving an interrupt, the goal stack, the resume point and the log - over stand-in subsystems you control.
+-- Tested:        The stand-ins pass the contract check; the rez offer is accepted; the fight interrupt is chosen and clears;
+--                setGoal / popGoal move the stack; the resume point is handed to persist once.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The stand-ins pass the contract check; the rez offer is accepted; the fight interrupt is chosen and clears; setGoal / popGoal move the stack; the resume point is handed to persist once.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.brain, eb.brain.contracts, eb.world
--- id:        world-brain-step-by-step
-
 -- your script: stand-in subsystems (C.stubs) with the few calls this example drives replaced
 local Brain = require("eb.brain")
 local C = require("eb.brain.contracts")

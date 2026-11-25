@@ -1,15 +1,17 @@
--- A pack verb that reads the journal and the world
+-- EB tested example: A pack verb that reads the journal and the world
+-- quest-turn-helpers | snippet | topics: quests, helpers
 --
--- A verb's handler gets the step's context. Besides the statuses it can answer, the context reads for it: ctx:completedDone() (the step's completed line is done in the journal), ctx:truth(condition), ctx:zoneEqual, ctx:groupCount() and ctx:inGuildHall(); ctx:log writes a line to the run's log.
+-- What it does:  A verb's handler gets the step's context. Besides the statuses it can answer, the context reads for it:
+--                ctx:completedDone() (the step's completed line is done in the journal), ctx:truth(condition), ctx:zoneEqual,
+--                ctx:groupCount() and ctx:inGuildHall(); ctx:log writes a line to the run's log.
+-- Tested:        The verb lights the lantern once, waits for the journal, and its step is done when the journal says so.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The verb lights the lantern once, waits for the journal, and its step is done when the journal says so.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.quest.verbs, eb.quest
--- id:        quest-turn-helpers
-
 local verbs = require("eb.quest.verbs")
 verbs.register("lightlantern", function(ctx)
     if ctx:completedDone() then return ctx:done("the journal says the lantern is lit") end

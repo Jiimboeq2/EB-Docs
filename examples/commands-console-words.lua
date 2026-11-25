@@ -1,15 +1,16 @@
--- A console word of your own
+-- EB tested example: A console word of your own
+-- commands-console-words | snippet | topics: commands, ui
 --
--- eb.console is the console window's model: register a word it answers itself, run lines, and read what a window draws - the newest row, the word list and this box's own row.
+-- What it does:  eb.console is the console window's model: register a word it answers itself, run lines, and read what a window
+--                draws - the newest row, the word list and this box's own row.
+-- Tested:        The new word is answered by the console; any other line goes to the dispatch; the word list grew once.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The new word is answered by the console; any other line goes to the dispatch; the word list grew once.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.console
--- id:        commands-console-words
-
 -- your script
 local Console = require("eb.console")
 local C = Console.new({ box = "is1", name = "Fixturae", clock = function() return 0 end,

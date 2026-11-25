@@ -1,15 +1,15 @@
--- Read and change an EB setting
+-- EB tested example: Read and change an EB setting
+-- data-settings-get-set | snippet | topics: data, settings
 --
--- P.settings() is EB's settings store: get with a default, set for the session, save once off the hot path.
+-- What it does:  P.settings() is EB's settings store: get with a default, set for the session, save once off the hot path.
+-- Tested:        get answers the default for an unset key; set changes it and marks the store dirty; save says why it cannot.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    get answers the default for an unset key; set changes it and marks the store dirty; save says why it cannot.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.platform
--- id:        data-settings-get-set
-
 -- offline stand-in: no EB folder is known here, so the store cannot be saved (in game save() writes eb-settings.json)
 local w = DOCS.world()
 eb.root = ""

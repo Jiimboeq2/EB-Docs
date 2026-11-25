@@ -1,15 +1,16 @@
--- Keep walks out of a bad spot
+-- EB tested example: Keep walks out of a bad spot
+-- nav-blacklist-spot | snippet | topics: nav, helpers
 --
--- Blacklist the spot you stand on (a hole walks fall into, a corner they wedge in) so routes go round it; a greenlight on it lifts the blacklist again.
+-- What it does:  Blacklist the spot you stand on (a hole walks fall into, a corner they wedge in) so routes go round it; a
+--                greenlight on it lifts the blacklist again.
+-- Tested:        The blacklist circle is kept for this zone and becomes an avoid circle; a greenlight on the same spot lifts it.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The blacklist circle is kept for this zone and becomes an avoid circle; a greenlight on the same spot lifts it.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav, eb.nav_places
--- id:        nav-blacklist-spot
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { x = 12, y = 0, z = -4 } })
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

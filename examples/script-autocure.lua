@@ -1,18 +1,19 @@
--- Auto-cure watcher (complete script)
+-- EB tested example: Auto-cure watcher (complete script)
+-- script-autocure | complete script | topics: helpers, recipes, combat
 --
--- A drop-in script that keeps your group clear of one kind of detriment: when a member in this zone carries it, target them, cast your cure, then go back to the target you had.
+-- What it does:  A drop-in script that keeps your group clear of one kind of detriment: when a member in this zone carries it,
+--                target them, cast your cure, then go back to the target you had.
+-- Where it goes: InnerSpace/Scripts/eb_autocure.lua (save it as eb_autocure.lua)
+-- Run it:        lua eb_autocure "Cure Noxious" noxious
+--                endlua eb_autocure
+-- Needs:         - EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
+--                - a cure ability in your knowledge book, by its exact name
+--                - your cast stack's own cures turned off, so the two do not cast over each other
+-- Tested:        Casts the cure once at the member who carries the detriment, then targets the mob it had before.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_autocure.lua
--- run:       lua eb_autocure "Cure Noxious" noxious
---            endlua eb_autocure
--- needs:     EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
---            a cure ability in your knowledge book, by its exact name
---            your cast stack's own cures turned off, so the two do not cast over each other
--- expect:    Casts the cure once at the member who carries the detriment, then targets the mob it had before.
--- verified:  on the offline stand-in for the game
--- id:        script-autocure
-
 -- eb_autocure.lua - keep your group clear of one kind of detriment. When a member in this zone carries it, target
 -- them, cast your cure, then go back to the target you had. It reads only members EB has verified to work.
 --

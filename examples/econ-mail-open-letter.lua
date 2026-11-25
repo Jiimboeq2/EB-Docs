@@ -1,15 +1,18 @@
--- Open one letter by its subject and take what it carries
+-- EB tested example: Open one letter by its subject and take what it carries
+-- econ-mail-open-letter | snippet | topics: items, quests
 --
--- A letter is picked by a part of its subject, by its sender's WHOLE name, or both - a part of a name never matches. The game may put a key in front of a subject (":<key>:"); it is never part of it. mail.pick is the pure rule; eco.mail:open(subject, sender, take) opens the first letter that fits and, with take, takes its attachments. A quest letter opened this way starts its quest.
+-- What it does:  A letter is picked by a part of its subject, by its sender's WHOLE name, or both - a part of a name never
+--                matches. The game may put a key in front of a subject (":<key>:"); it is never part of it. mail.pick is the pure
+--                rule; eco.mail:open(subject, sender, take) opens the first letter that fits and, with take, takes its
+--                attachments. A quest letter opened this way starts its quest.
+-- Tested:        The keyed subject is matched, "Fix" does not match the sender "Fixwell", and the lantern oil reaches the bags.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The keyed subject is matched, "Fix" does not match the sender "Fixwell", and the lantern oil reaches the bags.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.mail
--- id:        econ-mail-open-letter
-
 -- offline stand-in for the game's windows (in game EB builds the drive)
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world({ inbox = {

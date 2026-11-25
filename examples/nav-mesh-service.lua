@@ -1,15 +1,16 @@
--- Ask the mesh service directly
+-- EB tested example: Ask the mesh service directly
+-- nav-mesh-service | snippet | topics: nav, perf
 --
--- Load a zone's mesh in the background with eb.navd.ready, then ask it for one route, the nearest mesh point, a straight line's clearance and the floor height - each one request.
+-- What it does:  Load a zone's mesh in the background with eb.navd.ready, then ask it for one route, the nearest mesh point, a
+--                straight line's clearance and the floor height - each one request.
+-- Tested:        ready() answers "loading" until the mesh is in, then true; the route reaches the goal; the reports read back.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    ready() answers "loading" until the mesh is in, then true; the route reaches the goal; the reports read back.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.navd
--- id:        nav-mesh-service
-
 -- offline stand-in for the game: EB's own mesh extension answering over a toy flat floor (in game: the zone's mesh)
 local w = DOCS.world({ me = { x = 0, y = 0, z = 0 } })
 local fake = require("nav.lib.ebnav").attach(w, { zone = "fixture_hollow", loadFrames = 2 })

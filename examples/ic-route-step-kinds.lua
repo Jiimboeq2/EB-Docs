@@ -1,15 +1,17 @@
--- One route step of each kind
+-- EB tested example: One route step of each kind
+-- ic-route-step-kinds | snippet | topics: instances
 --
--- A route mixes camp spots, walks, clicks, waits, a wait for an actor's death, loot, an announce and the exit. Run one of each as the tank, then hand the same steps to a member's runner: it holds on every step that would move it, because only the tank walks the route and the tank's camp spots move the group.
+-- What it does:  A route mixes camp spots, walks, clicks, waits, a wait for an actor's death, loot, an announce and the exit. Run
+--                one of each as the tank, then hand the same steps to a member's runner: it holds on every step that would move
+--                it, because only the tank walks the route and the tank's camp spots move the group.
+-- Tested:        The tank's lap runs every step in order and leaves by the exit; the member holds on path, campspot and interact.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The tank's lap runs every step in order and leaves by the exit; the member holds on path, campspot and interact.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        ic-route-step-kinds
-
 local INSTANCE = {
     schema = "eb.ic/1", zone = "Fixture Hollow", short = "fixture_hollow",
     hub = { zone = "fixture_docks", entrance = { loc = { 0, 0, 0 }, tolerance = 8 },

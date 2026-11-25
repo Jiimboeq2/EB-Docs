@@ -1,15 +1,19 @@
--- Write cast-stack rows by hand
+-- EB tested example: Write cast-stack rows by hand
+-- stack-row-format | snippet | topics: combat, data
 --
--- Build a stack from hand-written rows of several Types and conditions, and read what came of each row: its kind, tags and priority, the rows held with a reason, an unknown Type, an empty row skipped.
+-- What it does:  Build a stack from hand-written rows of several Types and conditions, and read what came of each row: its kind,
+--                tags and priority, the rows held with a reason, an unknown Type, an empty row skipped.
+-- Tested:        Damage, buff, upkeep, heal, cure and rez rows build and run (a heal or cure with no class facts is built from
+--                its own Target, % and #); a buff with a health gate carries that gate; the allow-tag row is built off; a row
+--                aimed at an alias the profile never defined is held with that reason; the unknown Type and the empty row are
+--                reported.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Damage, buff, upkeep, heal, cure and rez rows build and run (a heal or cure with no class facts is built from its own Target, % and #); a buff with a health gate carries that gate; the allow-tag row is built off; a row aimed at an alias the profile never defined is held with that reason; the unknown Type and the empty row are reported.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.caststack.jsonstack, eb.caststack.jsonstack_kinds
--- id:        stack-row-format
-
 -- your script (pure Lua: no game needed)
 local JS = require("eb.caststack.jsonstack")
 local rows = {                                                    -- priority order: slot 1 first

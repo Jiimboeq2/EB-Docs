@@ -1,15 +1,16 @@
--- A JSON null, and Lua values as text
+-- EB tested example: A JSON null, and Lua values as text
+-- data-null-and-lua-values | snippet | topics: data
 --
--- ebkit.jsontable.null keeps a JSON null through a round trip; ebkit.lua_fmt.encode writes any value as a Lua literal, and ident says whether a key can be written bare.
+-- What it does:  ebkit.jsontable.null keeps a JSON null through a round trip; ebkit.lua_fmt.encode writes any value as a Lua
+--                literal, and ident says whether a key can be written bare.
+-- Tested:        The null survives encode and decode; a table becomes a Lua literal with bare and bracketed keys.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The null survives encode and decode; a table becomes a Lua literal with bare and bracketed keys.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   ebkit.jsontable, ebkit.lua_fmt
--- id:        data-null-and-lua-values
-
 -- your script
 local J = require("ebkit.jsontable")
 local F = require("ebkit.lua_fmt")

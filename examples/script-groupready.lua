@@ -1,17 +1,18 @@
--- Group-ready checker (complete script)
+-- EB tested example: Group-ready checker (complete script)
+-- script-groupready | complete script | topics: helpers, crew
 --
--- A drop-in script for after a fight or before a pull: it waits until everyone in the group is in this zone, alive, topped up and close, says so in group chat, and resumes the paused crew.
+-- What it does:  A drop-in script for after a fight or before a pull: it waits until everyone in the group is in this zone,
+--                alive, topped up and close, says so in group chat, and resumes the paused crew.
+-- Where it goes: InnerSpace/Scripts/eb_groupready.lua (save it as eb_groupready.lua)
+-- Run it:        eb all pause
+--                lua eb_groupready 90 80 30
+-- Needs:         - EB for InnerSpace running in this session (eb status answers)
+--                - the crew paused first (eb all pause), so it waits for the go this script gives
+-- Tested:        Waits while a member is low or away, then says the group is ready once and the crew resumes.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_groupready.lua
--- run:       eb all pause
---            lua eb_groupready 90 80 30
--- needs:     EB for InnerSpace running in this session (eb status answers)
---            the crew paused first (eb all pause), so it waits for the go this script gives
--- expect:    Waits while a member is low or away, then says the group is ready once and the crew resumes.
--- verified:  on the offline stand-in for the game
--- id:        script-groupready
-
 -- eb_groupready.lua - wait until the group is ready, then resume the crew.
 --
 --   eb all pause                                 pause the crew first (in the console)

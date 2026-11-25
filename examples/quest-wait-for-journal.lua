@@ -1,15 +1,18 @@
--- Wait for the journal to move on
+-- EB tested example: Wait for the journal to move on
+-- quest-wait-for-journal | snippet | topics: quests, events
 --
--- WaitForQuestStep "<quest>","<line>",<seconds> holds the pack (status working, never a blocking wait) until the journal shows that line, or ticks it. At the time limit the step is blocked, or with -continue it says so and goes on.
+-- What it does:  WaitForQuestStep "<quest>","<line>",<seconds> holds the pack (status working, never a blocking wait) until the
+--                journal shows that line, or ticks it. At the time limit the step is blocked, or with -continue it says so and
+--                goes on.
+-- Tested:        The wait reports working until the escort NPC's line shows up 15 s in, then the pack goes on; a wait that never
+--                sees its line is blocked at its limit.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The wait reports working until the escort NPC's line shows up 15 s in, then the pack goes on; a wait that never sees its line is blocked at its limit.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.quest
--- id:        quest-wait-for-journal
-
 local PACK = {
     schema = "eb-quest/1", quest_name = "Fixture Escort", continues_later = true,
     steps = {

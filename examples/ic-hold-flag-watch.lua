@@ -1,15 +1,17 @@
--- Tell a stuck combat flag from a real fight
+-- EB tested example: Tell a stuck combat flag from a real fight
+-- ic-hold-flag-watch | snippet | topics: instances, fights
 --
--- The game's in-combat flag can stay lit with nobody fighting. The combat hold's flag watch times that bare flag: HOLD.observe counts how long it has held, and after HOLD.STUCK_MS it is called stuck so a run never waits on it forever. A real fight between looks (HOLD.hated) starts the count over.
+-- What it does:  The game's in-combat flag can stay lit with nobody fighting. The combat hold's flag watch times that bare flag:
+--                HOLD.observe counts how long it has held, and after HOLD.STUCK_MS it is called stuck so a run never waits on it
+--                forever. A real fight between looks (HOLD.hated) starts the count over.
+-- Tested:        The bare flag is stuck after five seconds; a real fight in between resets the count.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The bare flag is stuck after five seconds; a real fight in between resets the count.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ic.ic_hold
--- id:        ic-hold-flag-watch
-
 local HOLD = require("eb.ic.ic_hold").HOLD
 
 -- your script: one look a second at "in combat, nobody hated, nobody near"

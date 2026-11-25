@@ -1,15 +1,16 @@
--- Switch one cast-stack row off and on
+-- EB tested example: Switch one cast-stack row off and on
+-- stack-switch-row | snippet | topics: combat, fights
 --
--- The holder is the live cast stack the engine reads every step; setEntryEnabled switches a row by its name or ability, and the engine stops casting it at once.
+-- What it does:  The holder is the live cast stack the engine reads every step; setEntryEnabled switches a row by its name or
+--                ability, and the engine stops casting it at once.
+-- Tested:        With Fixture Strike switched off the engine casts Fixture Smash instead; switched back on, Fixture Strike again.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    With Fixture Strike switched off the engine casts Fixture Smash instead; switched back on, Fixture Strike again.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.caststack.jsonstack_live, eb.combat
--- id:        stack-switch-row
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

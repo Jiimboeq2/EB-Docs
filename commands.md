@@ -1,2598 +1,1329 @@
 # EB console commands
 
-Every console command EB ships (296). Type them in the InnerSpace console of a session.
+Every console command EB ships to every player (296), by group: the line, what it does, its other names, which crew words it takes, and each argument. In the game, eb help always matches the EB you run.
 
-**Who runs it:** A word in front of any command: all | others | to <who> | local. With no word the command is for this box only.
+The same list is the Commands part of [EB_Scripting_Guide.md](EB_Scripting_Guide.md#commands), the one-file guide.
 
-Groups: [Core / control](#core) - [Combat](#combat) - [Navigation](#nav) - [Travel](#travel) - [Quests](#quest) - [Instances](#ic) - [Loot](#loot) - [Harvest](#harvest) - [Crafting](#craft) - [Broker](#broker) - [Depot / inventory](#depot) - [Gear / adorns](#gear) - [Accounts](#accounts) - [Crew](#relay) - [Windows](#ui) - [Monitor / analysis](#monitor) - [Coordination / tags](#coord) - [Utility](#util)
+## Contents
 
-<a id="core"></a>
-## Core / control
+- [Commands: Core / control](#commands-core--control)
+- [Commands: Combat](#commands-combat)
+- [Commands: Navigation](#commands-navigation)
+- [Commands: Travel](#commands-travel)
+- [Commands: Quests](#commands-quests)
+- [Commands: Instances](#commands-instances)
+- [Commands: Loot](#commands-loot)
+- [Commands: Harvest](#commands-harvest)
+- [Commands: Crafting](#commands-crafting)
+- [Commands: Broker](#commands-broker)
+- [Commands: Depot / inventory](#commands-depot--inventory)
+- [Commands: Gear / adorns](#commands-gear--adorns)
+- [Commands: Accounts](#commands-accounts)
+- [Commands: Crew](#commands-crew)
+- [Commands: Windows](#commands-windows)
+- [Commands: Monitor / analysis](#commands-monitor--analysis)
+- [Commands: Coordination / tags](#commands-coordination--tags)
+- [Commands: Utility](#commands-utility)
+
+Type a command in a session's InnerSpace console, or send it from a script: IS.Execute with luacall EBISX_cmd and the words after eb. A word in front of any command: all | others | to \<who> | local. With no word the command is for this box only.
+
+- `local`: this box only (what a command is with no word in front)
+- `all`: every box, this one too
+- `others`: every box but this one
+- `to`: the boxes the who names: a box (is2), a character, a class, an archetype (fighter | priest | mage | scout) or @role
+
+What an argument takes, by its type:
+
+- `flag`: a word that is there or not (go, -bags)
+- `onoff`: on | off (some rows take status or toggle, or words of their own)
+- `int`: a whole number
+- `float`: a number
+- `string`: free text (as the last arg it takes the rest of the line)
+- `enum`: one word of a list
+- `zone`: a zone: its short name or its name
+- `actor`: an actor's id or name
+- `item`: an item's name
+- `ability`: an ability's name
+- `member`: a group or raid member's name
+- `coords`: x y z (three numbers, or x,y,z)
+- `preset`: a saved preset's name
+- `path`: a file's path
+
+## Commands: Core / control
 
 What every box answers: status, stop, pause and resume, help, reload.
 
-### `eb afk [state]`
+- `eb help [topic]`: What EB's commands are: with no word the groups, with a group's word its commands, with a command's word what it does and what it takes.
+  - Also typed as: `h`, `?`.
+  - This box only.
+  - `topic` (string; optional): a group or a command; nothing lists the groups
+- `eb status [what]`: This box in a few lines: where it is, what it is doing, its health and power. crew, goal, nav or combat says that part alone; patch is the quick read after a game patch, PASS or FAIL for each read.
+  - Also typed as: `s`.
+  - This box only.
+  - `what` (enum; optional; one of bot | crew | goal | nav | combat | patch; default bot): which part
+- `eb stop`: The kill switch: stops quests, instance runs, walking and goals on this box (or the crew). The fight goes on, so you stay alive. eb resume starts again.
+  - Also typed as: `stopall`, `abort`.
+  - For the crew: `all`, `others`, `to`.
+- `eb freeze`: Stop everything at once and stay stopped: the walk, the follow, a run or a quest line end (as eb stop does), the cast going now is cancelled, and nothing is cast until eb resume lets it all go again. eb relay mygroup freeze stops your whole group: the Stop group button of the MCP and the mini.
+  - Also typed as: `halt`.
+  - For the crew: `all`, `others`, `to`.
+- `eb end <system>`: End one thing EB is running and leave the rest: the quest line, the instance run, a walk, the hunt, crafting, gathering - or all of them. irc leaves the IRC channel and server this box is on (eb irc end); all leaves IRC as it is.
+  - Also typed as: `kill`.
+  - For the crew: `to`.
+  - `system` (enum; required; one of quest | ic | nav | hunt | craft | harvest | all | irc): what to end
+- `eb pause [state]`: Hold quests, instance runs, walking and goals where they are (the fight goes on). Pause again, or eb resume, to go on.
+  - Also typed as: `hold`, `holdup`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional; one of pause | resume | toggle | status; default toggle): pause | resume | toggle (pause when running, resume when paused) | status
+- `eb resume`: Go on after a pause, or after eb stopall (the same as eb pause resume).
+  - Also typed as: `letsgo`, `go!`.
+  - For the crew: `all`, `others`, `to`.
+- `eb afk [state]`: Away mode: EB keeps the character from being logged out for idling, and the crew sees it as away.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional; one of on | off | toggle | status; default status): on | off | toggle | status
+- `eb reload [module]`: Load EB again in this session - the game stays up and the character stays logged in. With a word, one part only: nav, invites, stack or poi. A box in a run keeps the ask and loads again by itself once the run is over (eb reload cancel or eb stopall drops it); eb all reload: each box decides for itself.
+  - Also typed as: `r`.
+  - For the crew: `all`, `others`, `to`.
+  - `module` (string; optional): nothing = EB itself; nav | invites | stack | poi = that part's files, read again; cancel = drop a reload kept until a run is over
 
-Away mode: EB keeps the character from being logged out for idling, and the crew sees it as away.
-
-*who: local, all, others, to*
-
-- `state` (onoff, optional): on | off | toggle | status
-
-### `eb end <system>`
-
-End one thing EB is running and leave the rest: the quest line, the instance run, a walk, the hunt, crafting, gathering - or all of them. irc leaves the IRC channel and server this box is on (eb irc end); all leaves IRC as it is.
-
-*also: `kill` - who: local, to*
-
-- `system` (enum): what to end
-
-### `eb freeze`
-
-Stop everything at once and stay stopped: the walk, the follow, a run or a quest line end (as eb stop does), the cast going now is cancelled, and nothing is cast until eb resume lets it all go again. eb relay mygroup freeze stops your whole group: the Stop group button of the MCP and the mini.
-
-*also: `halt` - who: local, all, others, to*
-
-### `eb help [topic]`
-
-What EB's commands are: with no word the groups, with a group's word its commands, with a command's word what it does and what it takes.
-
-*also: `h`, `?` - who: local*
-
-- `topic` (string, optional): a group or a command; nothing lists the groups
-
-### `eb pause [state]`
-
-Hold quests, instance runs, walking and goals where they are (the fight goes on). Pause again, or eb resume, to go on.
-
-*also: `hold`, `holdup` - who: local, all, others, to*
-
-- `state` (onoff, optional): pause | resume | toggle (pause when running, resume when paused) | status
-
-### `eb reload [module]`
-
-Load EB again in this session - the game stays up and the character stays logged in. With a word, one part only: nav, invites, stack or poi. A box in a run keeps the ask and loads again by itself once the run is over (eb reload cancel or eb stopall drops it); eb all reload: each box decides for itself.
-
-*also: `r` - who: local, all, others, to*
-
-- `module` (string, optional): nothing = EB itself; nav | invites | stack | poi = that part's files, read again; cancel = drop a reload kept until a run is over
-
-### `eb resume`
-
-Go on after a pause, or after eb stopall (the same as eb pause resume).
-
-*also: `letsgo`, `go!` - who: local, all, others, to*
-
-### `eb status [what]`
-
-This box in a few lines: where it is, what it is doing, its health and power. crew, goal, nav or combat says that part alone; patch is the quick read after a game patch, PASS or FAIL for each read.
-
-*also: `s` - who: local*
-
-- `what` (enum, optional): which part
-
-### `eb stop`
-
-The kill switch: stops quests, instance runs, walking and goals on this box (or the crew). The fight goes on, so you stay alive. eb resume starts again.
-
-*also: `stopall`, `abort` - who: local, all, others, to*
-
-
-<a id="combat"></a>
-## Combat
+## Commands: Combat
 
 The fight: casting on and off, cures, rezzes, interrupts, heroic opportunities, holds, the cast stack, pets, mounts, and the part each box plays (tank / dps / subtle / heal).
 
-### `eb aa [value]`
-
-The AA slider: what share of adventure XP goes to AA XP - 0 to 100, on (100) or off (0). eb all aa <value> sets every box. Held until its live proof (eb proof).
-
-*also: `aaslider` - who: local, all, others, to*
-
-- `value` (string, optional): 0-100 | on | off - nothing = 0: all XP to adventure levels
-
-### `eb abilities [cmd] [options]`
-
-The ability book: export writes your own ability check (this character's book as JSON, which EB reads for the position checks; EB ships none) - with what to export and how (merge into your file, a fresh one or only the new lines; leave out passives, ascension or tradeskill lines; the lowest tier; the levels; just a few named abilities; a dry run), its progress in the Ability Export window and on the console; export stop / status; eb all abilities export runs it on every box. Research the next tier, details, what gets used, list.
-
-*also: `abilexport` - who: local, all, others, to*
-
-- `cmd` (enum, optional): export | research | details | tracker | list
-- `options` (string, optional): export: merge (the default) / fresh / new, dry, reread, nopassives, noascension, notradeskill, tier:<tier>, levels:<from>-<to>, quiet, only:<names> - or stop, status
-
-### `eb acs [xpack]`
-
-Put this character's class adornment set on: the set for its class, else its class group, else its archetype, the highest level its own level allows - from the bags first, then the Adornment Depot in reach. A word takes only that set: an expansion, a preset, or your own family (eb adorn own). The class set in EB's settings comes first when there is one. eb all acs: every box puts on the set of its own class.
-
-*also: `applyclassset` - who: local, all, others, to*
-
-- `xpack` (string, optional): an expansion (RoK, TSO), a preset (TSOx2) or your own family; nothing = the set your class and level take
-
-### `eb allow <tag> [secs]`
-
-Open an ALLOW tag for a while: the cast-stack rows that wait for it (its ATag rows) cast while it is up, then it is as it was. One box opening it reaches the group. `eb tags` explains every tag.
-
-*who: local, all, others, to*
-
-- `tag` (string): the cast-stack allow tag (one word)
-- `secs` (int, optional): for how many seconds (10 when left out)
-
-### `eb assist [who] [follow] [dist]`
-
-Fight what that one fights: tank = the group's tank (the one eb go tank names, else the group's first fighter), me = the box the line came from, a name, or off for no one. With follow, this box goes with that one too - the tank's own box stays where it is. eb relay mygroup assist tank follow is the MCP's Follow + assist tank: every box of your group goes with the tank and fights what it fights.
-
-*who: local, all, others, to*
-
-- `who` (actor, optional): tank (the group's tank), me (the box the line came from), a character's name, or off (no one); nothing says who this box assists now
-- `follow` (flag, optional): follow: follow that one too (a camp spot this box holds lets go)
-- `dist` (int, optional): with follow: how many metres behind, 2 to 20 (nothing: this character's own follow distance)
-
-### `eb autocure [words]`
-
-One member cured first, again and again: whenever that member carries what a cure row removes, this box cures them before anyone else. curse: a curse only. cursed: one curse cure on them, then the mark goes. off takes the mark off. The cure rows and the crew's claim decide as always.
-
-*also: `curefocus` - who: local, all, others, to*
-
-- `words` (string, optional): <member> [cure | curse | cursed | off] - or off (every mark) - or nothing (who is marked)
-
-### `eb autohunt [cmd] [list]`
-
-Hunt by a saved list (the Auto Hunt window's): pull the nearest mob EB can win against - the list's names first, and with no names any mob it may kill, never a guard - rest, move on around where it started, along its waypoints or inside its area, and stop at its kills or minutes, a zone line, until the bags hold so many of an item, until a quest updates, or at the third death in the group (deaths:<n>). No pull while a member is down; one up again elsewhere is called back. group: the others follow. reach:<m>: only what can be reached within that many metres walked on the mesh, the nearest that way first; pull:body: each pull is walked at until it comes (never an attack), then back to the camp. import makes your old Auto-Hunt routes hunt lists; rename renames a list; move puts a list in a folder of yours (list and folders show them by folder). options <list> says a list's hunt options, options <list> <option> <value> sets one in the list: pulls (the abilities that open each fight, first ready first), group_hp / group_power (no pull while anyone of the group is under that %), pause_chest (no pull while an Exquisite Chest lies near), delay_after (seconds after a fight before the next pull; on = 3), prebuff (a moment for the buffs before each pull), ignore_collision (kept; EB reads no sight line).
-
-*also: `ah`, `hunt` - who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | status | list | area | route | patrol | import | rename | move | folders | options
-- `list` (string, optional): a saved hunt list, then its words: kills:<n> minutes:<n> until:<n>:<item> (_ for a space) until:quest[:<quest>] deaths:<n> reach:<metres on the mesh> pull:body group; import: an old route's zone [overwrite]; rename: <list> to <new name>; move: <list> to <folder> (none: out of it); options: <list> [<option> <value>] - pulls (abilities split by |), group_hp, group_power, pause_chest, delay_after, prebuff, ignore_collision
-
-### `eb autorelease [state]`
-
-Whether this box releases by itself when it dies. on (the default): solo or a wipe releases at once; with someone else up - in the group, or in the raid while this group is all down - it waits for a rez first. off: it never releases by itself and waits for a rez (eb revive releases by hand). Kept per character; eb all autorelease off sets the crew.
-
-*also: `releaseauto` - who: local, all, others, to*
-
-- `state` (onoff, optional): on | off | status
-
-### `eb autotarget [cmd] [arg]`
-
-The kill-first list: which mobs this box fights first, by name. on / off (off: it fights what it is pointed at), add a mob, remove one, clear the list; radius: a candidate stands within that many metres; height: and within that many metres above or below me; rescan: a pick holds that long before another candidate takes its place; scan on / off: the out-of-combat scan. status says the list and the settings.
-
-*also: `killlist` - who: local, all, others, to*
-
-- `cmd` (enum, optional): status | on | off | add | remove | clear | radius | height | rescan | scan
-- `arg` (string, optional): add / remove: a mob's name; radius / height: metres (height 0 = no limit); rescan: seconds (0 = every step); scan: on | off
-
-### `eb beltadorn [what]`
-
-Put the belt rune a fight calls for on the belt: a word is first the item you named for it (eb set beltadorn.<word> <item>); stun, stifle, mez, fear or medic is a rune whose name ends that way (Adamant Defiance, Adamant Resolve, Astral Dominion, Blinding Gleam, Field Medic), the best one you can wear; any other word is the one item in the bags whose name holds it. Waits until the box is out of the fight and standing still; status says what is going on.
-
-*also: `belt` - who: local, all, others, to*
-
-- `what` (string, optional): stun, stifle, mez, fear or medic (a rune of that type), any other word, the adornment's own name, or status
-
-### `eb blockers [cmd]`
-
-The group's AE blockers - each class's own group ward against area damage (a druid's Tortoise Shell, a bard's Bladedance, a swashbuckler's Advance Warning, a channeler's Shield of Blackwood). now: this box's own (eb all blockers: each box its own); cycle: the group's, one box after another, ten seconds apart, so one is up at a time; stop ends a cycle; status says who has one.
-
-*also: `aeblockers`, `cycleblockers` - who: local, all, others, to*
-
-- `cmd` (enum, optional): now | cycle | stop | status
-
-### `eb cancel <spell>`
-
-Cancel a spell of yours that is up now (a maintained spell: a stance, a toggle, a buff), by its name. Only a cancel the game took is said as done.
-
-*also: `unbuff` - who: local, all, others, to*
-
-- `spell` (string): a spell of yours that is up, by its name (any rank)
-
-### `eb canceldet <icons>`
-
-A detriment on me cancelled, found by its icons - one a fight says to click off. Held until its live proof (eb proof); then it goes at once.
-
-*also: `canceldetriment`, `canceldetrimental` - who: local, all, others, to*
-
-- `icons` (string): <icon>[/<backdrop>] (or <icon> <backdrop>): the detriment's icons - the Target window shows an effect's
-
-### `eb cast <ability> [who]`
-
-Cast one ability of this character's cast stack now, by name: the row says what kind of spell it is - an attack goes only at the mob EB fights, a heal or a buff on the member named (eb cast "Mending Touch" on Tank). A name that is no row of the cast stack is refused. eb cast stop stops casting: the abilities the game has queued are cleared and the cast going now is cancelled.
-
-*who: local, all, others, to*
-
-- `ability` (string): the ability, in quotes when it has several words; stop = stop casting
-- `who` (string, optional): on <member> (a heal or a buff)
-
-### `eb castin [seconds] [ability] [who]`
-
-One cast, later: in so many seconds this box casts the ability (a row of its cast stack, or its book), aimed and paced like any cast - on the member named, when one is (eb castin 5 "Mending Touch" on Tank). list says what waits, clear drops it.
-
-*also: `castlater` - who: local, all, others, to*
-
-- `seconds` (string, optional): in how many seconds (600 at most) | list | clear
-- `ability` (string, optional): the ability, in quotes when it has several words
-- `who` (string, optional): on <member> (a heal or a buff)
-
-### `eb citycombat [state]`
-
-No casting or fighting in a city unless called for: off (the default), this box casts nothing, picks no target and attacks nothing in a city zone - a press by hand still goes, and so does a run that fights (a quest line, a hunt, an instance run); on, it fights in a city as anywhere. Kept per character.
-
-*who: local, all, others, to*
-
-- `state` (enum, optional): on | off | toggle | status
-
-### `eb classtab [option] [value]`
-
-This character's class tab as EB's own settings: every box of the tab EB acts on, with its value, whether it is set in EB or the profile's, and what EB does with it; an option and a value sets it for this character (the profile file is never changed) and the fight takes it at once; reset puts the profile's box back; window opens the Cast Stack window on its Class tab. Warlock myth (Negative Void on against one mob, off against an encounter, around Dark Siphoning, Apocalypse, Absolution, Dark Nebula and Decimation), mythds, mythsay; Ranger and Assassin exploit (Exploit Weakness when the game says a weakness is seen), the Ranger's focusaim, wreakhavoc, tracingshot (each taken down once up); Brigand swath; Troubador potm, Coercer ir, Dirge cob (another player's call holds yours); Coercer pe, penocombat, peoutside; Conjuror crystal (Crystal Blast when Crystalline Destruction procs) and dimstorage, Necromancer dimstorage; Dirge confrontfear; Inquisitor verdictepic, verdictepichp, verdictnonepic, verdictnonepichp.
-
-*also: `classopts` - who: local, all, others, to*
-
-- `option` (string, optional): one of this character's class tab options (nothing or list: every one; window: the Cast Stack window's Class tab)
-- `value` (string, optional): on | off | toggle, the pick, the words or the number it takes; reset = the profile's own box again
-
-### `eb combat [state]`
-
-Casting on or off on this box. Off: EB casts nothing and keeps watching. status says the stack and every switch. EB fights only what it can win and never attacks a guard.
-
-*also: `fight` - who: local, all, others, to*
-
-- `state` (onoff, optional): on | off | status
-
-### `eb combos [state]`
-
-The ascension chain: on, an ascension starter that went out is followed by its combo before the other damage rows; off, each ascension row casts where the cast stack puts it. Unset, the profile's ascension combos box decides. The same switch as eb flag combos, and it goes to the crew.
-
-*also: `ascension` - who: local, all, others, to*
-
-- `state` (onoff, optional): on | off | status
-
-### `eb cs [cmd] [arg]`
-
-Your cast stack: show it, set the camp, clear it, import a cast stack file (new or old format, tags kept), filter, archive, share. profile <name> switches the profile of this character's cast stack file EB casts from (EB's own pick, kept for this character: the file is never written; asked in a fight, it is taken once the fight is over), profile default goes back to the file's own, profile alone says which it casts from and which the file has. infuse swaps every Mount / Mercenary / Familiar Infusion row for the infusion this character holds now (one per kind, its Type and conditions kept) and saves; infuse all does it on every box, each with its own.
-
-*also: `caststack` - who: local*
-
-- `cmd` (enum, optional): show | profile | camp | rcs | clear | import | archive | share | infuse | filter
-- `arg` (string, optional): a profile, a file or a filter; after profile: a profile's name in this character's cast stack file, or default; after infuse: all (every box)
-
-### `eb curereq [cmd] [rest]`
-
-Cure requests: ask this box's curers for a cure that gives up after a while. cure <member> [kinds]: while they carry a kind named (none named: arcane, elemental, noxious and trauma; curse; confrontfear = Confront Fear on them once), the first ready cure that removes it goes on them, until they carry none. curse <member>: the same for a curse. group [kinds] [count <n>]: the group cure once, when at least n of the group (you included; 1 if not said) carry a kind named, each kind counted on its own. secs <s>: give up after this long (8 if not said); tag <t>: a name to cancel it by. cancel <member or tag> drops their requests, clear drops them all, status lists them. A request goes past the cures switch, never while the box is dead or paused; the crew's claim still gives each cure to one box.
-
-*also: `curerequest` - who: local, all, others, to*
-
-- `cmd` (enum, optional): cure | curse | group | cancel | clear | status
-- `rest` (string, optional): cure: <member> [arcane | elemental | noxious | trauma | curse | confrontfear ...] [secs <s>] [tag <t>]; curse: <member> [secs <s>] [tag <t>]; group: [arcane | elemental | noxious | trauma ...] [count <n>] [secs <s>] [tag <t>]; cancel: <member or tag>
-
-### `eb cures [state]`
-
-Cure detriments by themselves (arcane, noxious, elemental, trauma, curse), the worst first; across the crew only one box cures a target.
-
-*also: `cure` - who: local, all, others, to*
-
-- `state` (onoff, optional): on | off | status
-
-### `eb deadcheck [what] [arg]`
-
-Every dead member in this zone (the group and the raid) gets ONE rezzer. One already standing in reach of the body with a rez rezzes from where it stands - nobody runs (a tank in reach too); else the send list's first kind up runs: a dirge, then a necromancer, healers when switched on, a tank last of all - of one kind the nearest to the body, never the window you play. That box runs to the body on the mesh, rezzes from its rez's max range, runs back and brings the member along. A name: that member only (the Raid window's click; a second click within 4 s is ignored). on / off / toggle: this box does it every 3 s by itself, never for a body another box's rezzer took. healers on / off: whether healers are sent too. tanks on / off: whether a tank runs too, last of all (on by default; off: a tank rezzes only a body in its reach). send <list>: who goes, in order (a class, healer, bard, necro, rezzer, fighter, mage, scout or a name). first <list>: which body first (default: a dead healer, then a dead rezzer). hp <0-100>: the auto check waits while the group's health is under it. speed on / off: a rez run casts its in-combat speed buffs first (on by default; never Sprint). When someone of the group or raid dies here: say on / off says it out loud ('<name> died', who goes, or that nobody up can rez them - one voice a PC), popup on / off shows it across the top of the Raid window (on by default), scream on / off plays EB's own scream (once a PC, once for a wipe; the words wait for it). test: the scream, the words and the banner, whatever is on. Each kept per character.
-
-*who: local, all, others, to*
-
-- `what` (string, optional): now (the default) | on | off | toggle | status | healers | tanks | send | first | hp | say | popup | scream | speed | test | a dead member's name
-- `arg` (string, optional): healers / tanks / say / popup / scream / speed: on | off; send / first: a list of words (dirge,necromancer / healer,rezzer) or default; hp: 0-100
-
-### `eb deathsave [cmd] [arg]`
-
-The group's death-save plan: who saves whom and at what health, so two saves never go out together. propose makes this box's part (eb all deathsave propose: every box its own, in one order the whole group shares); status says who does what; clear drops it (one box a member at a time, as before); stagger sets the ladder (the first at 30%, each next 7 lower); auto on makes it again when the group changes.
-
-*also: `saves`, `deathsaves` - who: local, all, others, to*
-
-- `cmd` (enum, optional): status | propose | clear | stagger | auto
-- `arg` (string, optional): stagger: <top %> <step> (30 7); auto: on | off
-
-### `eb dnc [name]`
-
-The do-not-cancel list: maintained spells EB must never drop. A name puts it on the list or takes it off; nothing lists them.
-
-*also: `donotcancel` - who: local*
-
-- `name` (string, optional): a maintained spell
-
-### `eb embargo [kind] [name] [secs]`
-
-Hold an item, an ability or a tag for some seconds so the boxes take turns: one box's use holds it on the others. list shows the holds, clear ends them. A bare tag (eb embargo <tag> [secs]) holds the cast-stack rows that carry it while it is up.
-
-*who: local, all, others, to*
-
-- `kind` (enum, optional): item | ability | tag | list | clear
-- `name` (string, optional): the item, ability or tag (quote a name of several words)
-- `secs` (int, optional): for how many seconds (30 when left out)
-
-### `eb encounter [cmd] [name]`
-
-A scripted fight for a named or a raid boss - what to do when it does something: on, off, status, load one, list them. load with no name loads the setup for the named this box fights, else for the nearest named here. fights says the boss fight files EB's instance library holds for this zone; fight lays one on this box with no run going - its kill order and setting for that boss's whole fight, and its fight rules (cures, casts, lines said) answered here.
-
-*also: `enc` - who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | status | load | list | fight | fights
-- `name` (string, optional): the fight's file (load with none: the one for the named you fight, else the nearest named); fight / fights: the boss's name
-
-### `eb engage [state] [value]`
-
-Engage what I target: when you target a mob this box can fight - alive, read as attackable, not a player, a pet, a merchant or a guard, within 30 metres - it starts fighting it at once with its cast stack, as if you started the fight yourself; in a group the boxes EB drives fight what the group's lead targets. On by default, kept per character. A box EB is paused on (you play it by hand) never starts a fight by itself. cities on | off: also in a city or a guild hall (off by default: a click to look must never start a fight). range <metres>: how far, 5 to 50. status says whether it is on, how far it reaches, the cities switch and why it last did or did not start a fight.
-
-*who: local, all, others, to*
-
-- `state` (enum, optional): on | off | toggle | status | range | cities
-- `value` (string, optional): with range: how far, 5 to 50 metres (30 when never set); with cities: on, off or toggle
-
-### `eb fightto [spot]`
-
-Walk to a spot in this zone on the mesh and fight what is met on the way - only what EB can win against, never a guard, a named, a heroic or an epic - and stop there. group: the others follow this box. status says how it goes; off (or eb autohunt off) ends it.
-
-*who: local, all, others, to*
-
-- `spot` (string, optional): x,y,z (or x y z), then group to bring the others along; status; off
-
-### `eb flag [name] [state]`
-
-The fight's named switches (ae, pbae, encounter, nothreat, namedca, dumbfires, petassist, casting, cures, rez, interrupts, mez, ho, joust, face, hooffensive, dispel, combos, smartae, smartencounter, los, selectivecures, selectivegroupcures, autosetups, chatevents, queuenext, healinterrupt), any cast-stack tag, or one cast-stack row by its name: on, off, or what it is set to. dispel: the cast stack's dispel rows; combos: an ascension starter's combo goes next; smartae: a point-blank or targeted area attack waits until 2 or more mobs stand within its radius (around me, or around its target); smartencounter: an encounter attack waits until its target's encounter has 2 or more (the profile's own counts when it has them); los: the line-of-sight check before an attack; selectivecures / selectivegroupcures: single-target / group cures only for the types switched on (stcure_arcane ... groupcure_trauma; none on: that cure is not used); autosetups: every encounter setup installed is laid on, each while its named is the mob; chatevents: the coordination rules that answer a line someone says; queuenext: while a cast runs, the next ability of the cast stack is queued in the game so it fires the moment the cast ends (on; one queued at a time); healinterrupt: an attack of EB's that is casting is cancelled when a heal or a cure of the cast stack is needed now, and that heal or cure goes at once (off).
-
-*who: local*
-
-- `name` (string, optional): a switch, a tag or a row's name; nothing lists the switches
-- `state` (onoff, optional): on | off (nothing: say how it stands)
-
-### `eb flagrot [cmd] [words]`
-
-Flag rotation, for a fight's 'next one takes it': marks 1 to 8, each the characters flagged on it in the order they were flagged. next flags the next one not flagged yet on that mark - names in your order (a|b|c), or fighter / priest / mage / scout, a class, group (the default) or raid, by name A-Z - again starts the mark over once every one had a turn, and do <eb line> has that character's box run the line (a box played by hand is passed over then, and said). set / remove one, removeall, is <name>, list, clear every mark. The crew keeps one rotation: a change on one box is told to the others.
-
-*also: `flagrotation` - who: local, all, others, to*
-
-- `cmd` (enum, optional): list | set | remove | removeall | is | next | clear | sync
-- `words` (string, optional): set / remove / is: <name> [<mark>] (me = this box's character; remove <name> all: every mark); removeall / list: [<mark>]; next: <mark> [<who>] [again] [do <eb line>]
-
-### `eb formation [cmd] [arg]`
-
-The raid formation: in a fight every box works out its own spot round the mob from what every box sees alike, and walks there itself - the tank holds the front, the melee stand behind the mob (or on the flanks, or in front), the healers and the ranged further out, each one apart from the next and never inside an avoid circle; a raid's groups (group 1 to 4) take rings of their own. show says who stands where now. A box played by hand never walks for it. Kept for this session.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | status | show | melee | healer | ranged | group | role | avoid
-- `arg` (string, optional): on: behind | flank | front (the melee's side); melee / healer / ranged: a side and its metres; group: 1 to 4; role: <name> tank | melee | healer | ranged | auto; avoid: here [metres] | <x> <z> [metres] | clear
-
-### `eb go [what]`
-
-One word sets the part this box plays. tank: a fighter's defensive stance and its threat proc on, its offensive stance and Subtle Strikes off. dps: a fighter's offensive stance on, its defensive stance and threat proc off; every class's damage rows go. subtle: as dps, with Subtle Strikes on. heal: a priest's damage rows wait, so heals, cures and buffs go first. status (or nothing): what this box is set to. eb all go dps sets the whole crew, each box for itself.
-
-*who: local, all, others, to*
-
-- `what` (string, optional): tank|dps|subtle|heal|swap|status - any other word is a place: travel there (eb goto)
-
-### `eb guards [cmd]`
-
-The guard rule on this box: a mob with a guard word in its name or title is never fought, pulled or caught in an area attack - except the one mob a quest step or an instance run names to kill, outside a city. status: what stands now (here, the kills a run named, the area attacks this character's ability check names). check: each damage row of the cast stack and how EB knows whether it hits an area - by its row (an AE tag or a #), by the book, by this character's ability check (eb abilities export) - or not known. eb all guards check = every box answers for itself.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): status | check
-
-### `eb helpers [cmd] [arg]`
-
-Class helpers in plain words: when someone drops under a %, is down or is feared, a buff of yours is not on, the mob drops under a %, my pet drops under a %, my savagery is at a level, the game says a line ("when the game says <words>"), or the fight starts - cast an ability on them. list numbers them (your own, then the ones your class tab switches on), add one, remove one, on / off (all, or one by its number - kept for this character), test one (what it would do now and why: nothing is sent), up / down (the order your own are tried in), export / import a share code (EBHELP1:..., also in the class's share file), chains (the chains made in Tags & Helpers, and a dry run of one); nothing (or window) opens the Tags & Helpers window.
-
-*also: `helper` - who: local, all, others, to*
-
-- `cmd` (enum, optional): list | add | remove | on | off | status | window | test | up | down | export | import | chains
-- `arg` (string, optional): add: the helper in words (when the tank drops under 40%, cast "<ability>" on them); remove / test / up / down / on / off: its number (or its ability); export: one number, none = all your own lines; import: the code (none = this class's share file); chains: test <n> for a dry run of one
-
-### `eb ho [cmd]`
-
-Heroic opportunities: on, off, status (it also says when this box cannot read the wheel yet); do starts one now; exclude lists the abilities kept out of them; cancel cancels a starter that is up (held until its live proof).
-
-*also: `heroicop` - who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | status | do | exclude | cancel
-
-### `eb intent [cmd] [words]`
-
-Intents: a named list of abilities for one job (a burn, a group ward, a big heal). Fired, the first box of its scope with one of them ready casts it: the list's earliest ability any box has ready, cast by ONE box (self: this box alone; group, the default: one box of the group; raid: one of the raid). save keeps one on this box (a fire carries the list to the other boxes, so they need not have it); list, status (the last fire: who cast what), delete. A box played by hand never casts for an intent.
-
-*also: `intents` - who: local, all, others, to*
-
-- `cmd` (enum, optional): fire | save | list | status | delete | go
-- `words` (string, optional): fire: <name> [on <who>]; save: <name>: <ability>, <ability>, ... [scope:self|group|raid] [on:<who>]; delete: <name>
-
-### `eb interrupts [state]`
-
-Interrupt and dispel by themselves, on the casts and buffs being watched.
-
-*who: local, all, others, to*
-
-- `state` (onoff, optional): on | off | status
-
-### `eb joust [cmd] [metres]`
-
-Step out of melee for a mechanic (out: 25 m along the line from the mob) and back in (in: 3 m), walking on the mesh. status says where this box stands.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): in | out | status
-- `metres` (int, optional): how far, in metres
-
-### `eb lazyheal [cmd] [arg]`
-
-The lazy healer: in a fight, when the tank stands farther away than the reach, this box walks back within it - on the line from the tank back to where it stood, by EB's one mover, with the fight walk's holds (the cast bar, another walk, a stop). The tank is the crew's declared tank, else the group's first fighter. A box played by hand never walks for it. Kept for this session.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | status
-- `arg` (string, optional): on: the reach in metres (20 when none)
-
-### `eb lazytank [cmd] [arg]`
-
-The lazy tank: this box holds a camp spot and takes back every mob that gets loose on someone who is not the tank - a taunt of its cast stack at that mob, sent like every cast of the fight (only a fight that is ours, never a guard; an area taunt first when two or more got loose; the member worst off first). The tank is the crew's declared tank (eb go tank), else this box. on [<metres>]: the camp spot it holds, else one here; off lets go of the one it set; allow <name>: a member who may hold a mob (an off-tank). A box played by hand does nothing. Kept for this session.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | status | allow | unallow
-- `arg` (string, optional): on: the camp spot's metres (none: the camp spot it holds, else one here); allow / unallow: a member's name
-
-### `eb listen <tag>`
-
-Fire a tag now so its LISTEN rows cast: the rows held waiting for it go once, on this box and the group (an opener row does this by itself when it casts). `eb tags` explains every tag.
-
-*who: local, all, others, to*
-
-- `tag` (string): the cast-stack tag to fire (one word)
-
-### `eb mez [state]`
-
-Crowd control: mez or root the adds and renew it before it runs out - never the mob being killed.
-
-*also: `cc`, `crowdcontrol` - who: local, all, others, to*
-
-- `state` (onoff, optional): on | off | status
-
-### `eb mobcasts [cmd]`
-
-What the mobs near you are casting: watch it, record it, list it.
-
-*also: `tc`, `npccasts` - who: local*
-
-- `cmd` (enum, optional): on | off | record | watch | list
-
-### `eb mount [cmd]`
-
-Mount or dismount: on, off, toggle; status says which. best (the best mount you own) is not built yet.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | toggle | best | status
-
-### `eb npccast [cmd] [words]`
-
-The mobs' cast lists, answered in a fight: per zone, the mobs to watch and what to do when one starts a listed spell - the lists shipped in your InnerSpace scripts and your own (read only; yours over the shipped). On, in a fight: a listed spell marked to interrupt is interrupted (the cast stack's interrupt, at that mob only, never a mob that is not a fight of ours), an event line becomes the event your EB rules answer, an echo line is said. status, list [<zone>] (each mob and spell in words), reload. Off by default; kept for this character. A box played by hand interrupts nothing.
-
-*also: `castlists` - who: local, all, others, to*
-
-- `cmd` (enum, optional): status | on | off | toggle | list | reload
-- `words` (string, optional): list: a zone's name (nothing: this zone)
-
-### `eb pet [cmd] [state]`
-
-The pet: attack my target (only a fight that is ours, or an aggressive mob - never a guard, a merchant or a citizen), back off, or assist on | off (EB then sends it at every mob it fights). status says the switch.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): attack | backoff | assist | status
-- `state` (onoff, optional): on | off, for assist
-
-### `eb position [cmd] [metres]`
-
-Where this box stands in a fight: behind (at the mob's back), flank (at its side), off (where it is), status. Unset, the profile's Move behind mob box decides. The tank faces the mob and never walks round it; the walk is on the zone's mesh, and a spell with a cast time waits while it walks.
-
-*also: `pos` - who: local, all, others, to*
-
-- `cmd` (enum, optional): behind | flank | off | status
-- `metres` (int, optional): how far past the mob's edge, in metres (3 when left out)
-
-### `eb pullplan [cmd] [arg]`
-
-Pull planning by the hunt's own rules (never a guard, never another player's fight): scan says the mobs this box can reach walking on the mesh - a mob behind a wall is as far as the way round it - nearest that way first; plan says the order to pull them in; body <name> walks at the nearest one of that name until it comes for this box - never an attack - then back to where this box stood (here: it is fought where it came). stop ends a body pull. In a hunt: eb autohunt on <list> reach:<metres> pull:body.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): scan | plan | body | stop | status
-- `arg` (string, optional): scan / plan: metres on the mesh (60 when none); body: a mob's name, then here to fight it where it comes
-
-### `eb raidreact [cmd] [arg]`
-
-Ready answers to a boss's moves: on, off (all, or one by its place), status / list; view / edit opens the Raid React window; rec starts the fight scanner (pick a cast into a reaction there); test <n> sets one off now. stop holds every reaction that is on until arm (one switched by hand stays as it is). timer <n> <every> [<early>]: that reaction also goes off on its own clock in a fight, so many seconds early - every so often from the pull, and from each time it was seen. import lists your old reactions files and brings one (or all) in, off; grab lists the detriments that landed on you here and makes a reaction to the cast that likely put one on. Sharing them through the hub stays off (upload says so). The answers are the crew's: on or off on one box is on or off for every box.
-
-*also: `rr` - who: local*
-
-- `cmd` (enum, optional): on | off | status | view | list | rec | edit | test | grab | import | upload | arm | stop | timer
-- `arg` (string, optional): test / on / off: a reaction's place in the list (or its name); timer: <n> <every seconds> [<seconds early>] or <n> off; import: a file's number or all; grab: a detriment's number
-
-### `eb ranged [cmd]`
-
-The game's ranged auto-attack: on (held until its live proof), off (only while it is on: it stops the melee auto-attack too), status.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | status
-
-### `eb readycast <ability> [seconds] [tag]`
-
-Cast an ability the moment it is ready: this box watches its own ability for up to the seconds given and casts it through the engine (a row of its cast stack, or its book), then tells the crew; an instance run's 'wait for <ability> on <who>, else <fallback>' step sends it to that box and, when it is not ready in time, sends the fallback to every box that has it ready.
-
-*also: `castwhenready` - who: local, all, others, to*
-
-- `ability` (string): the ability, in quotes when it has several words
-- `seconds` (int, optional): how long to wait for it to be ready: 0 = now or never, 10 when unsaid, 60 at most
-- `tag` (string, optional): tag <id>: the crew hears eb:ready:<id> once it went (eb:missed:<id> when it did not)
-
-### `eb rebuff`
-
-Rebuff now: every wait EB was keeping on a buff or an item is forgotten, and whatever buff is down goes out again on the next casts.
-
-*who: local, all, others, to*
-
-### `eb revive`
-
-When this character is dead: release to the first revive point (EB's own release; the paid instant revive is never pressed). It says the release was sent, then 'up again' once this character reads alive.
-
-*who: local, all, others, to*
-
-### `eb rez [state]`
-
-Rez fallen members by themselves; across the crew only one box rezzes a target. now: rez the dead member at once, whatever the switch says.
-
-*who: local, all, others, to*
-
-- `state` (onoff, optional): on | off | status | toggle | now
-
-### `eb rezrun [who]`
-
-This box runs to a dead member's body on the mesh (a long way: its in-combat speed buffs first; out of a fight, Gather Remains first when the body is within its reach), stops at its rez's max range, rezzes them from its own cast stack (a group rez when it gets more up) and runs back to where it stood - bringing the member along, and the dead near it on the way; the goal it was on waits meanwhile. stop ends the run where it is (its camp spot back, or its follow goes on); status says how it goes. comeback <x,y,z> <rezzer>: the member a run got up walks back on the mesh to its own camp spot, else that spot (never a paused box, never one whose own run goes on) - its rezzer sends it. claim / unclaim <body> <rezzer>: which rezzer took which body - every box hears it (over EB IRC too), so no second rezzer goes.
-
-*who: local, all, others, to*
-
-- `who` (string, optional): the dead member to run to [irc] | stop | status | comeback <x,y,z> <rezzer> [<member>] | claim <body> <rezzer> | unclaim <body> <rezzer>
-
-### `eb rogue [cmd] [name]`
-
-A swashbuckler or brigand takes the tank's part. tank: on the rogue's box its defensive stance goes up, its taunts go first and its dehates off (read off its own ability check: eb abilities export), and the crew heals it as the tank and points its hate buffs on the tank at it; typed on another box, the line goes to the rogue's box. dps: every row back as it was, the stance off, and the box that tanked before takes the part back. status: what this box is set to.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): tank | dps | status
-- `name` (string, optional): tank: the rogue's character (nothing: this box when it is a swashbuckler or brigand, else the group's first)
-
-### `eb rotation [words]`
-
-A saved rotation order: the abilities this box casts in that order, each through the checked cast. save keeps one by name; <name> casts it once (on demand); <name> start goes round and round until stop; list, status, delete; board opens the Rotation Board (each box's caster, ability, role and when it is ready). An ability the game will not take yet is tried again a moment later, then passed over.
-
-*who: local, all, others, to*
-
-- `words` (string, optional): <name> [once | start] | stop | status | list | board | save <name>: <ability>, <ability>, ... | delete <name>
-
-### `eb scan [cmd]`
-
-The fight scanner: keep an eye on chosen mobs - mark one, clear the marks; adds lists the mobs that joined fights here; lines lists what the fights here said (a mob's words, its emotes, the warnings), kept while recording.
-
-*also: `fightscan` - who: local*
-
-- `cmd` (enum, optional): on | off | status | mark | clear | adds | lines
-
-### `eb setups [kind] [state]`
-
-Whether your encounter setups run by themselves, by the kind of zone: heroic = every zone that is not a raid zone (heroic and solo instances, overland, cities), raid = a raid zone. In a zone whose kind is on, every setup installed on this box is laid on, each while its named is the mob; going into a zone whose kind is off takes them off again (a setup you load by hand stays). Both off is the default: nothing is laid on by itself. Kept for this character.
-
-*who: local, all, others, to*
-
-- `kind` (enum, optional): heroic | raid | all | status
-- `state` (onoff, optional): on | off | toggle (nothing: say how it stands)
-
-### `eb stance [name]`
-
-A fighter's stance alone: def, off, subtle, or status. (eb go also sets the damage rows and the tank.)
-
-*also: `ts` - who: local, all, others, to*
-
-- `name` (string, optional): def | off | subtle | status
-
-### `eb tag <name> [state]`
-
-Switch one cast-stack tag on or off by hand: its rows are held when it is off. `eb tags` lists them and explains each; `eb allow` / `eb embargo` raise a tag for a while instead.
-
-*who: local, all, others, to*
-
-- `name` (string): the cast-stack tag (one word)
-- `state` (onoff, optional): on | off | status
-
-### `eb tagfor <tag> <secs> [how]`
-
-A cast-stack tag for a while: embargo holds the rows that carry it, allow lets them go (the rows that wait for it), for so many seconds - then it is as it was.
-
-*who: local, all, others, to*
-
-- `tag` (string): the cast-stack tag (one word)
-- `secs` (int): for how many seconds
-- `how` (enum, optional): allow | embargo
-
-
-<a id="nav"></a>
-## Navigation
+- `eb combat [state]`: Casting on or off on this box. Off: EB casts nothing and keeps watching. status says the stack and every switch. EB fights only what it can win and never attacks a guard.
+  - Also typed as: `fight`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional; one of on | off | status; default status): on | off | status
+- `eb autohunt [cmd] [list]`: Hunt by a saved list (the Auto Hunt window's): pull the nearest mob EB can win against - the list's names first, and with no names any mob it may kill, never a guard - rest, move on around where it started, along its waypoints or inside its area, and stop at its kills or minutes, a zone line, until the bags hold so many of an item, until a quest updates, or at the third death in the group (deaths:\<n>). No pull while a member is down; one up again elsewhere is called back. group: the others follow. reach:\<m>: only what can be reached within that many metres walked on the mesh, the nearest that way first; pull:body: each pull is walked at until it comes (never an attack), then back to the camp. import makes your old Auto-Hunt routes hunt lists; rename renames a list; move puts a list in a folder of yours (list and folders show them by folder). options \<list> says a list's hunt options, options \<list> \<option> \<value> sets one in the list: pulls (the abilities that open each fight, first ready first), group_hp / group_power (no pull while anyone of the group is under that %), pause_chest (no pull while an Exquisite Chest lies near), delay_after (seconds after a fight before the next pull; on = 3), prebuff (a moment for the buffs before each pull), ignore_collision (kept; EB reads no sight line).
+  - Also typed as: `ah`, `hunt`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | status | list | area | route | patrol | import | rename | move | folders | options; default status): on | off | status | list | area | route | patrol | import | rename | move | folders | options
+  - `list` (string; optional): a saved hunt list, then its words: kills:\<n> minutes:\<n> until:\<n>:\<item> (\_ for a space) until:quest\[:\<quest>\] deaths:\<n> reach:\<metres on the mesh> pull:body group; import: an old route's zone \[overwrite\]; rename: \<list> to \<new name>; move: \<list> to \<folder> (none: out of it); options: \<list> \[\<option> \<value>\] - pulls (abilities split by |), group_hp, group_power, pause_chest, delay_after, prebuff, ignore_collision
+- `eb cures [state]`: Cure detriments by themselves (arcane, noxious, elemental, trauma, curse), the worst first; across the crew only one box cures a target.
+  - Also typed as: `cure`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional): on | off | status
+- `eb interrupts [state]`: Interrupt and dispel by themselves, on the casts and buffs being watched.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional): on | off | status
+- `eb rez [state]`: Rez fallen members by themselves; across the crew only one box rezzes a target. now: rez the dead member at once, whatever the switch says.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional; one of on | off | status | toggle | now): on | off | status | toggle | now
+- `eb ho [cmd]`: Heroic opportunities: on, off, status (it also says when this box cannot read the wheel yet); do starts one now; exclude lists the abilities kept out of them; cancel cancels a starter that is up (held until its live proof).
+  - Also typed as: `heroicop`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | status | do | exclude | cancel; default status): on | off | status | do | exclude | cancel
+- `eb mez [state]`: Crowd control: mez or root the adds and renew it before it runs out - never the mob being killed.
+  - Also typed as: `cc`, `crowdcontrol`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional): on | off | status
+- `eb embargo [kind] [name] [secs]`: Hold an item, an ability or a tag for some seconds so the boxes take turns: one box's use holds it on the others. list shows the holds, clear ends them. A bare tag (eb embargo \<tag> \[secs\]) holds the cast-stack rows that carry it while it is up.
+  - For the crew: `all`, `others`, `to`.
+  - `kind` (enum; optional; one of item | ability | tag | list | clear; default list): item | ability | tag | list | clear
+  - `name` (string; optional): the item, ability or tag (quote a name of several words)
+  - `secs` (int; optional): for how many seconds (30 when left out)
+- `eb allow <tag> [secs]`: Open an ALLOW tag for a while: the cast-stack rows that wait for it (its ATag rows) cast while it is up, then it is as it was. One box opening it reaches the group. \`eb tags\` explains every tag.
+  - For the crew: `all`, `others`, `to`.
+  - `tag` (string; required): the cast-stack allow tag (one word)
+  - `secs` (int; optional): for how many seconds (10 when left out)
+- `eb listen <tag>`: Fire a tag now so its LISTEN rows cast: the rows held waiting for it go once, on this box and the group (an opener row does this by itself when it casts). \`eb tags\` explains every tag.
+  - For the crew: `all`, `others`, `to`.
+  - `tag` (string; required): the cast-stack tag to fire (one word)
+- `eb tag <name> [state]`: Switch one cast-stack tag on or off by hand: its rows are held when it is off. \`eb tags\` lists them and explains each; \`eb allow\` / \`eb embargo\` raise a tag for a while instead.
+  - For the crew: `all`, `others`, `to`.
+  - `name` (string; required): the cast-stack tag (one word)
+  - `state` (onoff; optional): on | off | status
+- `eb dnc [name]`: The do-not-cancel list: maintained spells EB must never drop. A name puts it on the list or takes it off; nothing lists them.
+  - Also typed as: `donotcancel`.
+  - This box only.
+  - `name` (string; optional): a maintained spell
+- `eb stance [name]`: A fighter's stance alone: def, off, subtle, or status. (eb go also sets the damage rows and the tank.)
+  - Also typed as: `ts`.
+  - For the crew: `all`, `others`, `to`.
+  - `name` (string; optional): def | off | subtle | status
+- `eb go [what]`: One word sets the part this box plays. tank: a fighter's defensive stance and its threat proc on, its offensive stance and Subtle Strikes off. dps: a fighter's offensive stance on, its defensive stance and threat proc off; every class's damage rows go. subtle: as dps, with Subtle Strikes on. heal: a priest's damage rows wait, so heals, cures and buffs go first. status (or nothing): what this box is set to. eb all go dps sets the whole crew, each box for itself.
+  - For the crew: `all`, `others`, `to`.
+  - `what` (string; optional): tank|dps|subtle|heal|swap|status - any other word is a place: travel there (eb goto)
+- `eb rogue [cmd] [name]`: A swashbuckler or brigand takes the tank's part. tank: on the rogue's box its defensive stance goes up, its taunts go first and its dehates off (read off its own ability check: eb abilities export), and the crew heals it as the tank and points its hate buffs on the tank at it; typed on another box, the line goes to the rogue's box. dps: every row back as it was, the stance off, and the box that tanked before takes the part back. status: what this box is set to.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of tank | dps | status; default status): tank | dps | status
+  - `name` (string; optional): tank: the rogue's character (nothing: this box when it is a swashbuckler or brigand, else the group's first)
+- `eb assist [who] [follow] [dist]`: Fight what that one fights: tank = the group's tank (the one eb go tank names, else the group's first fighter), me = the box the line came from, a name, or off for no one. With follow, this box goes with that one too - the tank's own box stays where it is. eb relay mygroup assist tank follow is the MCP's Follow + assist tank: every box of your group goes with the tank and fights what it fights.
+  - For the crew: `all`, `others`, `to`.
+  - `who` (actor; optional): tank (the group's tank), me (the box the line came from), a character's name, or off (no one); nothing says who this box assists now
+  - `follow` (flag; optional): follow: follow that one too (a camp spot this box holds lets go)
+  - `dist` (int; optional): with follow: how many metres behind, 2 to 20 (nothing: this character's own follow distance)
+- `eb encounter [cmd] [name]`: A scripted fight for a named or a raid boss - what to do when it does something: on, off, status, load one, list them. load with no name loads the setup for the named this box fights, else for the nearest named here. fights says the boss fight files EB's instance library holds for this zone; fight lays one on this box with no run going - its kill order and setting for that boss's whole fight, and its fight rules (cures, casts, lines said) answered here.
+  - Also typed as: `enc`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | status | load | list | fight | fights; default status): on | off | status | load | list | fight | fights
+  - `name` (string; optional): the fight's file (load with none: the one for the named you fight, else the nearest named); fight / fights: the boss's name
+- `eb setups [kind] [state]`: Whether your encounter setups run by themselves, by the kind of zone: heroic = every zone that is not a raid zone (heroic and solo instances, overland, cities), raid = a raid zone. In a zone whose kind is on, every setup installed on this box is laid on, each while its named is the mob; going into a zone whose kind is off takes them off again (a setup you load by hand stays). Both off is the default: nothing is laid on by itself. Kept for this character.
+  - For the crew: `all`, `others`, `to`.
+  - `kind` (enum; optional; one of heroic | raid | all | status; default all): heroic | raid | all | status
+  - `state` (onoff; optional): on | off | toggle (nothing: say how it stands)
+- `eb raidreact [cmd] [arg]`: Ready answers to a boss's moves: on, off (all, or one by its place), status / list; view / edit opens the Raid React window; rec starts the fight scanner (pick a cast into a reaction there); test \<n> sets one off now. stop holds every reaction that is on until arm (one switched by hand stays as it is). timer \<n> \<every> \[\<early>\]: that reaction also goes off on its own clock in a fight, so many seconds early - every so often from the pull, and from each time it was seen. import lists your old reactions files and brings one (or all) in, off; grab lists the detriments that landed on you here and makes a reaction to the cast that likely put one on. Sharing them through the hub stays off (upload says so). The answers are the crew's: on or off on one box is on or off for every box.
+  - Also typed as: `rr`.
+  - This box only.
+  - `cmd` (enum; optional; one of on | off | status | view | list | rec | edit | test | grab | import | upload | arm | stop | timer; default status): on | off | status | view | list | rec | edit | test | grab | import | upload | arm | stop | timer
+  - `arg` (string; optional): test / on / off: a reaction's place in the list (or its name); timer: \<n> \<every seconds> \[\<seconds early>\] or \<n> off; import: a file's number or all; grab: a detriment's number
+- `eb mobcasts [cmd]`: What the mobs near you are casting: watch it, record it, list it.
+  - Also typed as: `tc`, `npccasts`.
+  - This box only.
+  - `cmd` (enum; optional; one of on | off | record | watch | list; default list): on | off | record | watch | list
+- `eb helpers [cmd] [arg]`: Class helpers in plain words: when someone drops under a %, is down or is feared, a buff of yours is not on, the mob drops under a %, my pet drops under a %, my savagery is at a level, the game says a line ("when the game says \<words>"), or the fight starts - cast an ability on them. list numbers them (your own, then the ones your class tab switches on), add one, remove one, on / off (all, or one by its number - kept for this character), test one (what it would do now and why: nothing is sent), up / down (the order your own are tried in), export / import a share code (EBHELP1:..., also in the class's share file), chains (the chains made in Tags & Helpers, and a dry run of one); nothing (or window) opens the Tags & Helpers window.
+  - Also typed as: `helper`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of list | add | remove | on | off | status | window | test | up | down | export | import | chains): list | add | remove | on | off | status | window | test | up | down | export | import | chains
+  - `arg` (string; optional): add: the helper in words (when the tank drops under 40%, cast "\<ability>" on them); remove / test / up / down / on / off: its number (or its ability); export: one number, none = all your own lines; import: the code (none = this class's share file); chains: test \<n> for a dry run of one
+- `eb classtab [option] [value]`: This character's class tab as EB's own settings: every box of the tab EB acts on, with its value, whether it is set in EB or the profile's, and what EB does with it; an option and a value sets it for this character (the profile file is never changed) and the fight takes it at once; reset puts the profile's box back; window opens the Cast Stack window on its Class tab. Warlock myth (Negative Void on against one mob, off against an encounter, around Dark Siphoning, Apocalypse, Absolution, Dark Nebula and Decimation), mythds, mythsay; Ranger and Assassin exploit (Exploit Weakness when the game says a weakness is seen), the Ranger's focusaim, wreakhavoc, tracingshot (each taken down once up); Brigand swath; Troubador potm, Coercer ir, Dirge cob (another player's call holds yours); Coercer pe, penocombat, peoutside; Conjuror crystal (Crystal Blast when Crystalline Destruction procs) and dimstorage, Necromancer dimstorage; Dirge confrontfear; Inquisitor verdictepic, verdictepichp, verdictnonepic, verdictnonepichp.
+  - Also typed as: `classopts`.
+  - For the crew: `all`, `others`, `to`.
+  - `option` (string; optional): one of this character's class tab options (nothing or list: every one; window: the Cast Stack window's Class tab)
+  - `value` (string; optional): on | off | toggle, the pick, the words or the number it takes; reset = the profile's own box again
+- `eb scan [cmd]`: The fight scanner: keep an eye on chosen mobs - mark one, clear the marks; adds lists the mobs that joined fights here; lines lists what the fights here said (a mob's words, its emotes, the warnings), kept while recording.
+  - Also typed as: `fightscan`.
+  - This box only.
+  - `cmd` (enum; optional; one of on | off | status | mark | clear | adds | lines; default status): on | off | status | mark | clear | adds | lines
+- `eb flag [name] [state]`: The fight's named switches (ae, pbae, encounter, nothreat, namedca, dumbfires, petassist, casting, cures, rez, interrupts, mez, ho, joust, face, hooffensive, dispel, combos, smartae, smartencounter, los, selectivecures, selectivegroupcures, autosetups, chatevents, queuenext, healinterrupt), any cast-stack tag, or one cast-stack row by its name: on, off, or what it is set to. dispel: the cast stack's dispel rows; combos: an ascension starter's combo goes next; smartae: a point-blank or targeted area attack waits until 2 or more mobs stand within its radius (around me, or around its target); smartencounter: an encounter attack waits until its target's encounter has 2 or more (the profile's own counts when it has them); los: the line-of-sight check before an attack; selectivecures / selectivegroupcures: single-target / group cures only for the types switched on (stcure_arcane ... groupcure_trauma; none on: that cure is not used); autosetups: every encounter setup installed is laid on, each while its named is the mob; chatevents: the coordination rules that answer a line someone says; queuenext: while a cast runs, the next ability of the cast stack is queued in the game so it fires the moment the cast ends (on; one queued at a time); healinterrupt: an attack of EB's that is casting is cancelled when a heal or a cure of the cast stack is needed now, and that heal or cure goes at once (off).
+  - This box only.
+  - `name` (string; optional): a switch, a tag or a row's name; nothing lists the switches
+  - `state` (onoff; optional): on | off (nothing: say how it stands)
+- `eb cs [cmd] [arg]`: Your cast stack: show it, set the camp, clear it, import a cast stack file (new or old format, tags kept), filter, archive, share. profile \<name> switches the profile of this character's cast stack file EB casts from (EB's own pick, kept for this character: the file is never written; asked in a fight, it is taken once the fight is over), profile default goes back to the file's own, profile alone says which it casts from and which the file has. infuse swaps every Mount / Mercenary / Familiar Infusion row for the infusion this character holds now (one per kind, its Type and conditions kept) and saves; infuse all does it on every box, each with its own.
+  - Also typed as: `caststack`.
+  - This box only.
+  - `cmd` (enum; optional; one of show | profile | camp | rcs | clear | import | archive | share | infuse | filter; default show): show | profile | camp | rcs | clear | import | archive | share | infuse | filter
+  - `arg` (string; optional): a profile, a file or a filter; after profile: a profile's name in this character's cast stack file, or default; after infuse: all (every box)
+- `eb cast <ability> [who]`: Cast one ability of this character's cast stack now, by name: the row says what kind of spell it is - an attack goes only at the mob EB fights, a heal or a buff on the member named (eb cast "Mending Touch" on Tank). A name that is no row of the cast stack is refused. eb cast stop stops casting: the abilities the game has queued are cleared and the cast going now is cancelled.
+  - For the crew: `all`, `others`, `to`.
+  - `ability` (string; required): the ability, in quotes when it has several words; stop = stop casting
+  - `who` (string; optional): on \<member> (a heal or a buff)
+- `eb cancel <spell>`: Cancel a spell of yours that is up now (a maintained spell: a stance, a toggle, a buff), by its name. Only a cancel the game took is said as done.
+  - Also typed as: `unbuff`.
+  - For the crew: `all`, `others`, `to`.
+  - `spell` (string; required): a spell of yours that is up, by its name (any rank)
+- `eb tagfor <tag> <secs> [how]`: A cast-stack tag for a while: embargo holds the rows that carry it, allow lets them go (the rows that wait for it), for so many seconds - then it is as it was.
+  - For the crew: `all`, `others`, `to`.
+  - `tag` (string; required): the cast-stack tag (one word)
+  - `secs` (int; required): for how many seconds
+  - `how` (enum; optional; one of allow | embargo; default embargo): allow | embargo
+- `eb acs [xpack]`: Put this character's class adornment set on: the set for its class, else its class group, else its archetype, the highest level its own level allows - from the bags first, then the Adornment Depot in reach. A word takes only that set: an expansion, a preset, or your own family (eb adorn own). The class set in EB's settings comes first when there is one. eb all acs: every box puts on the set of its own class.
+  - Also typed as: `applyclassset`.
+  - For the crew: `all`, `others`, `to`.
+  - `xpack` (string; optional): an expansion (RoK, TSO), a preset (TSOx2) or your own family; nothing = the set your class and level take
+- `eb rotation [words]`: A saved rotation order: the abilities this box casts in that order, each through the checked cast. save keeps one by name; \<name> casts it once (on demand); \<name> start goes round and round until stop; list, status, delete; board opens the Rotation Board (each box's caster, ability, role and when it is ready). An ability the game will not take yet is tried again a moment later, then passed over.
+  - For the crew: `all`, `others`, `to`.
+  - `words` (string; optional): \<name> \[once | start\] | stop | status | list | board | save \<name>: \<ability>, \<ability>, ... | delete \<name>
+- `eb abilities [cmd] [options]`: The ability book: export writes your own ability check (this character's book as JSON, which EB reads for the position checks; EB ships none) - with what to export and how (merge into your file, a fresh one or only the new lines; leave out passives, ascension or tradeskill lines; the lowest tier; the levels; just a few named abilities; a dry run), its progress in the Ability Export window and on the console; export stop / status; eb all abilities export runs it on every box. Research the next tier, details, what gets used, list.
+  - Also typed as: `abilexport`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of export | research | details | tracker | list; default list): export | research | details | tracker | list
+  - `options` (string; optional): export: merge (the default) / fresh / new, dry, reread, nopassives, noascension, notradeskill, tier:\<tier>, levels:\<from>-\<to>, quiet, only:\<names> - or stop, status
+- `eb rebuff`: Rebuff now: every wait EB was keeping on a buff or an item is forgotten, and whatever buff is down goes out again on the next casts.
+  - For the crew: `all`, `others`, `to`.
+- `eb revive`: When this character is dead: release to the first revive point (EB's own release; the paid instant revive is never pressed). It says the release was sent, then 'up again' once this character reads alive.
+  - For the crew: `all`, `others`, `to`.
+- `eb deadcheck [what] [arg]`: Every dead member in this zone (the group and the raid) gets ONE rezzer. One already standing in reach of the body with a rez rezzes from where it stands - nobody runs (a tank in reach too); else the send list's first kind up runs: a dirge, then a necromancer, healers when switched on, a tank last of all - of one kind the nearest to the body, never the window you play. That box runs to the body on the mesh, rezzes from its rez's max range, runs back and brings the member along. A name: that member only (the Raid window's click; a second click within 4 s is ignored). on / off / toggle: this box does it every 3 s by itself, never for a body another box's rezzer took. healers on / off: whether healers are sent too. tanks on / off: whether a tank runs too, last of all (on by default; off: a tank rezzes only a body in its reach). send \<list>: who goes, in order (a class, healer, bard, necro, rezzer, fighter, mage, scout or a name). first \<list>: which body first (default: a dead healer, then a dead rezzer). hp <0-100>: the auto check waits while the group's health is under it. speed on / off: a rez run casts its in-combat speed buffs first (on by default; never Sprint). When someone of the group or raid dies here: say on / off says it out loud ('\<name> died', who goes, or that nobody up can rez them - one voice a PC), popup on / off shows it across the top of the Raid window (on by default), scream on / off plays EB's own scream (once a PC, once for a wipe; the words wait for it). test: the scream, the words and the banner, whatever is on. Each kept per character.
+  - For the crew: `all`, `others`, `to`.
+  - `what` (string; optional): now (the default) | on | off | toggle | status | healers | tanks | send | first | hp | say | popup | scream | speed | test | a dead member's name
+  - `arg` (string; optional): healers / tanks / say / popup / scream / speed: on | off; send / first: a list of words (dirge,necromancer / healer,rezzer) or default; hp: 0-100
+- `eb aa [value]`: The AA slider: what share of adventure XP goes to AA XP - 0 to 100, on (100) or off (0). eb all aa \<value> sets every box. Held until its live proof (eb proof).
+  - Also typed as: `aaslider`.
+  - For the crew: `all`, `others`, `to`.
+  - `value` (string; optional): 0-100 | on | off - nothing = 0: all XP to adventure levels
+- `eb blockers [cmd]`: The group's AE blockers - each class's own group ward against area damage (a druid's Tortoise Shell, a bard's Bladedance, a swashbuckler's Advance Warning, a channeler's Shield of Blackwood). now: this box's own (eb all blockers: each box its own); cycle: the group's, one box after another, ten seconds apart, so one is up at a time; stop ends a cycle; status says who has one.
+  - Also typed as: `aeblockers`, `cycleblockers`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of now | cycle | stop | status; default now): now | cycle | stop | status
+- `eb canceldet <icons>`: A detriment on me cancelled, found by its icons - one a fight says to click off. Held until its live proof (eb proof); then it goes at once.
+  - Also typed as: `canceldetriment`, `canceldetrimental`.
+  - For the crew: `all`, `others`, `to`.
+  - `icons` (string; required): \<icon>\[/\<backdrop>\] (or \<icon> \<backdrop>): the detriment's icons - the Target window shows an effect's
+- `eb autocure [words]`: One member cured first, again and again: whenever that member carries what a cure row removes, this box cures them before anyone else. curse: a curse only. cursed: one curse cure on them, then the mark goes. off takes the mark off. The cure rows and the crew's claim decide as always.
+  - Also typed as: `curefocus`.
+  - For the crew: `all`, `others`, `to`.
+  - `words` (string; optional): \<member> \[cure | curse | cursed | off\] - or off (every mark) - or nothing (who is marked)
+- `eb deathsave [cmd] [arg]`: The group's death-save plan: who saves whom and at what health, so two saves never go out together. propose makes this box's part (eb all deathsave propose: every box its own, in one order the whole group shares); status says who does what; clear drops it (one box a member at a time, as before); stagger sets the ladder (the first at 30%, each next 7 lower); auto on makes it again when the group changes.
+  - Also typed as: `saves`, `deathsaves`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of status | propose | clear | stagger | auto; default status): status | propose | clear | stagger | auto
+  - `arg` (string; optional): stagger: \<top %> \<step> (30 7); auto: on | off
+- `eb autotarget [cmd] [arg]`: The kill-first list: which mobs this box fights first, by name. on / off (off: it fights what it is pointed at), add a mob, remove one, clear the list; radius: a candidate stands within that many metres; height: and within that many metres above or below me; rescan: a pick holds that long before another candidate takes its place; scan on / off: the out-of-combat scan. status says the list and the settings.
+  - Also typed as: `killlist`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of status | on | off | add | remove | clear | radius | height | rescan | scan; default status): status | on | off | add | remove | clear | radius | height | rescan | scan
+  - `arg` (string; optional): add / remove: a mob's name; radius / height: metres (height 0 = no limit); rescan: seconds (0 = every step); scan: on | off
+- `eb castin [seconds] [ability] [who]`: One cast, later: in so many seconds this box casts the ability (a row of its cast stack, or its book), aimed and paced like any cast - on the member named, when one is (eb castin 5 "Mending Touch" on Tank). list says what waits, clear drops it.
+  - Also typed as: `castlater`.
+  - For the crew: `all`, `others`, `to`.
+  - `seconds` (string; optional): in how many seconds (600 at most) | list | clear
+  - `ability` (string; optional): the ability, in quotes when it has several words
+  - `who` (string; optional): on \<member> (a heal or a buff)
+- `eb citycombat [state]`: No casting or fighting in a city unless called for: off (the default), this box casts nothing, picks no target and attacks nothing in a city zone - a press by hand still goes, and so does a run that fights (a quest line, a hunt, an instance run); on, it fights in a city as anywhere. Kept per character.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (enum; optional; one of on | off | toggle | status; default status): on | off | toggle | status
+- `eb engage [state] [value]`: Engage what I target: when you target a mob this box can fight - alive, read as attackable, not a player, a pet, a merchant or a guard, within 30 metres - it starts fighting it at once with its cast stack, as if you started the fight yourself; in a group the boxes EB drives fight what the group's lead targets. On by default, kept per character. A box EB is paused on (you play it by hand) never starts a fight by itself. cities on | off: also in a city or a guild hall (off by default: a click to look must never start a fight). range \<metres>: how far, 5 to 50. status says whether it is on, how far it reaches, the cities switch and why it last did or did not start a fight.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (enum; optional; one of on | off | toggle | status | range | cities; default status): on | off | toggle | status | range | cities
+  - `value` (string; optional): with range: how far, 5 to 50 metres (30 when never set); with cities: on, off or toggle
+- `eb guards [cmd]`: The guard rule on this box: a mob with a guard word in its name or title is never fought, pulled or caught in an area attack - except the one mob a quest step or an instance run names to kill, outside a city. status: what stands now (here, the kills a run named, the area attacks this character's ability check names). check: each damage row of the cast stack and how EB knows whether it hits an area - by its row (an AE tag or a #), by the book, by this character's ability check (eb abilities export) - or not known. eb all guards check = every box answers for itself.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of status | check; default status): status | check
+- `eb readycast <ability> [seconds] [tag]`: Cast an ability the moment it is ready: this box watches its own ability for up to the seconds given and casts it through the engine (a row of its cast stack, or its book), then tells the crew; an instance run's 'wait for \<ability> on \<who>, else \<fallback>' step sends it to that box and, when it is not ready in time, sends the fallback to every box that has it ready.
+  - Also typed as: `castwhenready`.
+  - For the crew: `all`, `others`, `to`.
+  - `ability` (string; required): the ability, in quotes when it has several words
+  - `seconds` (int; optional): how long to wait for it to be ready: 0 = now or never, 10 when unsaid, 60 at most
+  - `tag` (string; optional): tag \<id>: the crew hears eb:ready:\<id> once it went (eb:missed:\<id> when it did not)
+- `eb rezrun [who]`: This box runs to a dead member's body on the mesh (a long way: its in-combat speed buffs first; out of a fight, Gather Remains first when the body is within its reach), stops at its rez's max range, rezzes them from its own cast stack (a group rez when it gets more up) and runs back to where it stood - bringing the member along, and the dead near it on the way; the goal it was on waits meanwhile. stop ends the run where it is (its camp spot back, or its follow goes on); status says how it goes. comeback \<x,y,z> \<rezzer>: the member a run got up walks back on the mesh to its own camp spot, else that spot (never a paused box, never one whose own run goes on) - its rezzer sends it. claim / unclaim \<body> \<rezzer>: which rezzer took which body - every box hears it (over EB IRC too), so no second rezzer goes.
+  - For the crew: `all`, `others`, `to`.
+  - `who` (string; optional): the dead member to run to \[irc\] | stop | status | comeback \<x,y,z> \<rezzer> \[\<member>\] | claim \<body> \<rezzer> | unclaim \<body> \<rezzer>
+- `eb autorelease [state]`: Whether this box releases by itself when it dies. on (the default): solo or a wipe releases at once; with someone else up - in the group, or in the raid while this group is all down - it waits for a rez first. off: it never releases by itself and waits for a rez (eb revive releases by hand). Kept per character; eb all autorelease off sets the crew.
+  - Also typed as: `releaseauto`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional; one of on | off | status; default status): on | off | status
+- `eb pet [cmd] [state]`: The pet: attack my target (only a fight that is ours, or an aggressive mob - never a guard, a merchant or a citizen), back off, or assist on | off (EB then sends it at every mob it fights). status says the switch.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of attack | backoff | assist | status; default status): attack | backoff | assist | status
+  - `state` (onoff; optional): on | off, for assist
+- `eb mount [cmd]`: Mount or dismount: on, off, toggle; status says which. best (the best mount you own) is not built yet.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | toggle | best | status; default status): on | off | toggle | best | status
+- `eb joust [cmd] [metres]`: Step out of melee for a mechanic (out: 25 m along the line from the mob) and back in (in: 3 m), walking on the mesh. status says where this box stands.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of in | out | status; default status): in | out | status
+  - `metres` (int; optional): how far, in metres
+- `eb ranged [cmd]`: The game's ranged auto-attack: on (held until its live proof), off (only while it is on: it stops the melee auto-attack too), status.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | status; default status): on | off | status
+- `eb position [cmd] [metres]`: Where this box stands in a fight: behind (at the mob's back), flank (at its side), off (where it is), status. Unset, the profile's Move behind mob box decides. The tank faces the mob and never walks round it; the walk is on the zone's mesh, and a spell with a cast time waits while it walks.
+  - Also typed as: `pos`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of behind | flank | off | status; default status): behind | flank | off | status
+  - `metres` (int; optional): how far past the mob's edge, in metres (3 when left out)
+- `eb beltadorn [what]`: Put the belt rune a fight calls for on the belt: a word is first the item you named for it (eb set beltadorn.\<word> \<item>); stun, stifle, mez, fear or medic is a rune whose name ends that way (Adamant Defiance, Adamant Resolve, Astral Dominion, Blinding Gleam, Field Medic), the best one you can wear; any other word is the one item in the bags whose name holds it. Waits until the box is out of the fight and standing still; status says what is going on.
+  - Also typed as: `belt`.
+  - For the crew: `all`, `others`, `to`.
+  - `what` (string; optional): stun, stifle, mez, fear or medic (a rune of that type), any other word, the adornment's own name, or status
+- `eb combos [state]`: The ascension chain: on, an ascension starter that went out is followed by its combo before the other damage rows; off, each ascension row casts where the cast stack puts it. Unset, the profile's ascension combos box decides. The same switch as eb flag combos, and it goes to the crew.
+  - Also typed as: `ascension`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional; one of on | off | status; default status): on | off | status
+- `eb fightto [spot]`: Walk to a spot in this zone on the mesh and fight what is met on the way - only what EB can win against, never a guard, a named, a heroic or an epic - and stop there. group: the others follow this box. status says how it goes; off (or eb autohunt off) ends it.
+  - For the crew: `all`, `others`, `to`.
+  - `spot` (string; optional): x,y,z (or x y z), then group to bring the others along; status; off
+- `eb lazytank [cmd] [arg]`: The lazy tank: this box holds a camp spot and takes back every mob that gets loose on someone who is not the tank - a taunt of its cast stack at that mob, sent like every cast of the fight (only a fight that is ours, never a guard; an area taunt first when two or more got loose; the member worst off first). The tank is the crew's declared tank (eb go tank), else this box. on \[\<metres>\]: the camp spot it holds, else one here; off lets go of the one it set; allow \<name>: a member who may hold a mob (an off-tank). A box played by hand does nothing. Kept for this session.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | status | allow | unallow; default status): on | off | status | allow | unallow
+  - `arg` (string; optional): on: the camp spot's metres (none: the camp spot it holds, else one here); allow / unallow: a member's name
+- `eb lazyheal [cmd] [arg]`: The lazy healer: in a fight, when the tank stands farther away than the reach, this box walks back within it - on the line from the tank back to where it stood, by EB's one mover, with the fight walk's holds (the cast bar, another walk, a stop). The tank is the crew's declared tank, else the group's first fighter. A box played by hand never walks for it. Kept for this session.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | status; default status): on | off | status
+  - `arg` (string; optional): on: the reach in metres (20 when none)
+- `eb formation [cmd] [arg]`: The raid formation: in a fight every box works out its own spot round the mob from what every box sees alike, and walks there itself - the tank holds the front, the melee stand behind the mob (or on the flanks, or in front), the healers and the ranged further out, each one apart from the next and never inside an avoid circle; a raid's groups (group 1 to 4) take rings of their own. show says who stands where now. A box played by hand never walks for it. Kept for this session.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | status | show | melee | healer | ranged | group | role | avoid; default status): on | off | status | show | melee | healer | ranged | group | role | avoid
+  - `arg` (string; optional): on: behind | flank | front (the melee's side); melee / healer / ranged: a side and its metres; group: 1 to 4; role: \<name> tank | melee | healer | ranged | auto; avoid: here \[metres\] | \<x> \<z> \[metres\] | clear
+- `eb pullplan [cmd] [arg]`: Pull planning by the hunt's own rules (never a guard, never another player's fight): scan says the mobs this box can reach walking on the mesh - a mob behind a wall is as far as the way round it - nearest that way first; plan says the order to pull them in; body \<name> walks at the nearest one of that name until it comes for this box - never an attack - then back to where this box stood (here: it is fought where it came). stop ends a body pull. In a hunt: eb autohunt on \<list> reach:\<metres> pull:body.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of scan | plan | body | stop | status; default scan): scan | plan | body | stop | status
+  - `arg` (string; optional): scan / plan: metres on the mesh (60 when none); body: a mob's name, then here to fight it where it comes
+- `eb npccast [cmd] [words]`: The mobs' cast lists, answered in a fight: per zone, the mobs to watch and what to do when one starts a listed spell - the lists shipped in your InnerSpace scripts and your own (read only; yours over the shipped). On, in a fight: a listed spell marked to interrupt is interrupted (the cast stack's interrupt, at that mob only, never a mob that is not a fight of ours), an event line becomes the event your EB rules answer, an echo line is said. status, list \[\<zone>\] (each mob and spell in words), reload. Off by default; kept for this character. A box played by hand interrupts nothing.
+  - Also typed as: `castlists`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of status | on | off | toggle | list | reload; default status): status | on | off | toggle | list | reload
+  - `words` (string; optional): list: a zone's name (nothing: this zone)
+- `eb flagrot [cmd] [words]`: Flag rotation, for a fight's 'next one takes it': marks 1 to 8, each the characters flagged on it in the order they were flagged. next flags the next one not flagged yet on that mark - names in your order (a|b|c), or fighter / priest / mage / scout, a class, group (the default) or raid, by name A-Z - again starts the mark over once every one had a turn, and do \<eb line> has that character's box run the line (a box played by hand is passed over then, and said). set / remove one, removeall, is \<name>, list, clear every mark. The crew keeps one rotation: a change on one box is told to the others.
+  - Also typed as: `flagrotation`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of list | set | remove | removeall | is | next | clear | sync; default list): list | set | remove | removeall | is | next | clear | sync
+  - `words` (string; optional): set / remove / is: \<name> \[\<mark>\] (me = this box's character; remove \<name> all: every mark); removeall / list: \[\<mark>\]; next: \<mark> \[\<who>\] \[again\] \[do \<eb line>\]
+- `eb intent [cmd] [words]`: Intents: a named list of abilities for one job (a burn, a group ward, a big heal). Fired, the first box of its scope with one of them ready casts it: the list's earliest ability any box has ready, cast by ONE box (self: this box alone; group, the default: one box of the group; raid: one of the raid). save keeps one on this box (a fire carries the list to the other boxes, so they need not have it); list, status (the last fire: who cast what), delete. A box played by hand never casts for an intent.
+  - Also typed as: `intents`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of fire | save | list | status | delete | go; default fire): fire | save | list | status | delete | go
+  - `words` (string; optional): fire: \<name> \[on \<who>\]; save: \<name>: \<ability>, \<ability>, ... \[scope:self|group|raid\] \[on:\<who>\]; delete: \<name>
+- `eb curereq [cmd] [rest]`: Cure requests: ask this box's curers for a cure that gives up after a while. cure \<member> \[kinds\]: while they carry a kind named (none named: arcane, elemental, noxious and trauma; curse; confrontfear = Confront Fear on them once), the first ready cure that removes it goes on them, until they carry none. curse \<member>: the same for a curse. group \[kinds\] \[count \<n>\]: the group cure once, when at least n of the group (you included; 1 if not said) carry a kind named, each kind counted on its own. secs \<s>: give up after this long (8 if not said); tag \<t>: a name to cancel it by. cancel \<member or tag> drops their requests, clear drops them all, status lists them. A request goes past the cures switch, never while the box is dead or paused; the crew's claim still gives each cure to one box.
+  - Also typed as: `curerequest`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of cure | curse | group | cancel | clear | status; default status): cure | curse | group | cancel | clear | status
+  - `rest` (string; optional): cure: \<member> \[arcane | elemental | noxious | trauma | curse | confrontfear ...\] \[secs \<s>\] \[tag \<t>\]; curse: \<member> \[secs \<s>\] \[tag \<t>\]; group: \[arcane | elemental | noxious | trauma ...\] \[count \<n>\] \[secs \<s>\] \[tag \<t>\]; cancel: \<member or tag>
+
+## Commands: Navigation
 
 Moving inside a zone on the zone's mesh: walk to a spot, follow, hold a camp, doors and gates, marks, map points, recorded routes.
 
-### `eb blacklist [cmd] [what]`
-
-Areas and links to stay out of (or, typed as greenlight, to prefer) when a walk is planned: add, remove, list, clear.
-
-*also: `bl`, `gl`, `greenlight`, `prefer` - who: local*
-
-- `cmd` (enum, optional): add | remove | list | clear
-- `what` (string, optional): an area or a link
-
-### `eb camera [cmd]`
-
-Put the game's camera back behind the character (held until its live proof).
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): reset
-
-### `eb closer`
-
-Follow closer: a metre nearer to the one this box follows now, each time (2 m at the nearest). Nothing is followed: it says so.
-
-*who: local, all, others, to*
-
-### `eb crouch`
-
-Crouch, or stand up again: one tap of your crouch key (eb movekeys says which) - the same tap the fear walk makes.
-
-*who: local, all, others, to*
-
-### `eb disperse [metres]`
-
-The team spreads out evenly round this box: every other box walks on the zone's mesh to its own place on a ring that many metres out (the crew's order, so no two share one) and stays there free - no camp (eb leash ring holds one).
-
-*who: local, all, others, to*
-
-- `metres` (int, optional): the ring's radius in metres, 3 to 60 (10 when left out)
-
-### `eb face [how]`
-
-Turn this box: eb others face me turns the others the way this box faces; target turns to the target; a number turns to that heading. Nothing says where this box faces.
-
-*who: local, all, others, to*
-
-- `how` (string, optional): me | target | a heading in degrees (the game's own, as /loc shows)
-
-### `eb farther`
-
-Follow farther back: a metre farther from the one this box follows now, each time (20 m at the farthest). Nothing is followed: it says so.
-
-*who: local, all, others, to*
-
-### `eb follow [who] [dist]`
-
-Follow someone over the mesh by NAME: a player or an NPC in range (the nearest of that name, an exact match first, case aside) or a crew member, who is followed across zones too. The one named is found again by its name after a zone change, after losing sight of it and after it despawns and comes back; a name that is not in range is looked for a short while, said once, then given up. target is the name of what you have targeted; an actor's number follows that one actor only, and ends with the zone. me (or nothing, in a crew line) is the box that sent it; off stops. It only walks: nothing is targeted or attacked. EB never moves a character you are playing by hand.
-
-*who: local, all, others, to*
-
-- `who` (actor, optional): a name: anyone in range, a player or an NPC, the crew too (in quotes when it has several words) - or me, leader, target (what you have targeted) or off; an actor's number only for one that has no name or shares it
-- `dist` (float, optional): how close to stop, in metres
-
-### `eb gate [cmd] [name]`
-
-Doors and gates: scan the ones nearby, open one, forget one EB learned. eb door is the same command.
-
-*also: `door` - who: local, all, others, to*
-
-- `cmd` (enum, optional): scan | open | forget
-- `name` (string, optional): the door or gate
-
-### `eb gtgm <who> [dist]`
-
-Go to a group member - on this box only, wherever the line came from.
-
-*also: `gotomember`, `navtomember` - who: local, all, others, to*
-
-- `who` (member): the member
-- `dist` (float, optional): stop within this many metres
-
-### `eb jump`
-
-Jump once, with your own jump key (eb movekeys says which).
-
-*who: local, all, others, to*
-
-### `eb leash [cmd] [spot]`
-
-Hold a camp: stay within some metres of a spot - where you stand, a point of this zone, or your own place on a ring round the box that sent it. A second number is how far off it gives up. Camp spots stack in tiers and the top one is held: rcs puts one on top (where you stand or at a point; tier <n> names the tier), drop [n] lets the top (or tier n) go and the one below holds again; here / at / ring start a fresh camp. behind / front / right / left <npc> [m] camps m metres (5 when left out) from a named NPC on that side of the way it faces - its front is where it looks, its right its own right hand; angle <degrees> <npc> [m] any side, clockwise from its face (0 front, 90 right, 180 behind, 270 left); for a crew line each box finds the NPC itself. off lets every tier go; status says where it holds.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): here | at | ring | rcs | drop | off | status | behind | front | right | left | angle
-- `spot` (string, optional): [x,y,z] [how many metres] [how far off it gives up]; rcs: tier <n> too; drop: the tier; behind / front / right / left: <npc> [metres from it]; angle: <degrees> <npc> [metres]
-
-### `eb marks [cmd] [name]`
-
-Your saved places, in every zone: set one where you stand, list them all numbered by category (list <words> narrows it), go to one by its name or its number (another zone: the trip there first, then the walk), del one; cat <place> <category> files it, how <place> bell | spire | druid makes a trip to it ride that way only (any: every way); reload reads the file again.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): set | list | go | del | cat | how | reload
-- `name` (string, optional): the place's name (go / cat / how: or its number in the list); list: words; cat: then the category; how: then bell, spire, druid or any
-
-### `eb movekeys [cmd] [what]`
-
-The game keys EB's walker holds and taps - your own binds in the game: list shows each role's key and where it came from (yours, EB's default, set at start); set <role> <key> names one (a key name EB can press, kept for this character, taken at once and at every start); reset [<role> | all] puts EB's default back. The same keys are in EB Settings > Movement (folded). There is no auto-run key: EB moves by the mesh.
-
-*also: `movementkeys` - who: local*
-
-- `cmd` (enum, optional): list | set | reset
-- `what` (string, optional): set: the role (forward, back, turn left, turn right, strafe left, strafe right, jump, swim up, swim down, crouch, run / walk), then the key; reset: a role or all
-
-### `eb nav [cmd] [arg]`
-
-Navigator control and diagnostics: pick a mesh, show the path, where and why, door state, load or unload a zone mesh.
-
-*also: `navigate` - who: local*
-
-- `cmd` (enum, optional): status | path | where | why | door | info | load | unload | swimup | badlegs | to | plan | stop | end | panel | on | off | set | reset
-- `arg` (string, optional): a zone, or x,y,z for path / plan; to: x,y,z then precision <m> / fly / nofly / doors / nodoors; swimup: [ms] [height]; badlegs: clear; panel: on / off; set: a setting and its value; reset: a setting or none
-
-### `eb navlink [cmd] [name]`
-
-The spots the mesh cannot walk (a jump, a climb, a lift, a drop): record one, list them, use one.
-
-*also: `nl` - who: local*
-
-- `cmd` (enum, optional): start|add|undo|cancel|save|del|jump|climb|ride|drop|list
-- `name` (string, optional): the link's name
-
-### `eb poi [name]`
-
-Walk to a map point by its name.
-
-*who: local, all, others, to*
-
-- `name` (string, optional): the point's name
-
-### `eb record [cmd] [name]`
-
-Record the path you walk as a route: start, drop a point, stop, save it under a name, cancel. eb walk <name> walks it.
-
-*also: `rec` - who: local*
-
-- `cmd` (enum, optional): start | drop | stop | save | cancel | status
-- `name` (string, optional): the route's name
-
-### `eb regroup [cmd] [metres]`
-
-Keep the group together, on the group's leader: a crew member more than 15 m away, out of a fight for a minute, walks back to the leader on the zone's mesh. on, off, now (call them back once), status. Never in a fight, never during an instance run, never a character you are playing by hand.
-
-*who: local*
-
-- `cmd` (enum, optional): on | off | now | status
-- `metres` (float, optional): how far a member may be before it is called back (15 when left out)
-
-### `eb runwalk`
-
-Run or walk: the game's own run / walk switch, one tap of your key for it (Shift+R unless you moved it: eb movekeys set run / walk <key>) - the game's own command instead once its live proof lets it out. The same tap the fear walk makes.
-
-*who: local, all, others, to*
-
-### `eb walk [target] [how]`
-
-Walk to a spot in this zone on the zone's mesh (its drops, jumps and climbs on the way): x y z, or the name of a saved route, a mark or a map point. A saved route walks again and again with ,<times> (up to 100) or ,loop (until eb walk stop): eb walk patrol,3. A spot the mesh has no way to is not walked to: EB says why. After a spot, fly asks for a flight (on a flying mount, when the zone lets you fly) and nofly keeps the trip on foot: eb walk 120 4 -88 fly.
-
-*also: `mm` - who: local, all, others, to*
-
-- `target` (coords, optional): x y z (three numbers, or x,y,z), or a name; a saved route then ,<times> or ,loop
-- `how` (enum, optional): fly | nofly after a spot: a flight asked for (on a flying mount), or never one
-
-
-<a id="travel"></a>
-## Travel
+- `eb walk [target] [how]`: Walk to a spot in this zone on the zone's mesh (its drops, jumps and climbs on the way): x y z, or the name of a saved route, a mark or a map point. A saved route walks again and again with ,\<times> (up to 100) or ,loop (until eb walk stop): eb walk patrol,3. A spot the mesh has no way to is not walked to: EB says why. After a spot, fly asks for a flight (on a flying mount, when the zone lets you fly) and nofly keeps the trip on foot: eb walk 120 4 -88 fly.
+  - Also typed as: `mm`.
+  - For the crew: `all`, `others`, `to`.
+  - `target` (coords; optional): x y z (three numbers, or x,y,z), or a name; a saved route then ,\<times> or ,loop
+  - `how` (enum; optional; one of fly | nofly): fly | nofly after a spot: a flight asked for (on a flying mount), or never one
+- `eb nav [cmd] [arg]`: Navigator control and diagnostics: pick a mesh, show the path, where and why, door state, load or unload a zone mesh.
+  - Also typed as: `navigate`.
+  - This box only.
+  - `cmd` (enum; optional; one of status | path | where | why | door | info | load | unload | swimup | badlegs | to | plan | stop | end | panel | on | off | set | reset; default status): status | path | where | why | door | info | load | unload | swimup | badlegs | to | plan | stop | end | panel | on | off | set | reset
+  - `arg` (string; optional): a zone, or x,y,z for path / plan; to: x,y,z then precision \<m> / fly / nofly / doors / nodoors; swimup: \[ms\] \[height\]; badlegs: clear; panel: on / off; set: a setting and its value; reset: a setting or none
+- `eb jump`: Jump once, with your own jump key (eb movekeys says which).
+  - For the crew: `all`, `others`, `to`.
+- `eb crouch`: Crouch, or stand up again: one tap of your crouch key (eb movekeys says which) - the same tap the fear walk makes.
+  - For the crew: `all`, `others`, `to`.
+- `eb runwalk`: Run or walk: the game's own run / walk switch, one tap of your key for it (Shift+R unless you moved it: eb movekeys set run / walk \<key>) - the game's own command instead once its live proof lets it out. The same tap the fear walk makes.
+  - For the crew: `all`, `others`, `to`.
+- `eb closer`: Follow closer: a metre nearer to the one this box follows now, each time (2 m at the nearest). Nothing is followed: it says so.
+  - For the crew: `all`, `others`, `to`.
+- `eb farther`: Follow farther back: a metre farther from the one this box follows now, each time (20 m at the farthest). Nothing is followed: it says so.
+  - For the crew: `all`, `others`, `to`.
+- `eb follow [who] [dist]`: Follow someone over the mesh by NAME: a player or an NPC in range (the nearest of that name, an exact match first, case aside) or a crew member, who is followed across zones too. The one named is found again by its name after a zone change, after losing sight of it and after it despawns and comes back; a name that is not in range is looked for a short while, said once, then given up. target is the name of what you have targeted; an actor's number follows that one actor only, and ends with the zone. me (or nothing, in a crew line) is the box that sent it; off stops. It only walks: nothing is targeted or attacked. EB never moves a character you are playing by hand.
+  - For the crew: `all`, `others`, `to`.
+  - `who` (actor; optional): a name: anyone in range, a player or an NPC, the crew too (in quotes when it has several words) - or me, leader, target (what you have targeted) or off; an actor's number only for one that has no name or shares it
+  - `dist` (float; optional): how close to stop, in metres
+- `eb face [how]`: Turn this box: eb others face me turns the others the way this box faces; target turns to the target; a number turns to that heading. Nothing says where this box faces.
+  - For the crew: `all`, `others`, `to`.
+  - `how` (string; optional): me | target | a heading in degrees (the game's own, as /loc shows)
+- `eb camera [cmd]`: Put the game's camera back behind the character (held until its live proof).
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of reset; default reset): reset
+- `eb movekeys [cmd] [what]`: The game keys EB's walker holds and taps - your own binds in the game: list shows each role's key and where it came from (yours, EB's default, set at start); set \<role> \<key> names one (a key name EB can press, kept for this character, taken at once and at every start); reset \[\<role> | all\] puts EB's default back. The same keys are in EB Settings > Movement (folded). There is no auto-run key: EB moves by the mesh.
+  - Also typed as: `movementkeys`.
+  - This box only.
+  - `cmd` (enum; optional; one of list | set | reset; default list): list | set | reset
+  - `what` (string; optional): set: the role (forward, back, turn left, turn right, strafe left, strafe right, jump, swim up, swim down, crouch, run / walk), then the key; reset: a role or all
+- `eb leash [cmd] [spot]`: Hold a camp: stay within some metres of a spot - where you stand, a point of this zone, or your own place on a ring round the box that sent it. A second number is how far off it gives up. Camp spots stack in tiers and the top one is held: rcs puts one on top (where you stand or at a point; tier \<n> names the tier), drop \[n\] lets the top (or tier n) go and the one below holds again; here / at / ring start a fresh camp. behind / front / right / left \<npc> \[m\] camps m metres (5 when left out) from a named NPC on that side of the way it faces - its front is where it looks, its right its own right hand; angle \<degrees> \<npc> \[m\] any side, clockwise from its face (0 front, 90 right, 180 behind, 270 left); for a crew line each box finds the NPC itself. off lets every tier go; status says where it holds.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of here | at | ring | rcs | drop | off | status | behind | front | right | left | angle; default here): here | at | ring | rcs | drop | off | status | behind | front | right | left | angle
+  - `spot` (string; optional): \[x,y,z\] \[how many metres\] \[how far off it gives up\]; rcs: tier \<n> too; drop: the tier; behind / front / right / left: \<npc> \[metres from it\]; angle: \<degrees> \<npc> \[metres\]
+- `eb gate [cmd] [name]`: Doors and gates: scan the ones nearby, open one, forget one EB learned. eb door is the same command.
+  - Also typed as: `door`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of scan | open | forget; default scan): scan | open | forget
+  - `name` (string; optional): the door or gate
+- `eb navlink [cmd] [name]`: The spots the mesh cannot walk (a jump, a climb, a lift, a drop): record one, list them, use one.
+  - Also typed as: `nl`.
+  - This box only.
+  - `cmd` (enum; optional; one of start | add | undo | cancel | save | del | jump | climb | ride | drop | list; default list): start|add|undo|cancel|save|del|jump|climb|ride|drop|list
+  - `name` (string; optional): the link's name
+- `eb record [cmd] [name]`: Record the path you walk as a route: start, drop a point, stop, save it under a name, cancel. eb walk \<name> walks it.
+  - Also typed as: `rec`.
+  - This box only.
+  - `cmd` (enum; optional; one of start | drop | stop | save | cancel | status; default status): start | drop | stop | save | cancel | status
+  - `name` (string; optional): the route's name
+- `eb marks [cmd] [name]`: Your saved places, in every zone: set one where you stand, list them all numbered by category (list \<words> narrows it), go to one by its name or its number (another zone: the trip there first, then the walk), del one; cat \<place> \<category> files it, how \<place> bell | spire | druid makes a trip to it ride that way only (any: every way); reload reads the file again.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of set | list | go | del | cat | how | reload; default list): set | list | go | del | cat | how | reload
+  - `name` (string; optional): the place's name (go / cat / how: or its number in the list); list: words; cat: then the category; how: then bell, spire, druid or any
+- `eb poi [name]`: Walk to a map point by its name.
+  - For the crew: `all`, `others`, `to`.
+  - `name` (string; optional): the point's name
+- `eb disperse [metres]`: The team spreads out evenly round this box: every other box walks on the zone's mesh to its own place on a ring that many metres out (the crew's order, so no two share one) and stays there free - no camp (eb leash ring holds one).
+  - For the crew: `all`, `others`, `to`.
+  - `metres` (int; optional): the ring's radius in metres, 3 to 60 (10 when left out)
+- `eb gtgm <who> [dist]`: Go to a group member - on this box only, wherever the line came from.
+  - Also typed as: `gotomember`, `navtomember`.
+  - For the crew: `all`, `others`, `to`.
+  - `who` (member; required): the member
+  - `dist` (float; optional): stop within this many metres
+- `eb blacklist [cmd] [what]`: Areas and links to stay out of (or, typed as greenlight, to prefer) when a walk is planned: add, remove, list, clear.
+  - Also typed as: `bl`, `gl`, `greenlight`, `prefer`.
+  - This box only.
+  - `cmd` (enum; optional; one of add | remove | list | clear; default list): add | remove | list | clear
+  - `what` (string; optional): an area or a link
+- `eb regroup [cmd] [metres]`: Keep the group together, on the group's leader: a crew member more than 15 m away, out of a fight for a minute, walks back to the leader on the zone's mesh. on, off, now (call them back once), status. Never in a fight, never during an instance run, never a character you are playing by hand.
+  - This box only.
+  - `cmd` (enum; optional; one of on | off | now | status; default status): on | off | now | status
+  - `metres` (float; optional): how far a member may be before it is called back (15 when left out)
+
+## Commands: Travel
 
 Going to another zone: bells, spires, druid rings, zone lines, doors and the guild hall. Never fast travel inside a quest line or an instance run.
 
-### `eb bell [dest]`
-
-Travel by this zone's bell (docks, city, a hall's bell) to a place; with no place, say where the bell goes.
-
-*who: local, all, others, to*
-
-- `dest` (string, optional): the place
-
-### `eb connection [cmd] [what]`
-
-Your own ways from one zone to another, kept on this PC and used by every trip at once: stand at a zone line and eb connection add <zone> (line is the default: where you stand is where it is walked into), door <its name> (a door clicked there), or bell / spire / druid (this zone's bell, spire or ring also goes there). A zone no network reaches is then gone to through this zone. list [zone] shows yours (numbered) and how many zone lines the zone data has here; remove <zone | n> forgets one.
-
-*also: `conn`, `connections` - who: local*
-
-- `cmd` (enum, optional): list | add | remove
-- `what` (string, optional): add: the zone it leads to, then line (the zone line where you stand), door <its name>, bell, spire or druid; remove: the zone or its number in the list; list: a zone
-
-### `eb druid [dest]`
-
-Travel by this zone's druid ring to a place; with no place, say where the ring goes and the ring on record.
-
-*who: local, all, others, to*
-
-- `dest` (string, optional): the place
-
-### `eb ft [dest]`
-
-Fast travel to a place, on your own press only. Refused while a quest line, a power-level route or an instance run is going.
-
-*also: `fasttravel` - who: local, all, others, to*
-
-- `dest` (string, optional): the place
-
-### `eb gha [cmd] [dest]`
-
-The guild hall: go calls you to it, exit leaves by its door, attune ties you to its travel beacon, porter [place] walks to the hall's Coldborne EverPorter, clicks it and picks the place in its list (none = the list is left open: eb zonedoor picks). EB never pays the hall's upkeep: upkeep says so.
-
-*also: `gh`, `guildhall` - who: local, all, others, to*
-
-- `cmd` (enum, optional): go | upkeep | exit | attune | porter
-- `dest` (string, optional): porter: the place as its list names it, or its number in the list
-
-### `eb goto <zone>`
-
-Travel to another zone the best way (bells, spires, druid rings, the guild hall, zone lines, doors) - or one way only: eb goto <zone> bell | spire | druid (eb goto spire <zone> too). A zone no bell, spire or ring reaches is gone to through a zone beside it: the network there, then its zone line. On a TLE server, or when this zone's own way on is far (1200 m or more), the trip goes by the guild hall first when Call to Guild Hall is ready. On the way: a walk of more than 400 m rides the zone's own pads when that saves walking; a box in the air on its flying mount comes down before Call to Guild Hall; a hall with no spire or ring of its own uses its portal wizard or druid; a travel item you hold is a way from anywhere; a zone line whose data says more than open the door runs step by step. Typed alone it moves this box only; eb relay mygroup goto <zone> takes your group along (a member you play by hand is left out) and eb all goto <zone> every box.
-
-*also: `t`, `travel` - who: local, all, others, to*
-
-- `zone` (zone): the zone: its short name or its name; bell, spire or druid before or after it rides that way only
-
-### `eb heartstone [cmd]`
-
-In the guild hall, walk to its heartstone and use Rekindle Bond; home casts Call to Home; status says whether a heartstone is in sight. Your own press only: refused while a quest line, a power-level route or an instance run is going.
-
-*also: `rekindle` - who: local, all, others, to*
-
-- `cmd` (enum, optional): rekindle | home | status
-
-### `eb hotzone [cmd]`
-
-The hot zones (bonus experience): refresh reads the game's rotation now (the zone-reuse window's Hot Zones page), list says the last read - each entry, when it resets, its zones - and count how many; the last read is kept on this PC.
-
-*also: `hz` - who: local*
-
-- `cmd` (enum, optional): list | count | refresh
-
-### `eb house [cmd]`
-
-Leave the house you stand in: EB walks to its door and uses Exit. status says whether this zone has a house door in sight.
-
-*also: `exithouse`, `leavehouse` - who: local, all, others, to*
-
-- `cmd` (enum, optional): exit | status
-
-### `eb hub [zone]`
-
-Take this box to the hub zone of an instance (or to the zone named), where the crew gathers before a run. eb all hub <instance> sends every box there by its own way. An instance you added with eb hubs add goes to the hub you gave it.
-
-*who: local, all, others, to*
-
-- `zone` (zone, optional): an instance or a zone
-
-### `eb hubs [cmd] [what]`
-
-The hub zones - where each instance is entered from, as the instance files say: list = the hubs and how many instances each holds; destinations <hub> = the instances entered from it (their copies, their door); add <hub zone> <instance> = one the files do not name, kept on this PC (eb hub <it> then takes a box to that hub); remove forgets one of yours. Only the way to the hub: the tank alone zones the group in.
-
-*who: local*
-
-- `cmd` (enum, optional): list | destinations | add | remove
-- `what` (string, optional): destinations: the hub zone; add: <hub zone> <the instance's name>; remove: the instance
-
-### `eb itinerary [state]`
-
-Say the hops still ahead at every zone change: on, off; status says them now.
-
-*also: `itin` - who: local*
-
-- `state` (onoff, optional): on | off | status
-
-### `eb portalwait [what]`
-
-Through a group port: after a wizard's or warlock's Translocate (Translocator Spires) or a fury's or warden's Circle of Growth (a druid portal), this box waits for the portal (up to a minute), walks up to it, opens it and picks the place on its map, then zones. eb all portalwait druid <place> sends every box through (the caster's too); no place leaves the map open. A box you play by hand is never sent; a server whose policy holds the group port back refuses it.
-
-*also: `classport` - who: local, all, others, to*
-
-- `what` (string, optional): druid or spire (none: either), then the place to pick on its map
-
-### `eb rally`
-
-Rally the crew to you: plant your Tactical Rally Banner where you stand, then every other box (in the guild hall) gets a flag, rekindles the heartstone and uses its flag. Your own press only.
-
-*also: `rallybanner` - who: local*
-
-### `eb rallyflag [cmd]`
-
-The guild's rally flag (a Tactical Rally Banner in the bags): get one from the guild hall's strategist, use it, go (rekindle the hall's heartstone, then use the flag: what a rally asks of each box), or status (whether you carry one). Your own press only.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): get | use | go | status
-
-### `eb route <zone>`
-
-Show the way to a zone, hop by hop. It only shows it: eb goto goes there.
-
-*also: `plan` - who: local*
-
-- `zone` (zone): the zone
-
-### `eb spire [dest]`
-
-Travel by this zone's wizard spire to a place; with no place, say where the spire goes and the spire on record.
-
-*who: local, all, others, to*
-
-- `dest` (string, optional): the place
-
-### `eb stagger [cmd] [arg]`
-
-Space the crew's moves out so the boxes do not all move at once: on, off, reset, the delay, who leads (leader auto: this group's tank).
-
-*also: `sg` - who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | reset | delay | leader
-- `arg` (string, optional): the delay in milliseconds, or the leader: a box, a character, or auto (this group's tank, read at each move)
-
-### `eb transit [dest]`
-
-Ride this zone's own transport (griffon, sokokar, flight pads) to a stop; with no stop, list them. The pad data's tools by their first word: list (the zones with pads), info [zone] (each pad, how it opens, where it flies), path <pad> to <pad> (the hops and the time), connections <pad>, addpad <name> [network] [hail | click] [actor] (a pad of your own where you stand), connect <pad> to <pad> (a flight of your own), reload - your own pads and flights are kept on this PC.
-
-*also: `tr` - who: local, all, others, to*
-
-- `dest` (string, optional): the stop; or list, info [zone], path <pad> to <pad>, connections <pad>, addpad <name> [network] [hail | click] [actor], connect <pad> to <pad>, reload
-
-### `eb travelactor [cmd] [what]`
-
-Travel objects a guild hall (or a zone) holds that send you somewhere - the Tunneler of Thalumbra, the Pennant of Skyshrine Loyalty, the Coldborne EverPorter, the guild hall teleporters EB's travel data names, and your own: list = each one, where it stands and where it takes you; destinations <it>; use <it> [place] walks to it here, uses it its way and picks the place in its list. add makes your own from the object you target (or name): its name, this zone (in a guild hall: any hall), where it stands, how it is used (verb <its verb>, click, list - an open list gives its places itself - or hail: a tamer or a guide, hailed, its travel reply answered and the place picked on its station list) and the places it takes you (to <place> / <place>); edit <it> changes one of yours (spot reads where it stands again), remove <it> forgets it - kept on this PC, used by every trip at once (eb share travelactor shares them, no names). A trip takes one only when no bell, spire or ring goes, and never into a zone this account lacks (eb features); a hall where one was not found is not planned again there until forget <it>; reload reads them again.
-
-*also: `ta`, `travelactors` - who: local, all, others, to*
-
-- `cmd` (enum, optional): list | destinations | use | add | edit | remove | reload | forget
-- `what` (string, optional): destinations / forget: the travel object; use: the object, then the place in its list; add: [target or its name] [verb <its verb> / click / list / hail] [needs <feature>] [to <place> / <place>]; edit: one of yours, then what changes (verb, click, list, hail, to, needs, name <new>, spot); remove: one of yours
-
-### `eb travelcancel [state]`
-
-The trip under way: pause it, resume it, or cancel it.
-
-*also: `pausetravel`, `resumetravel`, `canceltravel` - who: local, all, others, to*
-
-- `state` (enum, optional): pause | resume | cancel
-
-### `eb travelmap [zone]`
-
-The open travel map's places; with a place, pick it - a ride inside the zone it starts (a griffon, a city bell to the docks) is waited out until the box lands (given up after 5 minutes).
-
-*who: local, all, others, to*
-
-- `zone` (zone, optional): the place
-
-### `eb travelnet [cmd] [what]`
-
-What EB knows of the travel network and of this server: scan the bells, spires and rings here (in a guild hall with none of its own: its portal wizard or druid), status, the places, merge. info says which ways this server has - its type (live or TLE), each way allowed or blocked and why - and what this box has (its guild hall, Call to Guild Hall, a group port); reload reads the server policy and the travel data again. allow / block <way> (bell, spire, druid, hall, hallbell, port) and tle on | off are your own choice for this server, kept on this PC. A server not on the list uses every way until you block one; a TLE server goes by the guild hall first and has no fast travel. methods says which ways this box can leave its zone by right now and why not (its bell, spire and druid ring, Call to Guild Hall and its timer, a group port and who casts it, the pads, the zone lines, the travel objects, the travel items it holds, fast travel); stats says what the travel data holds, what this PC learned, and the trips this PC made (arrived, failed, stopped, the time a trip takes, each way's hops, what stopped them, the last trips); save writes the trip counts now and keeps one copy of every travel file this PC learned (each is kept the moment it changes).
-
-*also: `tnet` - who: local*
-
-- `cmd` (enum, optional): scan | status | locs | merge | info | reload | allow | block | tle | methods | stats | save
-- `what` (string, optional): allow / block: a way (bell, spire, druid, hall, hallbell, port); tle: on or off
-
-### `eb traveltest [cmd] [mode]`
-
-The travel test: this box travels the network zone by zone and writes down what happened - start [all | bell | druid | spire | hubs] (bell / druid / spire: that network's places; hubs: the three; all: those and every zone on record), in its own order (each box of a crew differs); each zone at most 3 minutes, a pass when it lands there; back to its guild hall between zones. stop, skip (the zone under way), status, report (the last run: what failed and why). Never fast travel; a box you play by hand is never sent.
-
-*also: `tt` - who: local, all, others, to*
-
-- `cmd` (enum, optional): start | stop | status | skip | report
-- `mode` (enum, optional): all | bell | druid | spire | hubs
-
-### `eb zoneclick`
-
-Click the zone door here: the zone's own door where EB knows it, else the nearest exit, zone line or door within 30 m, else the NPC who zones you - never in a guild hall. Then eb zonedoor picks in the list it opens.
-
-*who: local, all, others, to*
-
-### `eb zonedoor [entry]`
-
-Pick in the zone-door list that is open on screen (an instance door, a porter, a zone version): its number, the place as the list names it (any case, with or without "The ", or the one entry holding it - two holding it: nothing picked, the entries said), or last. It never clicks anything in the world; with no list open it says so. eb all zonedoor 2 picks on every box that has the list open.
-
-*who: local, all, others, to*
-
-- `entry` (string, optional): a number, the place as the list names it, or last
-
-### `eb zoneout [what]`
-
-Leave this zone by its exit: the exits in sight and the ones the zone data knows, as one list, best first (an exit by its own name, the nearest first). list [words] shows them, numbered; eb zoneout takes the first, eb zoneout <n> that one, eb zoneout <words> the first whose name or destination holds every word. The box walks to within 3 m of it, uses it (an exit only the zone data knows its own way: its door, a line walked into), answers the zone list with the data's entry (else the last copy) and waits for the zone to change. Never mid-fight; a box you play by hand is never sent by a crew line. In a pack: ZoneOut [words].
-
-*also: `exitzone` - who: local, all, others, to*
-
-- `what` (string, optional): list [words] (the exits known here), a number from that list, or words: the exit whose name or destination holds every word
-
-### `eb zoneroute [cmd] [what]`
-
-Your stored zone routes - a way somewhere written down step by step and played back: record <name> [to <place>], then add here (a walk to where you stand; a goto first when the zone changed), add <an eb line> (eb transit <stop>, eb actor <door> use ...) or add wait <minutes>, undo, save (cancel drops it). list, show <name>, play <name> (each step waited out: its walk, its zone change; a refused line is said and passed), pause / resume (before the next step), stop, status, delete <name>, reload. Kept on this PC for every character; never fast travel.
-
-*also: `zr`, `zoneroutes` - who: local, all, others, to*
-
-- `cmd` (enum, optional): list | show | play | pause | resume | stop | status | record | add | undo | save | cancel | delete | reload
-- `what` (string, optional): show / play / delete: the route; record: <name> [to <place>]; add: here, an eb line, or wait <minutes>
-
-### `eb zones [zone]`
-
-Zones: where this box is (its portals, its guild hall, its lockouts), or look at one (its portals and the way there). list [words] browses the zones on record (mine = your own); add <short name> [its name] teaches every trip a zone EB's data does not name yet (or a name of your own for one), kept on this PC; remove forgets one of yours; reload reads the travel data, the server policy, the zone lines and your own files again; import reads the zone pieces your other bot keeps on this PC (bell, spire and ring spots, zone doors, named points) into your own file - every trip uses them where EB's data has no entry; import status says what it holds, import forget drops it.
-
-*also: `zm`, `zonemanager` - who: local*
-
-- `zone` (zone, optional): a zone to look at; or list [words | mine], add <short name> [its name], remove <one of your own>, reload, import [status | forget]
-
-### `eb zoneto <who>`
-
-Go to the zone a crew member is in, the best way (as eb goto); in its zone already, nothing to do; in another copy of the same zone, the game's own move to a group member's copy (held until its live proof). eb all zoneto me brings every box to your zone. Your own press only: refused while a quest line, a power-level route or an instance run is going.
-
-*also: `changezoneto` - who: local, all, others, to*
-
-- `who` (member): the crew member (me = the box that sent the line)
-
-
-<a id="quest"></a>
-## Quests
+- `eb goto <zone>`: Travel to another zone the best way (bells, spires, druid rings, the guild hall, zone lines, doors) - or one way only: eb goto \<zone> bell | spire | druid (eb goto spire \<zone> too). A zone no bell, spire or ring reaches is gone to through a zone beside it: the network there, then its zone line. On a TLE server, or when this zone's own way on is far (1200 m or more), the trip goes by the guild hall first when Call to Guild Hall is ready. On the way: a walk of more than 400 m rides the zone's own pads when that saves walking; a box in the air on its flying mount comes down before Call to Guild Hall; a hall with no spire or ring of its own uses its portal wizard or druid; a travel item you hold is a way from anywhere; a zone line whose data says more than open the door runs step by step. Typed alone it moves this box only; eb relay mygroup goto \<zone> takes your group along (a member you play by hand is left out) and eb all goto \<zone> every box.
+  - Also typed as: `t`, `travel`.
+  - For the crew: `all`, `others`, `to`.
+  - `zone` (zone; required): the zone: its short name or its name; bell, spire or druid before or after it rides that way only
+- `eb route <zone>`: Show the way to a zone, hop by hop. It only shows it: eb goto goes there.
+  - Also typed as: `plan`.
+  - This box only.
+  - `zone` (zone; required): the zone
+- `eb ft [dest]`: Fast travel to a place, on your own press only. Refused while a quest line, a power-level route or an instance run is going.
+  - Also typed as: `fasttravel`.
+  - For the crew: `all`, `others`, `to`.
+  - `dest` (string; optional): the place
+- `eb bell [dest]`: Travel by this zone's bell (docks, city, a hall's bell) to a place; with no place, say where the bell goes.
+  - For the crew: `all`, `others`, `to`.
+  - `dest` (string; optional): the place
+- `eb spire [dest]`: Travel by this zone's wizard spire to a place; with no place, say where the spire goes and the spire on record.
+  - For the crew: `all`, `others`, `to`.
+  - `dest` (string; optional): the place
+- `eb druid [dest]`: Travel by this zone's druid ring to a place; with no place, say where the ring goes and the ring on record.
+  - For the crew: `all`, `others`, `to`.
+  - `dest` (string; optional): the place
+- `eb transit [dest]`: Ride this zone's own transport (griffon, sokokar, flight pads) to a stop; with no stop, list them. The pad data's tools by their first word: list (the zones with pads), info \[zone\] (each pad, how it opens, where it flies), path \<pad> to \<pad> (the hops and the time), connections \<pad>, addpad \<name> \[network\] \[hail | click\] \[actor\] (a pad of your own where you stand), connect \<pad> to \<pad> (a flight of your own), reload - your own pads and flights are kept on this PC.
+  - Also typed as: `tr`.
+  - For the crew: `all`, `others`, `to`.
+  - `dest` (string; optional): the stop; or list, info \[zone\], path \<pad> to \<pad>, connections \<pad>, addpad \<name> \[network\] \[hail | click\] \[actor\], connect \<pad> to \<pad>, reload
+- `eb travelmap [zone]`: The open travel map's places; with a place, pick it - a ride inside the zone it starts (a griffon, a city bell to the docks) is waited out until the box lands (given up after 5 minutes).
+  - For the crew: `all`, `others`, `to`.
+  - `zone` (zone; optional): the place
+- `eb gha [cmd] [dest]`: The guild hall: go calls you to it, exit leaves by its door, attune ties you to its travel beacon, porter \[place\] walks to the hall's Coldborne EverPorter, clicks it and picks the place in its list (none = the list is left open: eb zonedoor picks). EB never pays the hall's upkeep: upkeep says so.
+  - Also typed as: `gh`, `guildhall`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of go | upkeep | exit | attune | porter; default go): go | upkeep | exit | attune | porter
+  - `dest` (string; optional): porter: the place as its list names it, or its number in the list
+- `eb zoneout [what]`: Leave this zone by its exit: the exits in sight and the ones the zone data knows, as one list, best first (an exit by its own name, the nearest first). list \[words\] shows them, numbered; eb zoneout takes the first, eb zoneout \<n> that one, eb zoneout \<words> the first whose name or destination holds every word. The box walks to within 3 m of it, uses it (an exit only the zone data knows its own way: its door, a line walked into), answers the zone list with the data's entry (else the last copy) and waits for the zone to change. Never mid-fight; a box you play by hand is never sent by a crew line. In a pack: ZoneOut \[words\].
+  - Also typed as: `exitzone`.
+  - For the crew: `all`, `others`, `to`.
+  - `what` (string; optional): list \[words\] (the exits known here), a number from that list, or words: the exit whose name or destination holds every word
+- `eb zonedoor [entry]`: Pick in the zone-door list that is open on screen (an instance door, a porter, a zone version): its number, the place as the list names it (any case, with or without "The ", or the one entry holding it - two holding it: nothing picked, the entries said), or last. It never clicks anything in the world; with no list open it says so. eb all zonedoor 2 picks on every box that has the list open.
+  - For the crew: `all`, `others`, `to`.
+  - `entry` (string; optional): a number, the place as the list names it, or last
+- `eb zoneclick`: Click the zone door here: the zone's own door where EB knows it, else the nearest exit, zone line or door within 30 m, else the NPC who zones you - never in a guild hall. Then eb zonedoor picks in the list it opens.
+  - For the crew: `all`, `others`, `to`.
+- `eb hub [zone]`: Take this box to the hub zone of an instance (or to the zone named), where the crew gathers before a run. eb all hub \<instance> sends every box there by its own way. An instance you added with eb hubs add goes to the hub you gave it.
+  - For the crew: `all`, `others`, `to`.
+  - `zone` (zone; optional): an instance or a zone
+- `eb zoneroute [cmd] [what]`: Your stored zone routes - a way somewhere written down step by step and played back: record \<name> \[to \<place>\], then add here (a walk to where you stand; a goto first when the zone changed), add \<an eb line> (eb transit \<stop>, eb actor \<door> use ...) or add wait \<minutes>, undo, save (cancel drops it). list, show \<name>, play \<name> (each step waited out: its walk, its zone change; a refused line is said and passed), pause / resume (before the next step), stop, status, delete \<name>, reload. Kept on this PC for every character; never fast travel.
+  - Also typed as: `zr`, `zoneroutes`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of list | show | play | pause | resume | stop | status | record | add | undo | save | cancel | delete | reload; default list): list | show | play | pause | resume | stop | status | record | add | undo | save | cancel | delete | reload
+  - `what` (string; optional): show / play / delete: the route; record: \<name> \[to \<place>\]; add: here, an eb line, or wait \<minutes>
+- `eb traveltest [cmd] [mode]`: The travel test: this box travels the network zone by zone and writes down what happened - start \[all | bell | druid | spire | hubs\] (bell / druid / spire: that network's places; hubs: the three; all: those and every zone on record), in its own order (each box of a crew differs); each zone at most 3 minutes, a pass when it lands there; back to its guild hall between zones. stop, skip (the zone under way), status, report (the last run: what failed and why). Never fast travel; a box you play by hand is never sent.
+  - Also typed as: `tt`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of start | stop | status | skip | report; default status): start | stop | status | skip | report
+  - `mode` (enum; optional; one of all | bell | druid | spire | hubs; default all): all | bell | druid | spire | hubs
+- `eb portalwait [what]`: Through a group port: after a wizard's or warlock's Translocate (Translocator Spires) or a fury's or warden's Circle of Growth (a druid portal), this box waits for the portal (up to a minute), walks up to it, opens it and picks the place on its map, then zones. eb all portalwait druid \<place> sends every box through (the caster's too); no place leaves the map open. A box you play by hand is never sent; a server whose policy holds the group port back refuses it.
+  - Also typed as: `classport`.
+  - For the crew: `all`, `others`, `to`.
+  - `what` (string; optional): druid or spire (none: either), then the place to pick on its map
+- `eb travelactor [cmd] [what]`: Travel objects a guild hall (or a zone) holds that send you somewhere - the Tunneler of Thalumbra, the Pennant of Skyshrine Loyalty, the Coldborne EverPorter, the guild hall teleporters EB's travel data names, and your own: list = each one, where it stands and where it takes you; destinations \<it>; use \<it> \[place\] walks to it here, uses it its way and picks the place in its list. add makes your own from the object you target (or name): its name, this zone (in a guild hall: any hall), where it stands, how it is used (verb \<its verb>, click, list - an open list gives its places itself - or hail: a tamer or a guide, hailed, its travel reply answered and the place picked on its station list) and the places it takes you (to \<place> / \<place>); edit \<it> changes one of yours (spot reads where it stands again), remove \<it> forgets it - kept on this PC, used by every trip at once (eb share travelactor shares them, no names). A trip takes one only when no bell, spire or ring goes, and never into a zone this account lacks (eb features); a hall where one was not found is not planned again there until forget \<it>; reload reads them again.
+  - Also typed as: `ta`, `travelactors`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of list | destinations | use | add | edit | remove | reload | forget; default list): list | destinations | use | add | edit | remove | reload | forget
+  - `what` (string; optional): destinations / forget: the travel object; use: the object, then the place in its list; add: \[target or its name\] \[verb \<its verb> / click / list / hail\] \[needs \<feature>\] \[to \<place> / \<place>\]; edit: one of yours, then what changes (verb, click, list, hail, to, needs, name \<new>, spot); remove: one of yours
+- `eb hubs [cmd] [what]`: The hub zones - where each instance is entered from, as the instance files say: list = the hubs and how many instances each holds; destinations \<hub> = the instances entered from it (their copies, their door); add \<hub zone> \<instance> = one the files do not name, kept on this PC (eb hub \<it> then takes a box to that hub); remove forgets one of yours. Only the way to the hub: the tank alone zones the group in.
+  - This box only.
+  - `cmd` (enum; optional; one of list | destinations | add | remove; default list): list | destinations | add | remove
+  - `what` (string; optional): destinations: the hub zone; add: \<hub zone> \<the instance's name>; remove: the instance
+- `eb stagger [cmd] [arg]`: Space the crew's moves out so the boxes do not all move at once: on, off, reset, the delay, who leads (leader auto: this group's tank).
+  - Also typed as: `sg`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | reset | delay | leader; default on): on | off | reset | delay | leader
+  - `arg` (string; optional): the delay in milliseconds, or the leader: a box, a character, or auto (this group's tank, read at each move)
+- `eb itinerary [state]`: Say the hops still ahead at every zone change: on, off; status says them now.
+  - Also typed as: `itin`.
+  - This box only.
+  - `state` (onoff; optional): on | off | status
+- `eb travelnet [cmd] [what]`: What EB knows of the travel network and of this server: scan the bells, spires and rings here (in a guild hall with none of its own: its portal wizard or druid), status, the places, merge. info says which ways this server has - its type (live or TLE), each way allowed or blocked and why - and what this box has (its guild hall, Call to Guild Hall, a group port); reload reads the server policy and the travel data again. allow / block \<way> (bell, spire, druid, hall, hallbell, port) and tle on | off are your own choice for this server, kept on this PC. A server not on the list uses every way until you block one; a TLE server goes by the guild hall first and has no fast travel. methods says which ways this box can leave its zone by right now and why not (its bell, spire and druid ring, Call to Guild Hall and its timer, a group port and who casts it, the pads, the zone lines, the travel objects, the travel items it holds, fast travel); stats says what the travel data holds, what this PC learned, and the trips this PC made (arrived, failed, stopped, the time a trip takes, each way's hops, what stopped them, the last trips); save writes the trip counts now and keeps one copy of every travel file this PC learned (each is kept the moment it changes).
+  - Also typed as: `tnet`.
+  - This box only.
+  - `cmd` (enum; optional; one of scan | status | locs | merge | info | reload | allow | block | tle | methods | stats | save; default status): scan | status | locs | merge | info | reload | allow | block | tle | methods | stats | save
+  - `what` (string; optional): allow / block: a way (bell, spire, druid, hall, hallbell, port); tle: on or off
+- `eb travelcancel [state]`: The trip under way: pause it, resume it, or cancel it.
+  - Also typed as: `pausetravel`, `resumetravel`, `canceltravel`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (enum; optional; one of pause | resume | cancel; default cancel): pause | resume | cancel
+- `eb connection [cmd] [what]`: Your own ways from one zone to another, kept on this PC and used by every trip at once: stand at a zone line and eb connection add \<zone> (line is the default: where you stand is where it is walked into), door \<its name> (a door clicked there), or bell / spire / druid (this zone's bell, spire or ring also goes there). A zone no network reaches is then gone to through this zone. list \[zone\] shows yours (numbered) and how many zone lines the zone data has here; remove \<zone | n> forgets one.
+  - Also typed as: `conn`, `connections`.
+  - This box only.
+  - `cmd` (enum; optional; one of list | add | remove; default list): list | add | remove
+  - `what` (string; optional): add: the zone it leads to, then line (the zone line where you stand), door \<its name>, bell, spire or druid; remove: the zone or its number in the list; list: a zone
+- `eb zones [zone]`: Zones: where this box is (its portals, its guild hall, its lockouts), or look at one (its portals and the way there). list \[words\] browses the zones on record (mine = your own); add \<short name> \[its name\] teaches every trip a zone EB's data does not name yet (or a name of your own for one), kept on this PC; remove forgets one of yours; reload reads the travel data, the server policy, the zone lines and your own files again; import reads the zone pieces your other bot keeps on this PC (bell, spire and ring spots, zone doors, named points) into your own file - every trip uses them where EB's data has no entry; import status says what it holds, import forget drops it.
+  - Also typed as: `zm`, `zonemanager`.
+  - This box only.
+  - `zone` (zone; optional): a zone to look at; or list \[words | mine\], add \<short name> \[its name\], remove \<one of your own>, reload, import \[status | forget\]
+- `eb hotzone [cmd]`: The hot zones (bonus experience): refresh reads the game's rotation now (the zone-reuse window's Hot Zones page), list says the last read - each entry, when it resets, its zones - and count how many; the last read is kept on this PC.
+  - Also typed as: `hz`.
+  - This box only.
+  - `cmd` (enum; optional; one of list | count | refresh; default list): list | count | refresh
+- `eb zoneto <who>`: Go to the zone a crew member is in, the best way (as eb goto); in its zone already, nothing to do; in another copy of the same zone, the game's own move to a group member's copy (held until its live proof). eb all zoneto me brings every box to your zone. Your own press only: refused while a quest line, a power-level route or an instance run is going.
+  - Also typed as: `changezoneto`.
+  - For the crew: `all`, `others`, `to`.
+  - `who` (member; required): the crew member (me = the box that sent the line)
+- `eb house [cmd]`: Leave the house you stand in: EB walks to its door and uses Exit. status says whether this zone has a house door in sight.
+  - Also typed as: `exithouse`, `leavehouse`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of exit | status; default exit): exit | status
+- `eb heartstone [cmd]`: In the guild hall, walk to its heartstone and use Rekindle Bond; home casts Call to Home; status says whether a heartstone is in sight. Your own press only: refused while a quest line, a power-level route or an instance run is going.
+  - Also typed as: `rekindle`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of rekindle | home | status; default rekindle): rekindle | home | status
+- `eb rallyflag [cmd]`: The guild's rally flag (a Tactical Rally Banner in the bags): get one from the guild hall's strategist, use it, go (rekindle the hall's heartstone, then use the flag: what a rally asks of each box), or status (whether you carry one). Your own press only.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of get | use | go | status; default status): get | use | go | status
+- `eb rally`: Rally the crew to you: plant your Tactical Rally Banner where you stand, then every other box (in the guild hall) gets a flag, rekindles the heartstone and uses its flag. Your own press only.
+  - Also typed as: `rallybanner`.
+  - This box only.
+
+## Commands: Quests
 
 Quest lines, power-level routes, languages, and what the journal says.
 
-### `eb action <name>`
-
-Run one quest step by its name (ZoneOut, DoorOption ...).
-
-*also: `act` - who: local, all, others, to*
-
-- `name` (string): the step
-
-### `eb actor <name> [verb]`
-
-Do something with an actor by name: hail or click it, or use one of its right-click choices.
-
-*who: local, all, others, to*
-
-- `name` (string): the actor (quote a name of several words)
-- `verb` (string, optional): the right-click choice; nothing = hail or click
-
-### `eb dialog [cmd] [n]`
-
-Answer a dialog, a choice or a reward window: reply, choice, ok, close.
-
-*also: `dlg` - who: local, all, others, to*
-
-- `cmd` (enum, optional): reply | choice | ok | close
-- `n` (int, optional): which option
-
-### `eb hail [who]`
-
-Hail an NPC: target it and say the game's own /hail, which only ever talks (never a double-click on something that can be fought). An id, a name (within 30 m), or nothing for the nearest NPC to talk to within 15 m.
-
-*who: local, all, others, to*
-
-- `who` (actor, optional): an actor's id (a button's ${Target.ID}), a name, or nothing: the nearest NPC to talk to
-
-### `eb lang [name]`
-
-Learn a language.
-
-*also: `language` - who: local, all, others, to*
-
-- `name` (string, optional): the language
-
-### `eb linguist [what]`
-
-Learn a language a Linguist sells (Halasian, Oggish, Ratongan, Stout, Ykeshan): the primer in the bags is used at once; else this box goes to its Linguist - the one of this zone, else of its errand city (eb errands city), else of its side - by EB's own travel, walks up, buys the primer (never over its budget, 1p unless named) and uses it. where says which Linguist and why, list the Linguists, stop ends the trip. A box you play by hand is never sent.
-
-*also: `primer` - who: local, all, others, to*
-
-- `what` (string, optional): a language: Halasian, Oggish, Ratongan, Stout or Ykeshan (budget <coin>: the most the primer may cost, 1p when none named); or where, list, stop
-
-### `eb missiontimer`
-
-When missions and collections reset.
-
-*also: `missions`, `missiontimers` - who: local*
-
-### `eb overseer [cmd] [arg]`
-
-EB Overseer, the game's Overseer missions. run: one pass now - the finished missions turned in, the rewards taken, the scrolls in the bags added, new missions started with the agents whose traits suit them (by itself once an hour and when a mission is done, unless this character's No pass by itself is on; run auto is that start). stop: whatever EB's Overseer runs here (the pass, a trip, a share). status. window: EB's Overseer window. go: Go buy missions - the trip to an Administrator Agent, a new character's first agents, the missions bought and added, the agents off the broker when that is on, then the pass. buy: only the trip and the buy; trip: only the trip. The season, colour and amounts said, else this character's own. missions: the Overseer Quests boxes and the scrolls in the bags added now; scrolls lists them. agents: every box's agents, spare cards and what it is missing; add the cards in the bags (a duplicate kept; destroy = the game converts or destroys it); scan reads the window and the bags. share: the spare cards to the boxes that lack them; needs: who still needs what. set / options: this character's options. who, auto (after each run), spares (spares nobody needs), side, starter, brokerafter, broker cap: this PC's. mark / agent: the Administrator Agent EB buys from. tutorial: a new character's first agents (done / reset marks it). broker: agents a character lacks off the broker; owned: the agents it is known to have. lookup: which missions an agent suits, a mission's best free agents. EB never presses a Station Cash button, never cancels a mission and destroys a card only on your own word.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): run | stop | status | window | go | buy | trip | missions | scrolls | agents | share | needs | set | options | who | auto | spares | side | starter | tutorial | brokerafter | broker | mark | agent | owned | lookup | help
-- `arg` (string, optional): what the word takes: run auto; go / buy: season <1-7 | any> colour <any | blue | yellow | purple | green> num <1-50> copies <1-20> noscribe [off] destroy [off] gettogh [off] replenish price <copper> (buy stop | status too); agents list | add [destroy] | scan | check <token> [bags]; share local | mygroup | irc | all [bags]; set <option> <value>; who local | mygroup | irc | all; auto, spares, brokerafter on | off; starter on | off (alone: the starter pack now); side home | good | evil; tutorial done | reset [character]; broker check | buy | list | cap <copper> | after on | off; agent <n>; lookup <agent or mission>
-
-### `eb pl [cmd] [route]`
-
-A power-level route: hunts, instance runs and travel, step by step from level 1 to the top. start <route> [step <n>] runs it (from step n) - not the template (copy it first), and not while Auto Hunt, a quest line or its queue, an instance run or its queue, or a task list is going; pause holds it where it is and resume goes on (with no route going, resume picks the last one up at the step it was on); next ends the step in hand and goes on to the next; status says the step, what it is doing, the kills, deaths and minutes, kills and XP an hour; list (or route) lists the routes, route <name> its steps; map [<route>] [step <n>] opens it in the Power Level window with its spots on EB Map; stop ends it and says what the run did.
-
-*also: `powerlevel` - who: local, all, others, to*
-
-- `cmd` (enum, optional): start | stop | pause | resume | next | status | list | route | map
-- `route` (string, optional): the route, then step <n> to start it (or show it on the map) at that step
-
-### `eb ql [cmd] [name]`
-
-A quest line: load, start, resume, pause, cancel, skip a step, status, list them.
-
-*also: `questline`, `q1` - who: local, all, others, to*
-
-- `cmd` (enum, optional): load | start | resume | pause | cancel | skip | status | list
-- `name` (string, optional): a quest line or a quest
-
-### `eb qsteps [name]`
-
-Every step of a quest.
-
-*also: `queststeps` - who: local*
-
-- `name` (string, optional): the quest
-
-### `eb questdone [cmd]`
-
-Quests already done: scan the journal, upload, sync again.
-
-*also: `questsdone` - who: local*
-
-- `cmd` (enum, optional): scan | upload | resync
-
-### `eb questhelper [state] [first]`
-
-A helper while you quest by hand: a conversation with one reply gets it picked (with first, the first of several is always picked); standing still with no conversation up, a quest giver within 10 m is hailed and a quest object within 5 m is clicked - never one that moves you (a zone exit, a door, a portal, a bell, a spire, a flight). Nothing in a fight, while casting, moving or dead, or in a guild hall. Kept for this character.
-
-*also: `qh` - who: local, all, others, to*
-
-- `state` (onoff, optional): on | off | toggle | status
-- `first` (flag, optional): first: with several replies, always pick the first
-
-### `eb queststep [name]`
-
-The step a quest is on, as the journal has it.
-
-*also: `qstep` - who: local*
-
-- `name` (string, optional): the quest
-
-### `eb queue [cmd] [pack]`
-
-Quest lines to run one after another: add one, start, stop, status, clear.
-
-*also: `que` - who: local, all, others, to*
-
-- `cmd` (enum, optional): add | start | stop | status | clear
-- `pack` (string, optional): a quest line
-
-### `eb sharequest <quest>`
-
-Offer quests of the journal to the group: one by its name, or all of them (one a second). A mission is a quest here. The game offers the share to the members near.
-
-*also: `sharemission` - who: local, all, others, to*
-
-- `quest` (string): the quest's name as the journal has it (in quotes when it has several words), or all
-
-### `eb special`
-
-Click the nearest special object within 30 m (a glowing thing a zone wants clicked).
-
-*who: local, all, others, to*
-
-### `eb taskfile [cmd] [name]`
-
-The task files that came with EB (Tasks > Task files): list them by folder, or run one as a quest line of its own. A task starts from its first step each time; eb ql cancel stops it.
-
-*also: `taskfiles` - who: local, all, others, to*
-
-- `cmd` (enum, optional): run | list
-- `name` (string, optional): run: the task file, by its path under the task folder or its name in words (a word that names two is answered with both); list: words the path holds
-
-
-<a id="ic"></a>
-## Instances
+- `eb ql [cmd] [name]`: A quest line: load, start, resume, pause, cancel, skip a step, status, list them.
+  - Also typed as: `questline`, `q1`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of load | start | resume | pause | cancel | skip | status | list; default status): load | start | resume | pause | cancel | skip | status | list
+  - `name` (string; optional): a quest line or a quest
+- `eb pl [cmd] [route]`: A power-level route: hunts, instance runs and travel, step by step from level 1 to the top. start \<route> \[step \<n>\] runs it (from step n) - not the template (copy it first), and not while Auto Hunt, a quest line or its queue, an instance run or its queue, or a task list is going; pause holds it where it is and resume goes on (with no route going, resume picks the last one up at the step it was on); next ends the step in hand and goes on to the next; status says the step, what it is doing, the kills, deaths and minutes, kills and XP an hour; list (or route) lists the routes, route \<name> its steps; map \[\<route>\] \[step \<n>\] opens it in the Power Level window with its spots on EB Map; stop ends it and says what the run did.
+  - Also typed as: `powerlevel`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of start | stop | pause | resume | next | status | list | route | map; default status): start | stop | pause | resume | next | status | list | route | map
+  - `route` (string; optional): the route, then step \<n> to start it (or show it on the map) at that step
+- `eb queue [cmd] [pack]`: Quest lines to run one after another: add one, start, stop, status, clear.
+  - Also typed as: `que`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of add | start | stop | status | clear; default status): add | start | stop | status | clear
+  - `pack` (string; optional): a quest line
+- `eb queststep [name]`: The step a quest is on, as the journal has it.
+  - Also typed as: `qstep`.
+  - This box only.
+  - `name` (string; optional): the quest
+- `eb qsteps [name]`: Every step of a quest.
+  - Also typed as: `queststeps`.
+  - This box only.
+  - `name` (string; optional): the quest
+- `eb questdone [cmd]`: Quests already done: scan the journal, upload, sync again.
+  - Also typed as: `questsdone`.
+  - This box only.
+  - `cmd` (enum; optional; one of scan | upload | resync; default scan): scan | upload | resync
+- `eb lang [name]`: Learn a language.
+  - Also typed as: `language`.
+  - For the crew: `all`, `others`, `to`.
+  - `name` (string; optional): the language
+- `eb taskfile [cmd] [name]`: The task files that came with EB (Tasks > Task files): list them by folder, or run one as a quest line of its own. A task starts from its first step each time; eb ql cancel stops it.
+  - Also typed as: `taskfiles`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of run | list; default list): run | list
+  - `name` (string; optional): run: the task file, by its path under the task folder or its name in words (a word that names two is answered with both); list: words the path holds
+- `eb linguist [what]`: Learn a language a Linguist sells (Halasian, Oggish, Ratongan, Stout, Ykeshan): the primer in the bags is used at once; else this box goes to its Linguist - the one of this zone, else of its errand city (eb errands city), else of its side - by EB's own travel, walks up, buys the primer (never over its budget, 1p unless named) and uses it. where says which Linguist and why, list the Linguists, stop ends the trip. A box you play by hand is never sent.
+  - Also typed as: `primer`.
+  - For the crew: `all`, `others`, `to`.
+  - `what` (string; optional): a language: Halasian, Oggish, Ratongan, Stout or Ykeshan (budget \<coin>: the most the primer may cost, 1p when none named); or where, list, stop
+- `eb missiontimer`: When missions and collections reset.
+  - Also typed as: `missions`, `missiontimers`.
+  - This box only.
+- `eb action <name>`: Run one quest step by its name (ZoneOut, DoorOption ...).
+  - Also typed as: `act`.
+  - For the crew: `all`, `others`, `to`.
+  - `name` (string; required): the step
+- `eb actor <name> [verb]`: Do something with an actor by name: hail or click it, or use one of its right-click choices.
+  - For the crew: `all`, `others`, `to`.
+  - `name` (string; required): the actor (quote a name of several words)
+  - `verb` (string; optional): the right-click choice; nothing = hail or click
+- `eb hail [who]`: Hail an NPC: target it and say the game's own /hail, which only ever talks (never a double-click on something that can be fought). An id, a name (within 30 m), or nothing for the nearest NPC to talk to within 15 m.
+  - For the crew: `all`, `others`, `to`.
+  - `who` (actor; optional): an actor's id (a button's \${Target.ID}), a name, or nothing: the nearest NPC to talk to
+- `eb special`: Click the nearest special object within 30 m (a glowing thing a zone wants clicked).
+  - For the crew: `all`, `others`, `to`.
+- `eb dialog [cmd] [n]`: Answer a dialog, a choice or a reward window: reply, choice, ok, close.
+  - Also typed as: `dlg`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of reply | choice | ok | close; default reply): reply | choice | ok | close
+  - `n` (int; optional): which option
+- `eb questhelper [state] [first]`: A helper while you quest by hand: a conversation with one reply gets it picked (with first, the first of several is always picked); standing still with no conversation up, a quest giver within 10 m is hailed and a quest object within 5 m is clicked - never one that moves you (a zone exit, a door, a portal, a bell, a spire, a flight). Nothing in a fight, while casting, moving or dead, or in a guild hall. Kept for this character.
+  - Also typed as: `qh`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional): on | off | toggle | status
+  - `first` (flag; optional): first: with several replies, always pick the first
+- `eb overseer [cmd] [arg]`: EB Overseer, the game's Overseer missions. run: one pass now - the finished missions turned in, the rewards taken, the scrolls in the bags added, new missions started with the agents whose traits suit them (by itself once an hour and when a mission is done, unless this character's No pass by itself is on; run auto is that start). stop: whatever EB's Overseer runs here (the pass, a trip, a share). status. window: EB's Overseer window. go: Go buy missions - the trip to an Administrator Agent, a new character's first agents, the missions bought and added, the agents off the broker when that is on, then the pass. buy: only the trip and the buy; trip: only the trip. The season, colour and amounts said, else this character's own. missions: the Overseer Quests boxes and the scrolls in the bags added now; scrolls lists them. agents: every box's agents, spare cards and what it is missing; add the cards in the bags (a duplicate kept; destroy = the game converts or destroys it); scan reads the window and the bags. share: the spare cards to the boxes that lack them; needs: who still needs what. set / options: this character's options. who, auto (after each run), spares (spares nobody needs), side, starter, brokerafter, broker cap: this PC's. mark / agent: the Administrator Agent EB buys from. tutorial: a new character's first agents (done / reset marks it). broker: agents a character lacks off the broker; owned: the agents it is known to have. lookup: which missions an agent suits, a mission's best free agents. EB never presses a Station Cash button, never cancels a mission and destroys a card only on your own word.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of run | stop | status | window | go | buy | trip | missions | scrolls | agents | share | needs | set | options | who | auto | spares | side | starter | tutorial | brokerafter | broker | mark | agent | owned | lookup | help; default run): run | stop | status | window | go | buy | trip | missions | scrolls | agents | share | needs | set | options | who | auto | spares | side | starter | tutorial | brokerafter | broker | mark | agent | owned | lookup | help
+  - `arg` (string; optional): what the word takes: run auto; go / buy: season <1-7 | any> colour \<any | blue | yellow | purple | green> num <1-50> copies <1-20> noscribe \[off\] destroy \[off\] gettogh \[off\] replenish price \<copper> (buy stop | status too); agents list | add \[destroy\] | scan | check \<token> \[bags\]; share local | mygroup | irc | all \[bags\]; set \<option> \<value>; who local | mygroup | irc | all; auto, spares, brokerafter on | off; starter on | off (alone: the starter pack now); side home | good | evil; tutorial done | reset \[character\]; broker check | buy | list | cap \<copper> | after on | off; agent \<n>; lookup \<agent or mission>
+- `eb sharequest <quest>`: Offer quests of the journal to the group: one by its name, or all of them (one a second). A mission is a quest here. The game offers the share to the members near.
+  - Also typed as: `sharemission`.
+  - For the crew: `all`, `others`, `to`.
+  - `quest` (string; required): the quest's name as the journal has it (in quotes when it has several words), or all
+
+## Commands: Instances
 
 Instance runs: run one or a list of them, build one, the teams, lockouts and resets. The tank runs the way in alone and brings the group in.
 
-### `eb catalog [cmd] [what]`
+- `eb ic [cmd] [zone]`: An instance run: run one, loop it, stop, status, list them. The tank runs the way in alone and brings the group in; the group never walks it together. near \<ic> \[n\]: the steps nearest to where you stand; runnear \<ic>: run it from the nearest step (inside the instance); rundirect \<ic> \[difficulty\] \[step\]: run it from a step; goto \<step>: the running run goes on from that step; rerun \<ic>: one more run (out, reset from outside, back in); loopzone \<ic> \[difficulty\] \[minutes\]: loop it; looplist \[runs\] \[minutes\]: the instance queue again and again; ignorelock on|off: the queue runs a zone you are saved to anyway; checkitems \[items\]: what this box must carry (none named: the IC's own list); stats \[\<ic>\]: run times, nameds, deaths and the best time; stats csv: one row a run to eb-instance-timing.csv; rune \<name>: every box puts that belt rune on. A member down holds the run between steps until the rez run gets them up (then a release, then the walk back); catchup \[x y z\]: this member walks back to the lead along the IC's own route; rezmember \<name>: one rezzer runs to that member; gatherremains: this box casts Gather Remains; acceptrez: this box, dead, takes the rez offer on its screen; entrance \<ic>: this box walks to that instance's entrance, in its hub zone (eb hub gets it there; the door stays the tank's). options \[\<ic>\]: the IC's own options (ON or off, what each skips); option \[\<ic>\] \<id> on|off: keep one ON or off on this PC for the next run; files \[\<folder>|\<words>\]: the IC files EB can run - its own and the live folders of the old bots' files (instances, custom, default, test), each with its run name; load \<file>: read one now and say what EB will not run of it; save | export \<ic> \[\<name>\]: your own copy (the Instance Builder's Mine, eb ic run authored/\<name>); addmonitor / addscript: EB runs no scripts; new \[3boss | 5boss | raid\] \[name\]: an instance laid out from a template under your own instances, to walk in the Instance Builder; templates: lists them; teststep \<ic> \<step>: run that one step now, on this box (the Instance Builder's Test this step); nextstep: the step after the last tested.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of run | loop | stop | status | list | reload | near | runnear | rundirect | goto | rerun | loopzone | looplist | ignorelock | checkitems | stats | rune | catchup | rezmember | gatherremains | acceptrez | entrance | options | option | files | load | save | export | addmonitor | addscript | new | templates | teststep | nextstep; default status): run | loop | stop | status | list | reload | near | runnear | rundirect | goto | rerun | loopzone | looplist | ignorelock | checkitems | stats | rune | catchup | rezmember | gatherremains | acceptrez | entrance | options | option | files | load | save | export | addmonitor | addscript | new | templates | teststep | nextstep
+  - `zone` (string; optional): the instance (and its words: a difficulty, minutes, a step, loot=\<method> for the group's loot this run, merc=on for my mercenary when I run alone); goto: the step; looplist: runs and minutes; ignorelock: on or off; checkitems: the items; rune: the rune; options / option / load / save / export: the IC (option: \[\<ic>\] \<id> on|off); files: a folder or words
+- `eb iqueue [cmd] [zone]`: Instances to run in turn: add one, start (from a row), stop, pause, resume, clear, remove a row, move a row, set a row's copy (difficulty), keep the queue under a name and put it back (save, load, presets, delete), takeover (the tank drives), status (the next run, and the runs done this pass). tankdrives on | off | status: on (the default), a queue started on a box whose character is no fighter, in a group with a fighter whose box runs EB, goes to that fighter - it runs the way in and zones the group in, this box follows; off, whoever starts the queue drives it.
+  - Also typed as: `inst`, `instance`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of start | stop | pause | resume | clear | add | remove | move | difficulty | save | load | presets | delete | takeover | tankdrives | status; default status): start \[row\] | stop | pause | resume | clear | add | remove \<row> | move \<row> \<to> | difficulty \<row> \[\<copy>\] | save \<name> | load \<name> | presets | delete \<name> | takeover | tankdrives on|off | status
+  - `zone` (string; optional): the instance (add), or a row (start, remove), a row and where it goes (move), a row and its copy (difficulty), a preset's name (save, load, delete), on or off (tankdrives)
+- `eb catalog [cmd] [what]`: The NPC and door catalogue: with it on, every few seconds the NPCs and the doors around this box are noted, zone by zone (where each was seen, how often, the day) - never a player, a pet or a mercenary. find \<words>: where something was seen; list \[\<zone>\]: what a zone holds; scan: one look now; forget \[\<zone>\]: drop a zone; kept beside the install (eb-catalog.json).
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | status | scan | save | find | list | forget; default status): on | off | status | scan | save | find \<words> | list \[\<zone>\] | forget \[\<zone>\]
+  - `what` (string; optional): find: a name or part of one; list / forget: a zone (none = the zone you stand in)
+- `eb creator [what]`: Open a builder: the instance and fight builder, or the quest builder.
+  - Also typed as: `cr`.
+  - This box only.
+  - `what` (enum; optional; one of ic | quest | fight; default ic): ic | quest | fight
+- `eb teams [cmd] [arg]`: Run teams: who runs with whom, and the crew at work in teams. list: each box's team and role, the named teams and the rules. show / apply \[content\]: the teams the rules make for a content (solo, advanced_solo, heroic, group, quest, task), each with its leader (apply keeps them: relay \<number> sends to one). set \<name> \<A-E or -> \[role\]: the Teams window's teams. THE RULES: name \<team> \<names> and unname \<team>; pin \<names> \[leader \<name>\] (always together); pair \<class> \<class> (those classes together); leader \<character or class> (who leads first), leader \<team> \<character> (that team's own); clear \[pins | pairs | leaders | all\]; size \<content> \<n>; unpaired solo | group | skip (characters on no team); on | off \[\<team>\]; formgroups on | off; default \<team> \<ic | quest | tasklist> \<what> \[as \<content>\] \[share\] \[disband\] (what run \<team> runs). AT WORK - typed on one box, it plans for every box and each box does its own part; a box played by hand is left out: form \<team> \[content\] (the leader invites, the others leave other groups and accept) or form \<content> (the crew regrouped into the rules' teams); run \<team> (formed, then its leader - the tank, for an instance - runs its default run; disband breaks the group up when it is done); disband \<team>; runall, formall \[content\], disbandall; gather (this box leads, the crew in no group joins); leave; relay \<team> \<command>; waitdone \[seconds\] (until every team member is idle). breakout \[size\] splits the crew into teams A to E; breakout instances | quests | tasks \<items> \[content\], breakout queue (this box's instance queue), presets, save, show, delete, run \<name>: shared out across the teams. runlist \<list> \[breakout\] \[regroup \<zone>\] \[nowait\] runs one of your task lists (lists, show, make, add, remove, move, delete and regroup edit them); runlist mode \<list> sequential | breakout, wait \<list> on | off, limit \<list> \<minutes | off> and team \<list> \<team> add \<step> | remove \<item> | clear keep a list's own way (how it runs, its end said, how long it is waited for, a team's own items in a breakout). THE TEAMS WINDOW'S WORDS: add \<team> \<names> (onto a team - a new name makes it; onto a team that is on, they leave the other teams that are on), remove \[\<team>\] \<names>, new \[\<team>\], duplicate \<team> \[\<name>\] (a copy, switched off), empty \<team>, class \<name> \<class | -> (the class it plays, for building teams; the class its box says wins), unpin \<name>, unpair \<number | classes>, unlead \<character | class>.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of list | show | apply | set | team | name | unname | pin | pair | leader | clear | size | unpaired | on | off | formgroups | default | form | gather | leave | run | disband | runall | formall | disbandall | relay | waitdone | breakout | runlist | add | remove | new | duplicate | empty | class | unpin | unpair | unlead; default list): list | show | apply | set | team | name | unname | pin | pair | leader | clear | size | unpaired | on | off | formgroups | default | form | gather | leave | run | disband | runall | formall | disbandall | relay | waitdone | breakout | runlist | add | remove | new | duplicate | empty | class | unpin | unpair | unlead
+  - `arg` (string; optional): a team, a content (solo, advanced_solo, heroic, group, quest, task), names, or what the word takes
+- `eb resetzone [cmd] [zone]`: Reset a zone's lockout: one zone, all of them, or force. 'all' asks nothing first.
+  - Also typed as: `zonereset`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of one | all | force; default one): one | all | force
+  - `zone` (string; optional): the zone
+- `eb lockouts [cmd] [zone]`: The zone lockouts and reuse timers: list (this box's saved zones), refresh (read them again now), check \<zone> (is this box saved to it; check \<zone> for \<character> answers for that character), fleet \<zone> (every box that is on answers for itself, and every character this PC keeps that is not on answers from its last read, as of that read - a lockout whose own timer ran out counts as free), fleet with no zone lists what each character is saved to. Every read of a box's own lockouts is kept on this PC, one record a character.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (string; optional): list (the default) | refresh | check | fleet
+  - `zone` (string; optional): the zone to check (check \<zone> for \<character>: that character)
+- `eb zoneevent <event>`: A zone's own event, done on every box the line reaches: eb all zoneevent Xygoz_ClickAdd (The Fabled Veeshan's Peak, Xygoz - pressed when the crew stands next to its doppelgangers: each box double-clicks the NPC that bears its own character's name within 10 m). An event EB has no version of is said, never guessed.
+  - For the crew: `all`, `others`, `to`.
+  - `event` (string; required): the event's name, for example Xygoz_ClickAdd
 
-The NPC and door catalogue: with it on, every few seconds the NPCs and the doors around this box are noted, zone by zone (where each was seen, how often, the day) - never a player, a pet or a mercenary. find <words>: where something was seen; list [<zone>]: what a zone holds; scan: one look now; forget [<zone>]: drop a zone; kept beside the install (eb-catalog.json).
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | status | scan | save | find <words> | list [<zone>] | forget [<zone>]
-- `what` (string, optional): find: a name or part of one; list / forget: a zone (none = the zone you stand in)
-
-### `eb creator [what]`
-
-Open a builder: the instance and fight builder, or the quest builder.
-
-*also: `cr` - who: local*
-
-- `what` (enum, optional): ic | quest | fight
-
-### `eb ic [cmd] [zone]`
-
-An instance run: run one, loop it, stop, status, list them. The tank runs the way in alone and brings the group in; the group never walks it together. near <ic> [n]: the steps nearest to where you stand; runnear <ic>: run it from the nearest step (inside the instance); rundirect <ic> [difficulty] [step]: run it from a step; goto <step>: the running run goes on from that step; rerun <ic>: one more run (out, reset from outside, back in); loopzone <ic> [difficulty] [minutes]: loop it; looplist [runs] [minutes]: the instance queue again and again; ignorelock on|off: the queue runs a zone you are saved to anyway; checkitems [items]: what this box must carry (none named: the IC's own list); stats [<ic>]: run times, nameds, deaths and the best time; stats csv: one row a run to eb-instance-timing.csv; rune <name>: every box puts that belt rune on. A member down holds the run between steps until the rez run gets them up (then a release, then the walk back); catchup [x y z]: this member walks back to the lead along the IC's own route; rezmember <name>: one rezzer runs to that member; gatherremains: this box casts Gather Remains; acceptrez: this box, dead, takes the rez offer on its screen; entrance <ic>: this box walks to that instance's entrance, in its hub zone (eb hub gets it there; the door stays the tank's). options [<ic>]: the IC's own options (ON or off, what each skips); option [<ic>] <id> on|off: keep one ON or off on this PC for the next run; files [<folder>|<words>]: the IC files EB can run - its own and the live folders of the old bots' files (instances, custom, default, test), each with its run name; load <file>: read one now and say what EB will not run of it; save | export <ic> [<name>]: your own copy (the Instance Builder's Mine, eb ic run authored/<name>); addmonitor / addscript: EB runs no scripts; new [3boss | 5boss | raid] [name]: an instance laid out from a template under your own instances, to walk in the Instance Builder; templates: lists them; teststep <ic> <step>: run that one step now, on this box (the Instance Builder's Test this step); nextstep: the step after the last tested.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): run | loop | stop | status | list | reload | near | runnear | rundirect | goto | rerun | loopzone | looplist | ignorelock | checkitems | stats | rune | catchup | rezmember | gatherremains | acceptrez | entrance | options | option | files | load | save | export | addmonitor | addscript | new | templates | teststep | nextstep
-- `zone` (string, optional): the instance (and its words: a difficulty, minutes, a step, loot=<method> for the group's loot this run, merc=on for my mercenary when I run alone); goto: the step; looplist: runs and minutes; ignorelock: on or off; checkitems: the items; rune: the rune; options / option / load / save / export: the IC (option: [<ic>] <id> on|off); files: a folder or words
-
-### `eb iqueue [cmd] [zone]`
-
-Instances to run in turn: add one, start (from a row), stop, pause, resume, clear, remove a row, move a row, set a row's copy (difficulty), keep the queue under a name and put it back (save, load, presets, delete), takeover (the tank drives), status (the next run, and the runs done this pass). tankdrives on | off | status: on (the default), a queue started on a box whose character is no fighter, in a group with a fighter whose box runs EB, goes to that fighter - it runs the way in and zones the group in, this box follows; off, whoever starts the queue drives it.
-
-*also: `inst`, `instance` - who: local, all, others, to*
-
-- `cmd` (enum, optional): start [row] | stop | pause | resume | clear | add | remove <row> | move <row> <to> | difficulty <row> [<copy>] | save <name> | load <name> | presets | delete <name> | takeover | tankdrives on|off | status
-- `zone` (string, optional): the instance (add), or a row (start, remove), a row and where it goes (move), a row and its copy (difficulty), a preset's name (save, load, delete), on or off (tankdrives)
-
-### `eb lockouts [cmd] [zone]`
-
-The zone lockouts and reuse timers: list (this box's saved zones), refresh (read them again now), check <zone> (is this box saved to it; check <zone> for <character> answers for that character), fleet <zone> (every box that is on answers for itself, and every character this PC keeps that is not on answers from its last read, as of that read - a lockout whose own timer ran out counts as free), fleet with no zone lists what each character is saved to. Every read of a box's own lockouts is kept on this PC, one record a character.
-
-*who: local, all, others, to*
-
-- `cmd` (string, optional): list (the default) | refresh | check | fleet
-- `zone` (string, optional): the zone to check (check <zone> for <character>: that character)
-
-### `eb resetzone [cmd] [zone]`
-
-Reset a zone's lockout: one zone, all of them, or force. 'all' asks nothing first.
-
-*also: `zonereset` - who: local, all, others, to*
-
-- `cmd` (enum, optional): one | all | force
-- `zone` (string, optional): the zone
-
-### `eb teams [cmd] [arg]`
-
-Run teams: who runs with whom, and the crew at work in teams. list: each box's team and role, the named teams and the rules. show / apply [content]: the teams the rules make for a content (solo, advanced_solo, heroic, group, quest, task), each with its leader (apply keeps them: relay <number> sends to one). set <name> <A-E or -> [role]: the Teams window's teams. THE RULES: name <team> <names> and unname <team>; pin <names> [leader <name>] (always together); pair <class> <class> (those classes together); leader <character or class> (who leads first), leader <team> <character> (that team's own); clear [pins | pairs | leaders | all]; size <content> <n>; unpaired solo | group | skip (characters on no team); on | off [<team>]; formgroups on | off; default <team> <ic | quest | tasklist> <what> [as <content>] [share] [disband] (what run <team> runs). AT WORK - typed on one box, it plans for every box and each box does its own part; a box played by hand is left out: form <team> [content] (the leader invites, the others leave other groups and accept) or form <content> (the crew regrouped into the rules' teams); run <team> (formed, then its leader - the tank, for an instance - runs its default run; disband breaks the group up when it is done); disband <team>; runall, formall [content], disbandall; gather (this box leads, the crew in no group joins); leave; relay <team> <command>; waitdone [seconds] (until every team member is idle). breakout [size] splits the crew into teams A to E; breakout instances | quests | tasks <items> [content], breakout queue (this box's instance queue), presets, save, show, delete, run <name>: shared out across the teams. runlist <list> [breakout] [regroup <zone>] [nowait] runs one of your task lists (lists, show, make, add, remove, move, delete and regroup edit them); runlist mode <list> sequential | breakout, wait <list> on | off, limit <list> <minutes | off> and team <list> <team> add <step> | remove <item> | clear keep a list's own way (how it runs, its end said, how long it is waited for, a team's own items in a breakout). THE TEAMS WINDOW'S WORDS: add <team> <names> (onto a team - a new name makes it; onto a team that is on, they leave the other teams that are on), remove [<team>] <names>, new [<team>], duplicate <team> [<name>] (a copy, switched off), empty <team>, class <name> <class | -> (the class it plays, for building teams; the class its box says wins), unpin <name>, unpair <number | classes>, unlead <character | class>.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): list | show | apply | set | team | name | unname | pin | pair | leader | clear | size | unpaired | on | off | formgroups | default | form | gather | leave | run | disband | runall | formall | disbandall | relay | waitdone | breakout | runlist | add | remove | new | duplicate | empty | class | unpin | unpair | unlead
-- `arg` (string, optional): a team, a content (solo, advanced_solo, heroic, group, quest, task), names, or what the word takes
-
-### `eb zoneevent <event>`
-
-A zone's own event, done on every box the line reaches: eb all zoneevent Xygoz_ClickAdd (The Fabled Veeshan's Peak, Xygoz - pressed when the crew stands next to its doppelgangers: each box double-clicks the NPC that bears its own character's name within 10 m). An event EB has no version of is said, never guessed.
-
-*who: local, all, others, to*
-
-- `event` (string): the event's name, for example Xygoz_ClickAdd
-
-
-<a id="loot"></a>
-## Loot
+## Commands: Loot
 
 Looting: corpses and chests, the loot rules, who gets what, coin.
 
-### `eb checkloot`
+- `eb loot [cmd] [arg]`: Looting by itself: on, off, status; now loots the nearest corpse or chest in reach; rules and method set who gets what.
+  - Also typed as: `lootrules`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | status | rules | method | now; default status): on | off | status | rules | method | now
+  - `arg` (string; optional): a rule, or a method (and a rarity)
+- `eb lootdistro [cmd] [arg]`: Who gets the loot: resolve (the member who gains most), assign, status - and the wish list: add / remove / skip an item, scan (this character checks itself), look \<item>, sync (the wishes from every check).
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of resolve | assign | status | add | remove | skip | scan | look | sync; default status): resolve | assign | status | add | remove | skip | scan | look | sync
+  - `arg` (string; optional): add / remove / look: the item; skip: \<item> \<who>; scan: \<item>|\<item> to check too
+- `eb lootwin [cmd]`: The loot window: open it, claim what is in it, close it.
+  - Also typed as: `lw`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of open | claim | close; default open): open | claim | close
+- `eb coinsplit [state]`: The game's even coin split for the group: on / off sets it on the group leader's box in the game's own Group Options window (its coin split box, Apply, then read back when the window is opened again) and EB remembers your choice; status says EB's choice and the game's own box. A member's box only remembers it.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional): on | off | toggle | status (nothing: status)
+- `eb langloot [cmd] [arg]`: Language quests in a group: each member needs its own items - say which quest this character wants, what it holds and lacks, and the leader hands each item to a member still short of it.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of status | list | want | sync; default status): status | list | want | sync
+  - `arg` (string; optional): want: the quest or its language (off \[quest\] = not any more)
+- `eb stoponnotrade [state]`: The instance queue's No-Trade guard: with it on, the next loot window that holds a No-Trade drop pauses the queue (eb iqueue resume goes on).
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional): on | off (nothing: what it is now)
+- `eb checkloot`: The open loot window's drops, each No-Trade one marked (nothing taken, nothing paused).
+  - This box only.
 
-The open loot window's drops, each No-Trade one marked (nothing taken, nothing paused).
-
-*who: local*
-
-### `eb coinsplit [state]`
-
-The game's even coin split for the group: on / off sets it on the group leader's box in the game's own Group Options window (its coin split box, Apply, then read back when the window is opened again) and EB remembers your choice; status says EB's choice and the game's own box. A member's box only remembers it.
-
-*who: local, all, others, to*
-
-- `state` (onoff, optional): on | off | toggle | status (nothing: status)
-
-### `eb langloot [cmd] [arg]`
-
-Language quests in a group: each member needs its own items - say which quest this character wants, what it holds and lacks, and the leader hands each item to a member still short of it.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): status | list | want | sync
-- `arg` (string, optional): want: the quest or its language (off [quest] = not any more)
-
-### `eb loot [cmd] [arg]`
-
-Looting by itself: on, off, status; now loots the nearest corpse or chest in reach; rules and method set who gets what.
-
-*also: `lootrules` - who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | status | rules | method | now
-- `arg` (string, optional): a rule, or a method (and a rarity)
-
-### `eb lootdistro [cmd] [arg]`
-
-Who gets the loot: resolve (the member who gains most), assign, status - and the wish list: add / remove / skip an item, scan (this character checks itself), look <item>, sync (the wishes from every check).
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): resolve | assign | status | add | remove | skip | scan | look | sync
-- `arg` (string, optional): add / remove / look: the item; skip: <item> <who>; scan: <item>|<item> to check too
-
-### `eb lootwin [cmd]`
-
-The loot window: open it, claim what is in it, close it.
-
-*also: `lw` - who: local, all, others, to*
-
-- `cmd` (enum, optional): open | claim | close
-
-### `eb stoponnotrade [state]`
-
-The instance queue's No-Trade guard: with it on, the next loot window that holds a No-Trade drop pauses the queue (eb iqueue resume goes on).
-
-*who: local, all, others, to*
-
-- `state` (onoff, optional): on | off (nothing: what it is now)
-
-
-<a id="harvest"></a>
-## Harvest
+## Commands: Harvest
 
 Gathering: the nodes near you, gather routes, shinies, materials.
 
-### `eb gatherroute [name]`
+- `eb harvest [cmd] [arg]`: Gathering: on, off, status; near gathers what is close - once (one pull), reach:\<m> (how far it looks), move:\<m> (walks up to a node that far), count:\<n> (pulls), until:\<n>:\<item> (until the bags hold that many), a node's name; route runs a gather route. left says the nodes left a while (a refused pull or another box on it: 90 s; one the mesh could not reach: 5 min), left clear looks at them again; tally says what this session gathered (pulls, rares, per minute, per kind), tally reset counts from zero; log on | off writes each step of a run to a file (logs, one a session). roam lets the mesh pick where to look round you (a radius in metres, or mark:\<name> - an area route of yours or a saved spot), until stopped, count:\<n> or until:\<n>:\<item>; cover runs over every node this box has seen in this zone, cover sweep \[radius\] sweeps the whole zone in rings; make \<name> makes a gather route from the nodes seen here (no run); known says how many are known here (known clear forgets them). courtesy on | off: your own boxes, grouped or not, never go for one node (a node another box goes for is left to it) and each harvesting here takes its own part of a roam and its own start on a route (on unless set off). kind:\<kinds> (kind:ore,gem) on near, roam and cover takes only nodes of those kinds and passes the others by; roam \<radius> patrol walks its look points ring by ring, round and round. pause holds the harvest under way where it stands, resume goes on. plan lists EB Gather's zone plans, plan clear \<zone> clears one, plan go \<zone> travels there first and starts its plan.
+  - Also typed as: `harv`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | status | near | route | left | tally | log | roam | cover | make | known | courtesy | plan | pause | resume; default status): on | off | status | near | route | left | tally | log | roam | cover | make | known | courtesy | plan | pause | resume
+  - `arg` (string; optional): near: once, reach:\<m>, move:\<m>, count:\<n>, until:\<n>:\<item>, kind:\<kinds>, a node's name; route: a route; left: clear; tally: reset; log / courtesy: on | off; roam: a radius, patrol, mark:\<name>, count:\<n>, until:\<n>:\<item>, kind:\<kinds>; cover: sweep \[a radius\] or a node's name, kind:\<kinds>; make: the route's name; known: clear; plan: list | clear \<zone> | go \<zone>
+- `eb shinies [cmd]`: Shinies: pick them up by themselves - on, off, status; track marks where they are.
+  - Also typed as: `shiny`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of on | off | status | track; default status): on | off | status | track
+- `eb mats [cmd] [arg]`: Gather the raw materials on a list: recipe \<name> makes the list from that recipe's own components (what the bags hold counted); list says what is still missing; harvest gathers what is near until the list is filled; clear empties it. go harvests EB Gather's Materials list where it grows: in a zone of each material's tier (EB's own travel there first), only the node kinds that give it, until each count is gathered, then Call to Guild Hall and the harvest into the hall's Harvesting Supply Depot; stop ends that run; status says where it is and each material gathered of its count.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of harvest | list | recipe | clear | go | stop | status; default harvest): harvest | list | recipe | clear | go | stop | status
+  - `arg` (string; optional): recipe: the recipe's name, and how many: "name",3
+- `eb gatherroute [name]`: Run a saved gather route (a route of another zone: this box travels there first, then it runs). farm \<route> walks it round and round taking every node on it; all runs every route of this zone one after another, then over again; kind:\<kinds> takes only those node kinds. list names the routes; import reads your own saved gather route files (all of them, or the one named) into EB's routes; import old reads the old bot's auto-hunt routes (each zone's route and the named points of its map) as gather routes walked in order and round again - one zone, or overwrite to replace one already there; stop ends the run.
+  - Also typed as: `gather`.
+  - For the crew: `all`, `others`, `to`.
+  - `name` (string; optional): a saved route \[kind:\<kinds>\]; or farm \<route>, all, list | import \[all | \<file> | old \[\<zone>\] \[overwrite\]\] | stop
+- `eb packpony`: Send the pack pony out to harvest: summon it, hail it, answer its questions.
+  - For the crew: `all`, `others`, `to`.
 
-Run a saved gather route (a route of another zone: this box travels there first, then it runs). farm <route> walks it round and round taking every node on it; all runs every route of this zone one after another, then over again; kind:<kinds> takes only those node kinds. list names the routes; import reads your own saved gather route files (all of them, or the one named) into EB's routes; import old reads the old bot's auto-hunt routes (each zone's route and the named points of its map) as gather routes walked in order and round again - one zone, or overwrite to replace one already there; stop ends the run.
-
-*also: `gather` - who: local, all, others, to*
-
-- `name` (string, optional): a saved route [kind:<kinds>]; or farm <route>, all, list | import [all | <file> | old [<zone>] [overwrite]] | stop
-
-### `eb harvest [cmd] [arg]`
-
-Gathering: on, off, status; near gathers what is close - once (one pull), reach:<m> (how far it looks), move:<m> (walks up to a node that far), count:<n> (pulls), until:<n>:<item> (until the bags hold that many), a node's name; route runs a gather route. left says the nodes left a while (a refused pull or another box on it: 90 s; one the mesh could not reach: 5 min), left clear looks at them again; tally says what this session gathered (pulls, rares, per minute, per kind), tally reset counts from zero; log on | off writes each step of a run to a file (logs, one a session). roam lets the mesh pick where to look round you (a radius in metres, or mark:<name> - an area route of yours or a saved spot), until stopped, count:<n> or until:<n>:<item>; cover runs over every node this box has seen in this zone, cover sweep [radius] sweeps the whole zone in rings; make <name> makes a gather route from the nodes seen here (no run); known says how many are known here (known clear forgets them). courtesy on | off: your own boxes, grouped or not, never go for one node (a node another box goes for is left to it) and each harvesting here takes its own part of a roam and its own start on a route (on unless set off). kind:<kinds> (kind:ore,gem) on near, roam and cover takes only nodes of those kinds and passes the others by; roam <radius> patrol walks its look points ring by ring, round and round. pause holds the harvest under way where it stands, resume goes on. plan lists EB Gather's zone plans, plan clear <zone> clears one, plan go <zone> travels there first and starts its plan.
-
-*also: `harv` - who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | status | near | route | left | tally | log | roam | cover | make | known | courtesy | plan | pause | resume
-- `arg` (string, optional): near: once, reach:<m>, move:<m>, count:<n>, until:<n>:<item>, kind:<kinds>, a node's name; route: a route; left: clear; tally: reset; log / courtesy: on | off; roam: a radius, patrol, mark:<name>, count:<n>, until:<n>:<item>, kind:<kinds>; cover: sweep [a radius] or a node's name, kind:<kinds>; make: the route's name; known: clear; plan: list | clear <zone> | go <zone>
-
-### `eb mats [cmd] [arg]`
-
-Gather the raw materials on a list: recipe <name> makes the list from that recipe's own components (what the bags hold counted); list says what is still missing; harvest gathers what is near until the list is filled; clear empties it. go harvests EB Gather's Materials list where it grows: in a zone of each material's tier (EB's own travel there first), only the node kinds that give it, until each count is gathered, then Call to Guild Hall and the harvest into the hall's Harvesting Supply Depot; stop ends that run; status says where it is and each material gathered of its count.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): harvest | list | recipe | clear | go | stop | status
-- `arg` (string, optional): recipe: the recipe's name, and how many: "name",3
-
-### `eb packpony`
-
-Send the pack pony out to harvest: summon it, hail it, answer its questions.
-
-*who: local, all, others, to*
-
-### `eb shinies [cmd]`
-
-Shinies: pick them up by themselves - on, off, status; track marks where they are.
-
-*also: `shiny` - who: local, all, others, to*
-
-- `cmd` (enum, optional): on | off | status | track
-
-
-<a id="craft"></a>
-## Crafting
+## Commands: Crafting
 
 Crafting: one recipe or a queue of them, writs, recipe books, tinkering.
 
-### `eb craft [recipe]`
+- `eb craft [recipe]`: The craft bot (EB Craft). No word: opens EB Craft and says what it is doing. Runs: start (the setup queue), writs \[n\], quest \<quest>, tinker, lll, stop, pause \[on|off\]. The setup queue: add \<recipe> \[n\], remove \<recipe>, qty \<recipe> \<n>, clear, queue, save \<name>, load \<name>, queues, forget \<name>. Old saved queues: import list \[words\] shows the queue files your other craft tools left on this PC, import \<file> \[as \<name>\] saves one of them as a queue here, import all \[words\] saves every one (one a step; a name another queue has takes the file's folder words in front). Also: set \<setting> \<value> (set alone lists them), savesettings, reload, scan (read the recipe book again), lite on|off (answer the reactions of a combine you start by hand), recipes \<words>, parse \<writ step text>, end (stop and lite off), proof on|off (EB Boxer: its unproven crafting steps out for a proof run), addlast (add the newest recipe you scribed), books \[buy\] (the recipe books the queue's recipes need), shop books | sell \<item> | destroy \<item> (the named items in the bags sold to the merchant in reach, or destroyed - several split by | - never a protected one), minimize (EB Craft rolled up to its run row; eb craft brings it back). Any other words are a recipe crafted now: eb craft Fixture Pie 3.
+  - For the crew: `all`, `others`, `to`.
+  - `recipe` (string; optional): a word above, or a recipe and how many (a recipe's name or its id); for import, an old queue file's name
+- `eb craftqueue [cmd] [arg]`: The craft queue: add a recipe \[n\] \[for \<who>\], start, hand out (each recipe made for another box traded to it, which then scribes it), status, stop, clear.
+  - Also typed as: `cq`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of add | start | handout | status | stop | clear; default status): add | start | handout | status | stop | clear
+  - `arg` (string; optional): a recipe and how many, and for \<who> when it is for another box
+- `eb craftsetup [words]`: Take a new character from nothing to a crafting class (Low Level Leveling): start it (naming the class, and city:, where:, potion, xp and until:\<level> as you like), plan says what it would do, stop ends it. The class and city set the trainer; until:\<level> stops before the level-19 class choice; where: is where it crafts.
+  - Also typed as: `csetup`.
+  - For the crew: `all`, `others`, `to`.
+  - `words` (string; optional): \[start\] \<class> \[city:\<city>\] \[where:guildhall|house|here\] \[potion\] \[xp\] \[until:\<level>\] | plan | stop
+- `eb recipebooks [cmd] [arg]`: Recipe books: list how many recipes your book holds, scribe the books in your bags, plan the books your class still needs (to your tradeskill level), prices adds each book's broker / merchant cost, buy walks to the recipe merchant and buys then scribes them. known | unknown narrows the plan; buy takes broker | merchant, guildhall | nogh and noscribe.
+  - Also typed as: `rbooks`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of list | scribe | plan | prices | buy; default list): list | scribe | plan | prices | buy
+  - `arg` (string; optional): plan / prices / buy: a class, known | unknown, level:\<n>; buy: broker | merchant, guildhall | nogh, noscribe
+- `eb craftjunk [cmd] [item]`: Low Level Leveling's leftovers: the items such a run is known to make (EB's list and your own names). list says which bag stacks would go - only handcrafted copies never worn, never a protected item - and which stay; go destroys them; add / remove keeps your own names. A Low Level Leveling run clears them too when it cleans up.
+  - Also typed as: `llljunk`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of list | go | add | remove; default list): list | go | add | remove
+  - `item` (string; optional): add / remove: an item's name
+- `eb tinker [arg]`: Level a secondary skill by its bands to the cap - tinkering (the default) or adorning: on starts it (buying the band's books under a broker cap and crafting its rows), off stops it, nothing says where it stands. eb tinker adorning on levels adorning instead.
+  - For the crew: `all`, `others`, `to`.
+  - `arg` (string; optional): on | off | status; or 'adorning' first to level adorning (eb tinker adorning on)
+- `eb writs [cmd]`: Crafting writs: craft them, rush orders, commissions.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of craft | rush | commission; default craft): craft | rush | commission
+- `eb luck [cmd]`: The Luck window: while a skill that levels by chance climbs (tinkering, adorning, transmuting), how many crafts, how many skill-ups, the percent and the longest dry run. on: it pops up by itself while one levels; off: only on eb luck; reset counts from zero.
+  - This box only.
+  - `cmd` (enum; optional; one of show | on | off | reset; default show): show | on | off | reset
+- `eb craftgm [words]`: Craft Grandmasters: the (Master) spell scrolls in your bags turned into (Grandmaster) crafts, one craft per scroll. scan (the default) says what would be crafted and what is left out; start crafts them; queue only puts the recipes in the setup queue (eb craft start crafts it) and never uses the depot; status, stop. A level range (131-135, 131 135, level 131-135, or one level; all = every level, the default) is the recipe's level. depot also takes the Scroll Depot's scrolls, in batches that fit your bags (stand at it: nothing walks); nodepot is bags only. A scroll taken out and not crafted stays in your bags.
+  - Also typed as: `grandmasters`.
+  - For the crew: `all`, `others`, `to`.
+  - `words` (string; optional): \[\<range> | all\] \[scan | start | queue | status | stop\] \[depot | nodepot\] - a range: 131-135, 131 135, level 131-135 or one level
 
-The craft bot (EB Craft). No word: opens EB Craft and says what it is doing. Runs: start (the setup queue), writs [n], quest <quest>, tinker, lll, stop, pause [on|off]. The setup queue: add <recipe> [n], remove <recipe>, qty <recipe> <n>, clear, queue, save <name>, load <name>, queues, forget <name>. Old saved queues: import list [words] shows the queue files your other craft tools left on this PC, import <file> [as <name>] saves one of them as a queue here, import all [words] saves every one (one a step; a name another queue has takes the file's folder words in front). Also: set <setting> <value> (set alone lists them), savesettings, reload, scan (read the recipe book again), lite on|off (answer the reactions of a combine you start by hand), recipes <words>, parse <writ step text>, end (stop and lite off), proof on|off (EB Boxer: its unproven crafting steps out for a proof run), addlast (add the newest recipe you scribed), books [buy] (the recipe books the queue's recipes need), shop books | sell <item> | destroy <item> (the named items in the bags sold to the merchant in reach, or destroyed - several split by | - never a protected one), minimize (EB Craft rolled up to its run row; eb craft brings it back). Any other words are a recipe crafted now: eb craft Fixture Pie 3.
-
-*who: local, all, others, to*
-
-- `recipe` (string, optional): a word above, or a recipe and how many (a recipe's name or its id); for import, an old queue file's name
-
-### `eb craftgm [words]`
-
-Craft Grandmasters: the (Master) spell scrolls in your bags turned into (Grandmaster) crafts, one craft per scroll. scan (the default) says what would be crafted and what is left out; start crafts them; queue only puts the recipes in the setup queue (eb craft start crafts it) and never uses the depot; status, stop. A level range (131-135, 131 135, level 131-135, or one level; all = every level, the default) is the recipe's level. depot also takes the Scroll Depot's scrolls, in batches that fit your bags (stand at it: nothing walks); nodepot is bags only. A scroll taken out and not crafted stays in your bags.
-
-*also: `grandmasters` - who: local, all, others, to*
-
-- `words` (string, optional): [<range> | all] [scan | start | queue | status | stop] [depot | nodepot] - a range: 131-135, 131 135, level 131-135 or one level
-
-### `eb craftjunk [cmd] [item]`
-
-Low Level Leveling's leftovers: the items such a run is known to make (EB's list and your own names). list says which bag stacks would go - only handcrafted copies never worn, never a protected item - and which stay; go destroys them; add / remove keeps your own names. A Low Level Leveling run clears them too when it cleans up.
-
-*also: `llljunk` - who: local, all, others, to*
-
-- `cmd` (enum, optional): list | go | add | remove
-- `item` (string, optional): add / remove: an item's name
-
-### `eb craftqueue [cmd] [arg]`
-
-The craft queue: add a recipe [n] [for <who>], start, hand out (each recipe made for another box traded to it, which then scribes it), status, stop, clear.
-
-*also: `cq` - who: local, all, others, to*
-
-- `cmd` (enum, optional): add | start | handout | status | stop | clear
-- `arg` (string, optional): a recipe and how many, and for <who> when it is for another box
-
-### `eb craftsetup [words]`
-
-Take a new character from nothing to a crafting class (Low Level Leveling): start it (naming the class, and city:, where:, potion, xp and until:<level> as you like), plan says what it would do, stop ends it. The class and city set the trainer; until:<level> stops before the level-19 class choice; where: is where it crafts.
-
-*also: `csetup` - who: local, all, others, to*
-
-- `words` (string, optional): [start] <class> [city:<city>] [where:guildhall|house|here] [potion] [xp] [until:<level>] | plan | stop
-
-### `eb luck [cmd]`
-
-The Luck window: while a skill that levels by chance climbs (tinkering, adorning, transmuting), how many crafts, how many skill-ups, the percent and the longest dry run. on: it pops up by itself while one levels; off: only on eb luck; reset counts from zero.
-
-*who: local*
-
-- `cmd` (enum, optional): show | on | off | reset
-
-### `eb recipebooks [cmd] [arg]`
-
-Recipe books: list how many recipes your book holds, scribe the books in your bags, plan the books your class still needs (to your tradeskill level), prices adds each book's broker / merchant cost, buy walks to the recipe merchant and buys then scribes them. known | unknown narrows the plan; buy takes broker | merchant, guildhall | nogh and noscribe.
-
-*also: `rbooks` - who: local, all, others, to*
-
-- `cmd` (enum, optional): list | scribe | plan | prices | buy
-- `arg` (string, optional): plan / prices / buy: a class, known | unknown, level:<n>; buy: broker | merchant, guildhall | nogh, noscribe
-
-### `eb tinker [arg]`
-
-Level a secondary skill by its bands to the cap - tinkering (the default) or adorning: on starts it (buying the band's books under a broker cap and crafting its rows), off stops it, nothing says where it stands. eb tinker adorning on levels adorning instead.
-
-*who: local, all, others, to*
-
-- `arg` (string, optional): on | off | status; or 'adorning' first to level adorning (eb tinker adorning on)
-
-### `eb writs [cmd]`
-
-Crafting writs: craft them, rush orders, commissions.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): craft | rush | commission
-
-
-<a id="broker"></a>
-## Broker
+## Commands: Broker
 
 The broker: buying what a character needs, prices, a shopping list, collections.
 
-### `eb broker [cmd] [arg]`
+- `eb broker [cmd] [arg]`: The broker: buy an item, masters (spell upgrades). Selling: list alone names what the bags could put up; list bags puts them up (each priced first by EB Broker's rules - the cheapest other seller, else your price default; no price, it stays in the bags - then into its default's sale box, else the first with room); list unlisted lists what is not up; list reprice reprices every listing as EB Broker is set (big drops held); listings shows your listings by box and index; setprice / unlist / list \<box> \<index> act on one; coin takes the coin out of every sale box; repeat runs the pricing round again on a random min..max timer while the broker window is up. history: what was sold, bought and taken in coin, kept per character (readlog reads the market's Sales Log page); log: each act and whether its price read back.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of buy | masters | sweep | list | listings | setprice | unlist | coin | repeat | replenish | history | log | status; default status): buy | masters | sweep | list | listings | setprice | unlist | coin | repeat | replenish | history | log | status
+  - `arg` (string; optional): buy: an item; sweep: \[tier\] \[\<min>-\<max>\] \[the most a scroll may cost\] \[max \<n>\]; replenish: add | remove \<item>, list, now, on, off; list: bags \[box\] | unlisted | reprice | \<box> \<index> \[price\]; setprice: \<box> \<index> \<price>; unlist: \<box> \<index>; repeat: check | beat | match | smart | unlisted \[min s\] \[max s\], or off; history: days | readlog; log: how many
+- `eb buybest [what]`: Buy the best gear, spells or adornments this character can use from the broker.
+  - Also typed as: `brokerbuybest`.
+  - For the crew: `all`, `others`, `to`.
+  - `what` (enum; optional; one of gear | spells | adorns; default gear): gear | spells | adorns
+- `eb brokerbuy <item> [qty] [max]`: Buy one item from the broker.
+  - Also typed as: `brokerbuyitem`.
+  - For the crew: `all`, `others`, `to`.
+  - `item` (item; required): the item (quote a name of several words)
+  - `qty` (int; optional): how many
+  - `max` (int; optional): the most to pay for one
+- `eb purchase [cmd] [item]`: The shopping list (merchant and broker): add an item, run it, repeat its broker lines every \<min>-\<max> s, status, clear. Merchant spots kept on this PC: grab keeps your target's spot (a name typed keeps it under that name), locate says the best spot known for a merchant, known lists them all, go walks this character there (its zone first by EB's own travel, then the mesh walk up to it). expect "\<item>" \[seconds\] answers the game's purchase question Yes for a buy you make yourself, only when it names exactly that item (5 s to 10 min, 20 s by default, as long again after each Yes); confirms says what is expected; stop ends the walk, the run and what is expected.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of add | run | repeat | status | clear | grab | locate | known | go | expect | confirms | stop; default status): add | run | repeat | status | clear | grab | locate | known | go | expect | confirms | stop
+  - `item` (item; optional): add: the item; repeat: \<min s> \[max s\], off or status; grab: a name to keep the spot under (else your target's own); locate / go: the merchant; expect: "\<item>" \[seconds\]
+- `eb spells [cmd] [arg]`: Spell upgrades: buy buys the Master scrolls of the spells named from the broker (under your price cap), then scribes every spell scroll in the bags, then writes the ability export again; scribe does the last two. The export is written only when something was scribed. eb all spells scribe: every box its own.
+  - Also typed as: `scribescrolls`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of buy | scribe; default scribe): buy | scribe
+  - `arg` (string; optional): buy: the spells, \<spell>|\<spell> (else the masters list in your settings)
+- `eb collections [cmd] [arg]`: Collections: list what each still needs, scan the journal, add the collectibles in the bags (examine / fill), take pieces from the depot, buy the missing ones on the broker under a cap (buy: a plan first, go buys), or acquire: bags, depot, broker, added - one run.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of fill | list | depot | examine | scan | buy | acquire; default list): fill | list | depot | examine | scan | buy | acquire
+  - `arg` (string; optional): a collection's word; examine: all; buy / acquire: \[word\] \[the most a piece may cost\] (buy: and go)
 
-The broker: buy an item, masters (spell upgrades). Selling: list alone names what the bags could put up; list bags puts them up (each priced first by EB Broker's rules - the cheapest other seller, else your price default; no price, it stays in the bags - then into its default's sale box, else the first with room); list unlisted lists what is not up; list reprice reprices every listing as EB Broker is set (big drops held); listings shows your listings by box and index; setprice / unlist / list <box> <index> act on one; coin takes the coin out of every sale box; repeat runs the pricing round again on a random min..max timer while the broker window is up. history: what was sold, bought and taken in coin, kept per character (readlog reads the market's Sales Log page); log: each act and whether its price read back.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): buy | masters | sweep | list | listings | setprice | unlist | coin | repeat | replenish | history | log | status
-- `arg` (string, optional): buy: an item; sweep: [tier] [<min>-<max>] [the most a scroll may cost] [max <n>]; replenish: add | remove <item>, list, now, on, off; list: bags [box] | unlisted | reprice | <box> <index> [price]; setprice: <box> <index> <price>; unlist: <box> <index>; repeat: check | beat | match | smart | unlisted [min s] [max s], or off; history: days | readlog; log: how many
-
-### `eb brokerbuy <item> [qty] [max]`
-
-Buy one item from the broker.
-
-*also: `brokerbuyitem` - who: local, all, others, to*
-
-- `item` (item): the item (quote a name of several words)
-- `qty` (int, optional): how many
-- `max` (int, optional): the most to pay for one
-
-### `eb buybest [what]`
-
-Buy the best gear, spells or adornments this character can use from the broker.
-
-*also: `brokerbuybest` - who: local, all, others, to*
-
-- `what` (enum, optional): gear | spells | adorns
-
-### `eb collections [cmd] [arg]`
-
-Collections: list what each still needs, scan the journal, add the collectibles in the bags (examine / fill), take pieces from the depot, buy the missing ones on the broker under a cap (buy: a plan first, go buys), or acquire: bags, depot, broker, added - one run.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): fill | list | depot | examine | scan | buy | acquire
-- `arg` (string, optional): a collection's word; examine: all; buy / acquire: [word] [the most a piece may cost] (buy: and go)
-
-### `eb purchase [cmd] [item]`
-
-The shopping list (merchant and broker): add an item, run it, repeat its broker lines every <min>-<max> s, status, clear. Merchant spots kept on this PC: grab keeps your target's spot (a name typed keeps it under that name), locate says the best spot known for a merchant, known lists them all, go walks this character there (its zone first by EB's own travel, then the mesh walk up to it). expect "<item>" [seconds] answers the game's purchase question Yes for a buy you make yourself, only when it names exactly that item (5 s to 10 min, 20 s by default, as long again after each Yes); confirms says what is expected; stop ends the walk, the run and what is expected.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): add | run | repeat | status | clear | grab | locate | known | go | expect | confirms | stop
-- `item` (item, optional): add: the item; repeat: <min s> [max s], off or status; grab: a name to keep the spot under (else your target's own); locate / go: the merchant; expect: "<item>" [seconds]
-
-### `eb spells [cmd] [arg]`
-
-Spell upgrades: buy buys the Master scrolls of the spells named from the broker (under your price cap), then scribes every spell scroll in the bags, then writes the ability export again; scribe does the last two. The export is written only when something was scribed. eb all spells scribe: every box its own.
-
-*also: `scribescrolls` - who: local, all, others, to*
-
-- `cmd` (enum, optional): buy | scribe
-- `arg` (string, optional): buy: the spells, <spell>|<spell> (else the masters list in your settings)
-
-
-<a id="depot"></a>
-## Depot / inventory
+## Commands: Depot / inventory
 
 Depot, bank and bags: put in and take out, restock, hand items over, food and potions, repairs, mail, clearing junk, the ledger.
 
-### `eb bank [cmd] [arg]`
-
-The bank: deposit, withdraw, coin, move, status. withdraw takes items by name (A|B: several), or by a pick: a part of the name, the tiers, a level band, a class that can use it, a stat or Resolve at least (or at most, <, or exactly, =) a number, the guild bank's pages, and how many of each. A pick the bank's rows on this box cannot judge (no tier read, no name on a guild row) takes nothing and says why. coin moves coin in or out of the personal, shared or guild bank (the guild bank: whole silver, on a page 1-4). move takes everything on one guild bank page and puts it on another, one stack at a time.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): deposit | withdraw | coin | move | status
-- `arg` (string, optional): [personal|shared|guild] all | <item> | <item>|<item> | a withdraw pick (-name <part> -tiers <a,b> -level <n>-<m> -class <class> -stat <stat> <n> -resolve <n> -pages <1,2> -qty <n>); coin: deposit|withdraw <copper> [personal|shared|guild [<page 1-4>]]; move: <from page> <to page>
-
-### `eb buy [what]`
-
-Buy from the merchant in reach: open it and buy the item, one at a time, each purchase question answered for that item only. An open broker window is closed first (no merchant opens over it).
-
-*who: local, all, others, to*
-
-- `what` (string, optional): <item> [n] [from <merchant>]
-
-### `eb consume [state]`
-
-Auto-consume the worn food & drink on|off (toggle flips both; status says what is worn and whether it auto-consumes). On eats / drinks one at once when its effect is not up.
-
-*also: `autoconsume` - who: local, all, others, to*
-
-- `state` (onoff, optional): on|off|toggle|status
-
-### `eb depot [cmd] [arg]`
-
-The depot: index what is in it, here (the one you stand at), top an item up to a count, the keep list, deposit, status. list <name> runs one of the PC's withdraw lists on this box (EB Depot > Withdraw lists makes them): a depot list brings each item up to its count, a bank list takes each item out of that bank; list alone names them. eb all depot list <name>: every box.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): index | here | topup | keep | deposit | everywhere | status | list
-- `arg` (string, optional): a depot, an item, a count; list: a withdraw list's name
-
-### `eb distribute <item> [qty] [who]`
-
-Hand a number of an item to each member of the group, the raid or a named list, one trade after another; status shows how far it got, cancel calls it off.
-
-*also: `dist` - who: local, all, others, to*
-
-- `item` (item): the item (quote a name of several words), or status / cancel
-- `qty` (int, optional): how many each (1)
-- `who` (string, optional): group | raid | <name>,<name> (group)
-
-### `eb economy`
-
-What the economy loaded on this box: your own rules, any file that does not read, the saved T.S.E, what is under way. eb all economy asks every box.
-
-*who: local, all, others, to*
-
-### `eb inv [cmd] [arg]`
-
-The bags: show, tidy (the empty slots gathered at the end: an item of a later bag into an empty slot of an earlier one; a dry run unless go), move (one item, the whole stack, into a bag - slot 1 = its first - only ever into an empty slot; done only when the game shows it there), sell, destroy, restock, trade, quiver, and your inventory presets (a named item list with what to do with it).
-
-*also: `inventory`, `im` - who: local, all, others, to*
-
-- `cmd` (enum, optional): show | tidy | move | sell | destroy | restock | trade | quiver | preset
-- `arg` (string, optional): move: <item> to <bag 1-6 | a bag's name> [slot <n>] [qty <n>]; tidy: go (without it a dry run); a preset, an ammo name, <item> to <member>, or preset save <name> <action> <item>|<item> / run <name> [go] [to <who>] / list / show / delete
-
-### `eb invdestroy <what> [bags]`
-
-Say which junk raws or resources would be destroyed to free bag slots (protected items are left alone). It destroys nothing.
-
-*also: `idestroy` - who: local, all, others, to*
-
-- `what` (enum): raws | resources
-- `bags` (flag, optional): -bags
-
-### `eb itemgate [cmd]`
-
-The item gate: a worn clicky whose effect shows only in a Persona stat (Dragon's Temper's Whirlwind: AE auto-attack) is not clicked again while that effect is on - its cast-stack row held off, back on when it may be used; status, on, off, reload the rules.
-
-*who: local*
-
-- `cmd` (enum, optional): status | on | off | reload
-
-### `eb items [kind] [go]`
-
-The bag items a use-them-all button means (status items, mercenary items, Forlorn books ...): listed, and used only with go. Familiar items EB finds by itself (your names in use.kinds.familiars override that), and go adds each one to the familiar collection. unpack go opens each package, done once it left the bags (a package that offers a choice is left for you to pick).
-
-*who: local, all, others, to*
-
-- `kind` (enum, optional): list | status | ingots | familiars | mercenaries | forlorn | unpack
-- `go` (string, optional): go = use them (without it EB only lists them)
-
-### `eb itemsearch [mode] <words>`
-
-Find an item by words, anywhere: this box's bags, its bank and the depots read this session - and every other box of the crew answers with its own.
-
-*also: `isearch` - who: local*
-
-- `mode` (enum, optional): keep | consume
-- `words` (string): words of the name
-
-### `eb krono [cmd] [who] [qty]`
-
-Krono: count them, use one, give one.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): count | use | give
-- `who` (member, optional): the member
-- `qty` (int, optional): give: how many (1 when left out)
-
-### `eb ledger [sub] [arg]`
-
-The ledger: what every box sold, deposited, unadorned, transmuted and looted, day by day (kept on this PC; only your own boxes see it). open and close its window; status says every box's coin and counts today, one line a box (a box of yours on another PC says its own); a day, the last 12 hours, who got the loot; clear <day> or clear all forgets this PC's days, every box's.
-
-*who: local*
-
-- `sub` (enum, optional): open | close | status | clear | day | last12 | loot
-- `arg` (string, optional): a day (YYYY-MM-DD), or all for clear; loot: a day or last12
-
-### `eb mail [cmd] [arg]`
-
-Mail: read it, take the attachments, send.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): read | attach | send
-- `arg` (string, optional): read: a subject or all; send: <to> <item>
-
-### `eb potion [state] [items]`
-
-Auto-consume named potions / elixirs / scrolls / poisons in the bags on|off - the game's own Auto Consume flag (on uses one at once when its effect is not up); status reads them. The auto-consume LIST (one for every character on this PC) is kept on by every box, off after the idle minutes without a move, a fight or a cast: list [on|off], add, remove, enable, disable, idle <min>|on|off, apply.
-
-*also: `pot`, `potions` - who: local, all, others, to*
-
-- `state` (enum, optional): on | off | status | list | add | remove | enable | disable | idle | apply
-- `items` (string, optional): item; item; ... (';' between names, any case); list: on or off; idle: minutes, on or off
-
-### `eb protect [cmd] [item]`
-
-Keep items from being sold, destroyed or transmuted: protect, unprotect, list.
-
-*also: `prot`, `unprot`, `protlist` - who: local*
-
-- `cmd` (enum, optional): protect | unprotect | list
-- `item` (item, optional): the item
-
-### `eb repair [state]`
-
-Repair gear at a mender in reach (now). on: auto repair - out of a fight, gear worn down and a mender in reach. status: the switch.
-
-*also: `mend` - who: local, all, others, to*
-
-- `state` (onoff, optional): now|on|off|status
-
-### `eb restock [preset] [name]`
-
-Restock ammo, the quiver or crafting materials from the depot, by preset.
-
-*also: `quiver`, `craftmats` - who: local, all, others, to*
-
-- `preset` (preset, optional): the preset (or quiver / craftmats)
-- `name` (string, optional): after quiver / craftmats: the preset's name
-
-### `eb scroll <name>`
-
-Use a Scroll of <name> from the bags - the Thaumic Scroll of <name> first when the bags hold one, else the plain one; refused while its own reuse runs. eb all scroll <name> on every box.
-
-*also: `scrollof` - who: local, all, others, to*
-
-- `name` (string): what the scroll is of: eb scroll Prowess uses a Scroll of Prowess
-
-### `eb trade <cmd> <who> [arg]`
-
-One trade with one character: an item, coin, several items at once, or take that character's trade (accept); each is done only when the other side accepted.
-
-*who: local, all, others, to*
-
-- `cmd` (enum): item | coin | batch | accept
-- `who` (string): the character
-- `arg` (string, optional): item: <item> [how many]; coin: 5g, 1p 20g or copper; batch: <item>|<item>|...; accept: how many seconds to wait (90)
-
-### `eb tradeq [text]`
-
-Ask whichever box holds an item to hand it to another character: the holder named, else the one this PC's records show holding it; each hand-over is proven and said back here.
-
-*who: local*
-
-- `text` (string, optional): <item> [how many] to <recipient> [from <holder>], or status
-
-### `eb tse [op] [rest]`
-
-Transmute, salvage, extract or destroy the picked items by rule; sell them to the exporter; give them to the leader. saved uses the tiers you kept; stop ends it.
-
-*also: `transmutesalvage` - who: local, all, others, to*
-
-- `op` (enum, optional): transmute | salvage | extract | destroy | sell | give | saved | stop
-- `rest` (string, optional): tiers to take (and 'go' for a destroy); give: the leader
-
-### `eb useitem <item>`
-
-Use an item now - a potion, an elixir, food, a worn clicky - worn first, then the bags (never from the bank); refused while its own reuse runs. eb all useitem <item> on every box.
-
-*also: `use` - who: local, all, others, to*
-
-- `item` (string): the item's name, any case: worn first, then the bags
-
-### `eb useon <who> <item>`
-
-Use an item on a group or raid member - a buff clicky, a potion meant for another player: worn first, then the bags; refused while its own reuse runs or the member is not here.
-
-*also: `useitemon` - who: local, all, others, to*
-
-- `who` (member): the group or raid member (me for this box)
-- `item` (string): the item's name, any case: worn first, then the bags
-
-### `eb whohas <words> [all]`
-
-Which characters hold an item, and how many in all: each one's bags and bank as EB last read them on this PC (this server's), this box read now, the crew's boxes answer for themselves; the shared bank counted once.
-
-*who: local*
-
-- `words` (string): words of the name
-- `all` (flag, optional): -all: every server's characters
-
-
-<a id="gear"></a>
-## Gear / adorns
+- `eb depot [cmd] [arg]`: The depot: index what is in it, here (the one you stand at), top an item up to a count, the keep list, deposit, status. list \<name> runs one of the PC's withdraw lists on this box (EB Depot > Withdraw lists makes them): a depot list brings each item up to its count, a bank list takes each item out of that bank; list alone names them. eb all depot list \<name>: every box.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of index | here | topup | keep | deposit | everywhere | status | list; default status): index | here | topup | keep | deposit | everywhere | status | list
+  - `arg` (string; optional): a depot, an item, a count; list: a withdraw list's name
+- `eb inv [cmd] [arg]`: The bags: show, tidy (the empty slots gathered at the end: an item of a later bag into an empty slot of an earlier one; a dry run unless go), move (one item, the whole stack, into a bag - slot 1 = its first - only ever into an empty slot; done only when the game shows it there), sell, destroy, restock, trade, quiver, and your inventory presets (a named item list with what to do with it).
+  - Also typed as: `inventory`, `im`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of show | tidy | move | sell | destroy | restock | trade | quiver | preset; default show): show | tidy | move | sell | destroy | restock | trade | quiver | preset
+  - `arg` (string; optional): move: \<item> to \<bag 1-6 | a bag's name> \[slot \<n>\] \[qty \<n>\]; tidy: go (without it a dry run); a preset, an ammo name, \<item> to \<member>, or preset save \<name> \<action> \<item>|\<item> / run \<name> \[go\] \[to \<who>\] / list / show / delete
+- `eb bank [cmd] [arg]`: The bank: deposit, withdraw, coin, move, status. withdraw takes items by name (A|B: several), or by a pick: a part of the name, the tiers, a level band, a class that can use it, a stat or Resolve at least (or at most, <, or exactly, =) a number, the guild bank's pages, and how many of each. A pick the bank's rows on this box cannot judge (no tier read, no name on a guild row) takes nothing and says why. coin moves coin in or out of the personal, shared or guild bank (the guild bank: whole silver, on a page 1-4). move takes everything on one guild bank page and puts it on another, one stack at a time.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of deposit | withdraw | coin | move | status; default status): deposit | withdraw | coin | move | status
+  - `arg` (string; optional): \[personal|shared|guild\] all | \<item> | \<item>|\<item> | a withdraw pick (-name \<part> -tiers \<a,b> -level \<n>-\<m> -class \<class> -stat \<stat> \<n> -resolve \<n> -pages <1,2> -qty \<n>); coin: deposit|withdraw \<copper> \[personal|shared|guild \[\<page 1-4>\]\]; move: \<from page> \<to page>
+- `eb restock [preset] [name]`: Restock ammo, the quiver or crafting materials from the depot, by preset.
+  - Also typed as: `quiver`, `craftmats`.
+  - For the crew: `all`, `others`, `to`.
+  - `preset` (preset; optional): the preset (or quiver / craftmats)
+  - `name` (string; optional): after quiver / craftmats: the preset's name
+- `eb buy [what]`: Buy from the merchant in reach: open it and buy the item, one at a time, each purchase question answered for that item only. An open broker window is closed first (no merchant opens over it).
+  - For the crew: `all`, `others`, `to`.
+  - `what` (string; optional): \<item> \[n\] \[from \<merchant>\]
+- `eb items [kind] [go]`: The bag items a use-them-all button means (status items, mercenary items, Forlorn books ...): listed, and used only with go. Familiar items EB finds by itself (your names in use.kinds.familiars override that), and go adds each one to the familiar collection. unpack go opens each package, done once it left the bags (a package that offers a choice is left for you to pick).
+  - For the crew: `all`, `others`, `to`.
+  - `kind` (enum; optional; one of list | status | ingots | familiars | mercenaries | forlorn | unpack; default list): list | status | ingots | familiars | mercenaries | forlorn | unpack
+  - `go` (string; optional): go = use them (without it EB only lists them)
+- `eb economy`: What the economy loaded on this box: your own rules, any file that does not read, the saved T.S.E, what is under way. eb all economy asks every box.
+  - For the crew: `all`, `others`, `to`.
+- `eb distribute <item> [qty] [who]`: Hand a number of an item to each member of the group, the raid or a named list, one trade after another; status shows how far it got, cancel calls it off.
+  - Also typed as: `dist`.
+  - For the crew: `all`, `others`, `to`.
+  - `item` (item; required): the item (quote a name of several words), or status / cancel
+  - `qty` (int; optional): how many each (1)
+  - `who` (string; optional): group | raid | \<name>,\<name> (group)
+- `eb tradeq [text]`: Ask whichever box holds an item to hand it to another character: the holder named, else the one this PC's records show holding it; each hand-over is proven and said back here.
+  - This box only.
+  - `text` (string; optional): \<item> \[how many\] to \<recipient> \[from \<holder>\], or status
+- `eb trade <cmd> <who> [arg]`: One trade with one character: an item, coin, several items at once, or take that character's trade (accept); each is done only when the other side accepted.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; required; one of item | coin | batch | accept): item | coin | batch | accept
+  - `who` (string; required): the character
+  - `arg` (string; optional): item: \<item> \[how many\]; coin: 5g, 1p 20g or copper; batch: \<item>|\<item>|...; accept: how many seconds to wait (90)
+- `eb consume [state]`: Auto-consume the worn food & drink on|off (toggle flips both; status says what is worn and whether it auto-consumes). On eats / drinks one at once when its effect is not up.
+  - Also typed as: `autoconsume`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional; one of on | off | toggle | status; default status): on|off|toggle|status
+- `eb useitem <item>`: Use an item now - a potion, an elixir, food, a worn clicky - worn first, then the bags (never from the bank); refused while its own reuse runs. eb all useitem \<item> on every box.
+  - Also typed as: `use`.
+  - For the crew: `all`, `others`, `to`.
+  - `item` (string; required): the item's name, any case: worn first, then the bags
+- `eb scroll <name>`: Use a Scroll of \<name> from the bags - the Thaumic Scroll of \<name> first when the bags hold one, else the plain one; refused while its own reuse runs. eb all scroll \<name> on every box.
+  - Also typed as: `scrollof`.
+  - For the crew: `all`, `others`, `to`.
+  - `name` (string; required): what the scroll is of: eb scroll Prowess uses a Scroll of Prowess
+- `eb useon <who> <item>`: Use an item on a group or raid member - a buff clicky, a potion meant for another player: worn first, then the bags; refused while its own reuse runs or the member is not here.
+  - Also typed as: `useitemon`.
+  - For the crew: `all`, `others`, `to`.
+  - `who` (member; required): the group or raid member (me for this box)
+  - `item` (string; required): the item's name, any case: worn first, then the bags
+- `eb potion [state] [items]`: Auto-consume named potions / elixirs / scrolls / poisons in the bags on|off - the game's own Auto Consume flag (on uses one at once when its effect is not up); status reads them. The auto-consume LIST (one for every character on this PC) is kept on by every box, off after the idle minutes without a move, a fight or a cast: list \[on|off\], add, remove, enable, disable, idle \<min>|on|off, apply.
+  - Also typed as: `pot`, `potions`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (enum; optional; one of on | off | status | list | add | remove | enable | disable | idle | apply; default status): on | off | status | list | add | remove | enable | disable | idle | apply
+  - `items` (string; optional): item; item; ... (';' between names, any case); list: on or off; idle: minutes, on or off
+- `eb itemgate [cmd]`: The item gate: a worn clicky whose effect shows only in a Persona stat (Dragon's Temper's Whirlwind: AE auto-attack) is not clicked again while that effect is on - its cast-stack row held off, back on when it may be used; status, on, off, reload the rules.
+  - This box only.
+  - `cmd` (enum; optional; one of status | on | off | reload; default status): status | on | off | reload
+- `eb protect [cmd] [item]`: Keep items from being sold, destroyed or transmuted: protect, unprotect, list.
+  - Also typed as: `prot`, `unprot`, `protlist`.
+  - This box only.
+  - `cmd` (enum; optional; one of protect | unprotect | list; default list): protect | unprotect | list
+  - `item` (item; optional): the item
+- `eb itemsearch [mode] <words>`: Find an item by words, anywhere: this box's bags, its bank and the depots read this session - and every other box of the crew answers with its own.
+  - Also typed as: `isearch`.
+  - This box only.
+  - `mode` (enum; optional; one of keep | consume): keep | consume
+  - `words` (string; required): words of the name
+- `eb whohas <words> [all]`: Which characters hold an item, and how many in all: each one's bags and bank as EB last read them on this PC (this server's), this box read now, the crew's boxes answer for themselves; the shared bank counted once.
+  - This box only.
+  - `words` (string; required): words of the name
+  - `all` (flag; optional): -all: every server's characters
+- `eb invdestroy <what> [bags]`: Say which junk raws or resources would be destroyed to free bag slots (protected items are left alone). It destroys nothing.
+  - Also typed as: `idestroy`.
+  - For the crew: `all`, `others`, `to`.
+  - `what` (enum; required; one of raws | resources): raws | resources
+  - `bags` (flag; optional): -bags
+- `eb tse [op] [rest]`: Transmute, salvage, extract or destroy the picked items by rule; sell them to the exporter; give them to the leader. saved uses the tiers you kept; stop ends it.
+  - Also typed as: `transmutesalvage`.
+  - For the crew: `all`, `others`, `to`.
+  - `op` (enum; optional; one of transmute | salvage | extract | destroy | sell | give | saved | stop; default saved): transmute | salvage | extract | destroy | sell | give | saved | stop
+  - `rest` (string; optional): tiers to take (and 'go' for a destroy); give: the leader
+- `eb krono [cmd] [who] [qty]`: Krono: count them, use one, give one.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of count | use | give; default count): count | use | give
+  - `who` (member; optional): the member
+  - `qty` (int; optional): give: how many (1 when left out)
+- `eb mail [cmd] [arg]`: Mail: read it, take the attachments, send.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of read | attach | send; default read): read | attach | send
+  - `arg` (string; optional): read: a subject or all; send: \<to> \<item>
+- `eb repair [state]`: Repair gear at a mender in reach (now). on: auto repair - out of a fight, gear worn down and a mender in reach. status: the switch.
+  - Also typed as: `mend`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional; one of now | on | off | status; default now): now|on|off|status
+- `eb ledger [sub] [arg]`: The ledger: what every box sold, deposited, unadorned, transmuted and looted, day by day (kept on this PC; only your own boxes see it). open and close its window; status says every box's coin and counts today, one line a box (a box of yours on another PC says its own); a day, the last 12 hours, who got the loot; clear \<day> or clear all forgets this PC's days, every box's.
+  - This box only.
+  - `sub` (enum; optional; one of open | close | status | clear | day | last12 | loot; default open): open | close | status | clear | day | last12 | loot
+  - `arg` (string; optional): a day (YYYY-MM-DD), or all for clear; loot: a day or last12
+
+## Commands: Gear / adorns
 
 Gear and adornments: gear a character up, adornment plans, gear sets, what is worn.
 
-### `eb adorn [cmd] [arg]`
+- `eb gearup [who] [arg]`: Gear a new character from the broker: each empty slot gets the best listing for it under the cap (max:5p, else your broker cap - never a buy without one) and at most your level (lvl:\<n>), then the upgrades are worn; group: every box not paused gears itself up, skip:Name,Name leaves those out.
+  - For the crew: `all`, `others`, `to`.
+  - `who` (enum; optional; one of self | group; default self): self | group
+  - `arg` (string; optional): max:\<the most a piece may cost> lvl:\<the highest level> skip:Name,Name (the boxes a group run leaves out)
+- `eb aup [who] [arg]`: Wear the upgrades in your bags: every bag piece is judged against what you wear in its slot (Resolve, then Fervor, then Potency, then your main stat; a piece whose stats did not read is not judged), the best one is put on with the old piece's adornments carried across, then the next, until nothing in the bags is better. Name slots or kinds to judge only those; -1h / -2h / -any is the weapon pick (one-handed for a plate tank, two-handed for a brawler, either for the rest). group: who in the crew should wear which spare piece - scan (every box on this PC shares its gear), plan (the bare form: a dry run), trade (each piece handed over and worn by the member it upgrades most), cancel, status, priority tank,healer,dps,utility (the role order), scope me | group.
+  - Also typed as: `adornup`.
+  - For the crew: `all`, `others`, `to`.
+  - `who` (enum; optional; one of self | group; default self): self | group
+  - `arg` (string; optional): self: \[slots or kinds: head, ring, armor, weapons, jewelry, charms, all\] \[-1h | -2h | -any\]; group: plan | scan | export | trade | cancel | status | priority \<roles> | scope me|group
+- `eb adorn [cmd] [arg]`: Adornments. apply \[set\] puts a set on from the bags and the Adornment Depot; fill \[set\] does the same, then buys the rest on the broker under a cap (-depot: the depot only, -broker: the broker only, -auto: the depot, then the broker; -craft: the missing ones crafted, then put on; the cap: 5p, 2g50s, or platinum gold silver copper - never a buy without one, your broker cap when the line has none). No set = your class set as eb acs picks it; a set = a gear set, your own family or a class set (RoK, TSOx2). adopt \<member> puts on the adornments that member wears (the gear it shares on this PC). contents \[set\] says where each adornment is: on, in the bags, in a depot, nowhere; missing says the same for what is not on. own \<family> saves what this box wears as its class's set in your own family (one set per class); own copy \<family> \<set> \[class\], own add | remove \<family> \<class> \<slot> \<adornment>, own delete \<family> \[class\], own list. buy \<adornment> \[cap\] buys one more; buy set \[\<set>\] \[-cap \<coin>\] buys what the set still needs - each adornment neither on nor in the bags, by its name, under the cap (never without one), nothing put on. Also take, unadorn, guide.
+  - Also typed as: `adorns`, `adornments`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of guide | apply | missing | fill | contents | own | adopt | take | buy | unadorn | export; default guide): guide | apply | missing | fill | contents | own | adopt | take | buy | unadorn | export
+  - `arg` (string; optional): apply / fill: \[a set\] \[-depot | -broker | -auto | -craft\] \[the most one may cost: 5p, or 5 0 0 0\]; adopt: \<member> \[the same words\]; contents / missing: \[a set\] (contents worn: what is worn); own: \<family> | list | copy | add | remove | delete ...; take: \<adornment> \[how many\]; buy: \<adornment> \[the most it may cost\] | set \[\<set>\] \[-cap \<coin>\]; unadorn: \[tiers\] \[-name \<part>\]
+- `eb tempadorn [state] [arg]`: Temporary adornments, by the Temp Adorns window's plan (this class over Everyone): apply puts the plan on (one still on is left; one not in the bags comes from the Adornment Depot in reach, never bought) - apply dry only says what it would do, apply force puts fresh ones on everywhere; check says what of the plan is on; status the switch, the plan, the bag counts and how long each one EB put on has left; restock \[n\] tops the bags up to n of each from the Adornment Depot; find \[words\] the ones named so, the slots each fits, how long it lasts and where it is; on keeps them on (put back out of a fight when one is gone or near its end), off stops that.
+  - Also typed as: `tempadorns`.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (enum; optional; one of apply | check | status | restock | find | on | off; default apply): apply | check | status | restock | find | on | off
+  - `arg` (string; optional): apply: dry | force; restock: how many of each to keep in the bags (10); find: a part of a name (none: the plan's)
+- `eb bestgear [cmd] [arg]`: The best gear on the broker. shop: per slot the listings ranked by the stats you pick (stat, then stat2, then EB's scorer; need: a listing must carry those), the best bought by its name under the cap (max:, else your broker cap; count:0 only lists them), upgrade:1 only what beats the worn piece, bags:1 a better bag piece on first, wear:1 what is bought put on with the old adornments carried across. buy \<slot> \[stat:\<focus>\]: the best for that slot by that stat, bought and worn. goals: your stat goals against the worn gear's totals (set multiattack=116,abilitymod=1300, clear), goals run shops for the stat furthest from its goal. A listing whose stats did not read is never judged nor bought.
+  - Also typed as: `gearshop`, `geargoals`.
+  - This box only.
+  - `cmd` (enum; optional; one of shop | buy | goals | status; default status): shop | buy | goals | status
+  - `arg` (string; optional): shop: slots:head|chest|all stat:\<stat> stat2:\<stat> need:a+b lvl:\<min>-\<max> max:\<coin> count:0 (list only) upgrade:1 bags:1 wear:1 tiers:a|b; buy: \<slot> \[stat:\<focus>\] \[stat2:\<stat>\] \[max:\<coin>\]; goals: set \<stat>=\<n>,\<stat>=\<n> | clear | run \[words\]
+- `eb gearjob [cmd] [arg]`: Look at what a member wears; or the gear job on this box: take \<item> waits for the piece to reach the bags, wears it and carries the old piece's adornments across (EB Loot Assign's Assign+ starts it on the box it gave the piece to); best \[slot\] picks the bag piece that gains this box the most and does the same; upgrade (the MCP's Upgrade Item): put the piece you wear now in bag 1 slot 1 and its upgrade in bag 1 slot 2 - the old piece's adornments go onto the new one, the old piece to the end of bag 1, the new one is worn (two pieces for one slot, the new one with no adornment yet, else nothing moves); status says how far it got, cancel stops it, dismiss clears it.
+  - Also typed as: `gearworn`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of look | take | best | upgrade | status | cancel | dismiss; default look): look | take | best | upgrade | status | cancel | dismiss
+  - `arg` (string; optional): look: the member; take: the piece this box is to wear (quote a name of several words); best: \[a slot or kind\] \[-1h | -2h | -any\]
+- `eb glance [cmd] [arg]`: At a glance. card (the bare form): one line of this character's gear, bags and coin. Runs: a preset is steps done on several boxes - withdraw \<adornment> \[n\] from the Adornment Depot, adorn \[word\] (the class set, as eb acs), coin \<from> \<amount> (that box hands each box the coin), check (what each box wears shared for the windows), buy (the empty slots from the broker, as eb gearup). presets lists them; preset \<name> \<steps> saves one (preset \<name> delete); run \<preset> \[boxes\] starts it - each box does its own part, a few seconds apart, a step that fails skips the rest on that box (check still runs); join is what each box is told to do; retry runs again the boxes not done, each from its first step left; stop ends every box's part (the step under way finishes); status says what each box did.
+  - Also typed as: `ataglance`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of card | presets | preset | run | join | retry | stop | status; default card): card | presets | preset | run | join | retry | stop | status
+  - `arg` (string; optional): preset: \<name> \<steps> \[boxes a,b\] | \<name> | \<name> delete - steps joined by ; are withdraw \<adornment> \[n\], adorn \[word\], coin \<from> \<amount>, check, buy; run: \<preset> \[box,box,...\]
+- `eb transmutelevel [cmd] [arg]`: Level the transmuting skill at a stone merchant: level buys a Transmuter's Stone and transmutes it, round after round, until Transmuting is maxed (stone words: the stone to start from; -max N stones at most, 2000; -cur a|b only these currencies, ~ for a space; -keep N bag slots left free, 4; -dry N transmutes with no skill-up before the next stone up, 50, 0 = never); scan says what the merchant sells and for what, the currency held and the skill; stop; status.
+  - Also typed as: `tmlevel`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of level | scan | stop | status; default status): level | scan | stop | status
+  - `arg` (string; optional): level: \[stone words\] \[-max N\] \[-cur a|b\] \[-keep N\] \[-dry N\]
+- `eb gearset [cmd] [name]`: Gear sets: save what is worn (pieces and adornments) under a name; put the adornments or the pieces back; list them, delete one.
+  - Also typed as: `gearsets`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of save | adorn | equip | list | delete; default list): save | adorn | equip | list | delete
+  - `name` (string; optional): the set's name (default: default)
+- `eb unadorn [tiers]`: Take the adornments off the bag items of the tiers named (-name \<part>: only the pieces whose name holds it). They stay in the bags; protected items are skipped.
+  - For the crew: `all`, `others`, `to`.
+  - `tiers` (string; optional): tiers, e.g. treasured legendary (none = every tier), then -name \<a part of the piece's name> to take them off those pieces only
+- `eb checkgear`: Worn gear: the worst piece's condition, and what is under the repair line.
+  - For the crew: `all`, `others`, `to`.
 
-Adornments. apply [set] puts a set on from the bags and the Adornment Depot; fill [set] does the same, then buys the rest on the broker under a cap (-depot: the depot only, -broker: the broker only, -auto: the depot, then the broker; -craft: the missing ones crafted, then put on; the cap: 5p, 2g50s, or platinum gold silver copper - never a buy without one, your broker cap when the line has none). No set = your class set as eb acs picks it; a set = a gear set, your own family or a class set (RoK, TSOx2). adopt <member> puts on the adornments that member wears (the gear it shares on this PC). contents [set] says where each adornment is: on, in the bags, in a depot, nowhere; missing says the same for what is not on. own <family> saves what this box wears as its class's set in your own family (one set per class); own copy <family> <set> [class], own add | remove <family> <class> <slot> <adornment>, own delete <family> [class], own list. buy <adornment> [cap] buys one more; buy set [<set>] [-cap <coin>] buys what the set still needs - each adornment neither on nor in the bags, by its name, under the cap (never without one), nothing put on. Also take, unadorn, guide.
-
-*also: `adorns`, `adornments` - who: local, all, others, to*
-
-- `cmd` (enum, optional): guide | apply | missing | fill | contents | own | adopt | take | buy | unadorn | export
-- `arg` (string, optional): apply / fill: [a set] [-depot | -broker | -auto | -craft] [the most one may cost: 5p, or 5 0 0 0]; adopt: <member> [the same words]; contents / missing: [a set] (contents worn: what is worn); own: <family> | list | copy | add | remove | delete ...; take: <adornment> [how many]; buy: <adornment> [the most it may cost] | set [<set>] [-cap <coin>]; unadorn: [tiers] [-name <part>]
-
-### `eb aup [who] [arg]`
-
-Wear the upgrades in your bags: every bag piece is judged against what you wear in its slot (Resolve, then Fervor, then Potency, then your main stat; a piece whose stats did not read is not judged), the best one is put on with the old piece's adornments carried across, then the next, until nothing in the bags is better. Name slots or kinds to judge only those; -1h / -2h / -any is the weapon pick (one-handed for a plate tank, two-handed for a brawler, either for the rest). group: who in the crew should wear which spare piece - scan (every box on this PC shares its gear), plan (the bare form: a dry run), trade (each piece handed over and worn by the member it upgrades most), cancel, status, priority tank,healer,dps,utility (the role order), scope me | group.
-
-*also: `adornup` - who: local, all, others, to*
-
-- `who` (enum, optional): self | group
-- `arg` (string, optional): self: [slots or kinds: head, ring, armor, weapons, jewelry, charms, all] [-1h | -2h | -any]; group: plan | scan | export | trade | cancel | status | priority <roles> | scope me|group
-
-### `eb bestgear [cmd] [arg]`
-
-The best gear on the broker. shop: per slot the listings ranked by the stats you pick (stat, then stat2, then EB's scorer; need: a listing must carry those), the best bought by its name under the cap (max:, else your broker cap; count:0 only lists them), upgrade:1 only what beats the worn piece, bags:1 a better bag piece on first, wear:1 what is bought put on with the old adornments carried across. buy <slot> [stat:<focus>]: the best for that slot by that stat, bought and worn. goals: your stat goals against the worn gear's totals (set multiattack=116,abilitymod=1300, clear), goals run shops for the stat furthest from its goal. A listing whose stats did not read is never judged nor bought.
-
-*also: `gearshop`, `geargoals` - who: local*
-
-- `cmd` (enum, optional): shop | buy | goals | status
-- `arg` (string, optional): shop: slots:head|chest|all stat:<stat> stat2:<stat> need:a+b lvl:<min>-<max> max:<coin> count:0 (list only) upgrade:1 bags:1 wear:1 tiers:a|b; buy: <slot> [stat:<focus>] [stat2:<stat>] [max:<coin>]; goals: set <stat>=<n>,<stat>=<n> | clear | run [words]
-
-### `eb checkgear`
-
-Worn gear: the worst piece's condition, and what is under the repair line.
-
-*who: local, all, others, to*
-
-### `eb gearjob [cmd] [arg]`
-
-Look at what a member wears; or the gear job on this box: take <item> waits for the piece to reach the bags, wears it and carries the old piece's adornments across (EB Loot Assign's Assign+ starts it on the box it gave the piece to); best [slot] picks the bag piece that gains this box the most and does the same; upgrade (the MCP's Upgrade Item): put the piece you wear now in bag 1 slot 1 and its upgrade in bag 1 slot 2 - the old piece's adornments go onto the new one, the old piece to the end of bag 1, the new one is worn (two pieces for one slot, the new one with no adornment yet, else nothing moves); status says how far it got, cancel stops it, dismiss clears it.
-
-*also: `gearworn` - who: local, all, others, to*
-
-- `cmd` (enum, optional): look | take | best | upgrade | status | cancel | dismiss
-- `arg` (string, optional): look: the member; take: the piece this box is to wear (quote a name of several words); best: [a slot or kind] [-1h | -2h | -any]
-
-### `eb gearset [cmd] [name]`
-
-Gear sets: save what is worn (pieces and adornments) under a name; put the adornments or the pieces back; list them, delete one.
-
-*also: `gearsets` - who: local, all, others, to*
-
-- `cmd` (enum, optional): save | adorn | equip | list | delete
-- `name` (string, optional): the set's name (default: default)
-
-### `eb gearup [who] [arg]`
-
-Gear a new character from the broker: each empty slot gets the best listing for it under the cap (max:5p, else your broker cap - never a buy without one) and at most your level (lvl:<n>), then the upgrades are worn; group: every box not paused gears itself up, skip:Name,Name leaves those out.
-
-*who: local, all, others, to*
-
-- `who` (enum, optional): self | group
-- `arg` (string, optional): max:<the most a piece may cost> lvl:<the highest level> skip:Name,Name (the boxes a group run leaves out)
-
-### `eb glance [cmd] [arg]`
-
-At a glance. card (the bare form): one line of this character's gear, bags and coin. Runs: a preset is steps done on several boxes - withdraw <adornment> [n] from the Adornment Depot, adorn [word] (the class set, as eb acs), coin <from> <amount> (that box hands each box the coin), check (what each box wears shared for the windows), buy (the empty slots from the broker, as eb gearup). presets lists them; preset <name> <steps> saves one (preset <name> delete); run <preset> [boxes] starts it - each box does its own part, a few seconds apart, a step that fails skips the rest on that box (check still runs); join is what each box is told to do; retry runs again the boxes not done, each from its first step left; stop ends every box's part (the step under way finishes); status says what each box did.
-
-*also: `ataglance` - who: local, all, others, to*
-
-- `cmd` (enum, optional): card | presets | preset | run | join | retry | stop | status
-- `arg` (string, optional): preset: <name> <steps> [boxes a,b] | <name> | <name> delete - steps joined by ; are withdraw <adornment> [n], adorn [word], coin <from> <amount>, check, buy; run: <preset> [box,box,...]
-
-### `eb tempadorn [state] [arg]`
-
-Temporary adornments, by the Temp Adorns window's plan (this class over Everyone): apply puts the plan on (one still on is left; one not in the bags comes from the Adornment Depot in reach, never bought) - apply dry only says what it would do, apply force puts fresh ones on everywhere; check says what of the plan is on; status the switch, the plan, the bag counts and how long each one EB put on has left; restock [n] tops the bags up to n of each from the Adornment Depot; find [words] the ones named so, the slots each fits, how long it lasts and where it is; on keeps them on (put back out of a fight when one is gone or near its end), off stops that.
-
-*also: `tempadorns` - who: local, all, others, to*
-
-- `state` (enum, optional): apply | check | status | restock | find | on | off
-- `arg` (string, optional): apply: dry | force; restock: how many of each to keep in the bags (10); find: a part of a name (none: the plan's)
-
-### `eb transmutelevel [cmd] [arg]`
-
-Level the transmuting skill at a stone merchant: level buys a Transmuter's Stone and transmutes it, round after round, until Transmuting is maxed (stone words: the stone to start from; -max N stones at most, 2000; -cur a|b only these currencies, ~ for a space; -keep N bag slots left free, 4; -dry N transmutes with no skill-up before the next stone up, 50, 0 = never); scan says what the merchant sells and for what, the currency held and the skill; stop; status.
-
-*also: `tmlevel` - who: local, all, others, to*
-
-- `cmd` (enum, optional): level | scan | stop | status
-- `arg` (string, optional): level: [stone words] [-max N] [-cur a|b] [-keep N] [-dry N]
-
-### `eb unadorn [tiers]`
-
-Take the adornments off the bag items of the tiers named (-name <part>: only the pieces whose name holds it). They stay in the bags; protected items are skipped.
-
-*who: local, all, others, to*
-
-- `tiers` (string, optional): tiers, e.g. treasured legendary (none = every tier), then -name <a part of the piece's name> to take them off those pieces only
-
-
-<a id="accounts"></a>
-## Accounts
+## Commands: Accounts
 
 Characters and helpers: the roster, mercenaries, hirelings, the overnight chores, and logging sessions in (eb login, eb launch).
 
-### `eb autologin [cmd] [rest]`
-
-Launch profiles: named lists of boxes to log in, kept beside the box list on this PC (a row names a box, nothing secret). Each row is a box (or a character and its server), its session (is1 ... or any), a class to play at character select, and the PC it belongs to; a profile has its pause between two sessions opening and between two logins, and a character set of your multiboxing tool per PC. list names them, show <name> its rows, dry <name> says what start would do and does nothing, start <name> opens this PC's rows one pause apart (pause, login and only change that one run and are never saved), save makes one (from boxes copies your box list; overwrite replaces a saved one), set picks a PC's character set, delete removes one, shortcut says how to make a shortcut that starts it from Windows.
-
-*also: `launchprofile` - who: local*
-
-- `cmd` (enum, optional): list | show | dry | start | save | delete | set | shortcut
-- `rest` (string, optional): the profile's name, then: start [pause <s>] [login <s>] [only is1,is2]; save <rows> [pause <s>] [login <s>] [overwrite] (a row: is1=<box>, any=<character>@<server>/<class>, <pc>:is2=<box>; then lead, on x,y,w,h, fill) or save <name> from boxes; set <pc | this> <character set | none>
-
-### `eb createchar [spec]`
-
-Help making a new character: the steps at character select, the class (and race) you name checked against the game's own, and the box list ready for the new name. You make the character yourself; EB never types a password.
-
-*who: local*
-
-- `spec` (string, optional): a class (and a race), or nothing for the steps
-
-### `eb features [what]`
-
-The account's features - its unlocked expansions and membership unlocks - for the character on this box, in plain words: what it has, what it lacks, what is tied to no zone, and its flags. Kept per character on this PC; every trip plans around a zone of an expansion the account lacks and says why (needs <expansion> - not on this account); not known never holds a trip back. refresh reads the game's own list now; import reads your other bots' files - the AccountFeatures snapshots and the account-features.json flags (on your press only); why <zone> says the expansion a zone needs and what this account says; forget drops this character's list.
-
-*also: `accountfeatures`, `acctfeatures` - who: local, all, others, to*
-
-- `what` (string, optional): nothing: what this character's account has; refresh; import; why <zone>; forget
-
-### `eb hirelings [cmd] [band]`
-
-The guild hall's harvest hirelings (gatherer, miner, hunter), in your guild hall: run takes what each brought back and sends it out again; collect only takes back; send only sends out; status says what each did last, the levels it offered and when it is due back. look walks to each one, hails it and reads its state and the levels it offers, pressing only its way out (nothing taken, nothing sent), then says which are in sight, the band, the deposit and the auto visit; stop ends a visit under way; band <level> keeps the band every visit sends them out at, band <hireling> <level> that one's own (same: back to every visit's); send <hireling> on | off: whether a visit sends that one out (off: what it brought is still taken); deposit on | off: after a visit the harvest goes in the hall's Harvesting Supply Depot (on unless set off); auto on | off: a visit every 2 h 1 min while this box is idle in its guild hall.
-
-*also: `hireling` - who: local*
-
-- `cmd` (enum, optional): status | run | collect | send | look | stop | band | deposit | auto
-- `band` (string, optional): send / run / band: the harvest level to ask for - ts (your tradeskill level), adv (your level), top, or a number; band <hireling> <level | same>: that one's own; send <hireling> on | off; deposit / auto: on | off
-
-### `eb launch [what]`
-
-EB for InnerSpace: open game sessions that log themselves in - one box, every box of the box list, or a whole team set up in ISBoxer (set <team>). A window goes where you say (on x,y,w,h), else where the game puts it; avoid-primary keeps it off the main monitor.
-
-*who: local*
-
-- `what` (string, optional): a box [on x,y,w,h] [avoid-primary] | set <team>; nothing = every box of the box list
-
-### `eb login [what]`
-
-EB for InnerSpace: log this session in from your saved logins - the box its launch named, or the box you name. -s <server> picks that character's login on that server (a short form works: ior); -c <class> logs it in as that class: the class is picked at character select before Play, and when the pick cannot go Play is not pressed (it is said why). <character>:<server>:<class> is the same with no spaces. With no word it says where the login is. boxes lists the box list (boxes save writes it in your logins' order); check reads the login form and types nothing.
-
-*who: local*
-
-- `what` (string, optional): a box (its id or character name) [-s <server>] [-c <class>] | <character>:<server>:<class> | boxes | boxes save | check
-
-### `eb membership [nonmember]`
-
-This character's membership level as the game's own Persona window shows it (All Access, Free ...), said on this box's console: eb all membership asks every box, each says its own. nonmember: only a character that is not a member says it. Held until its live proof (the game's value has not been read by EB yet).
-
-*also: `memberlevel` - who: local, all, others, to*
-
-- `nonmember` (flag, optional): nonmember: say it only when this character is not a member
-
-### `eb mercenary [cmd] [query]`
-
-The mercenary: summon it (or the one whose name has these words), suspend it, swap to another, list them, check its buffs, status. EB never dismisses or hires one by itself.
-
-*also: `merc` - who: local, all, others, to*
-
-- `cmd` (enum, optional): summon | dismiss | buff | status | suspend | list | swap
-- `query` (string, optional): summon / swap: words of the mercenary's name
-
-### `eb persona [cmd] [arg]`
-
-Persona: one character, several classes. open (the bare form) opens the Persona window; <class> (or as <class>) changes the class of the character in the world through the game's own Persona window, the class it leaves keeping what it wears first (held until its live proof); status says the classes this character is known in, the profile each loads and why, the gear kept for each and the switches. rules lists the profile rules; rule <server | all> <class> <file> says which cast-stack profile file a class loads on one server or every server (a server's short form works: the first letters of its words), rule ... clear removes it; char <class> <file> is this character's own rule there, over every class rule; a rule takes effect the next time that class loads, and a character with no rule and no file of its own starts from the class sample. remove <n> takes a rule away and fix <n> also opens the Cast Stack (no file is ever deleted); later puts the Profile not found view away. gear save | restore | clear [<class> | all]: keep what a class wears, put it back on from the bags (a piece the game refuses is listed once and kept, the next best piece is tried), forget it; bags <digits>: the bags that hold persona gear (all: every bag); noswap on | off: do not swap gear when changing class; adorn on | off: move adornments onto a class's bare gear after a change (on to start), recheck: the same for the gear worn now (each bare piece taken off, adorned, put back), stop. After a class change the old class's gear is kept, the new class's bare pieces get their adornments and its gear goes back on - held until that moment's live proof.
-
-*also: `personas` - who: local, all, others, to*
-
-- `cmd` (enum, optional): open | status | as | rules | rule | char | remove | fix | later | gear | bags | noswap | adorn | stop
-- `arg` (string, optional): a class; rule: <server | all> <class> <file | clear>; char: <class> <file | clear>; remove / fix: <n>; gear: save | restore | clear [<class> | all]; bags: <digits 1-6> | all; noswap: on | off; adorn: on | off | recheck | stop | status
-
-### `eb roster [cmd]`
-
-Your characters: list (every box of this PC and every character EB has seen, with class and level - never a login detail), status (who is online now and where), account (the characters of the account this box is logged into, as the game lists them - held until its live proof), window (the Roster window).
-
-*who: local*
-
-- `cmd` (enum, optional): list | status | account | window
-
-### `eb tasklist [cmd] [name]`
-
-A task list of the Tasks window run whole on this box, step after step: a quest line (until it ends), an instance run (until it ends; a run that stops ends the list), a command (and the chore it starts), a wait. run <list>, stop, status, lists. eb all tasklist run <list> runs each box's own list of that name (never on a box played by hand); add stagger <seconds> and each box starts that long after the one before. trigger: a list run by itself on login, on a zone-in (any zone, or one whose name holds the words) or every N hours, kept across restarts; on, off, remove, test (run it now). level: the levels a list is for - a character under or over them skips it and says so. resume: a list EB went down in the middle of, picked up at its step (one kept a few minutes is picked up by itself); forget drops that place. The list called maintenance is the chore an instance run does between its runs (eb ic loop ... maintenance).
-
-*also: `task` - who: local, all, others, to*
-
-- `cmd` (enum, optional): run | stop | status | lists | trigger | triggers | level | resume | forget
-- `name` (string, optional): the task list (its name in the Tasks window), then its words: run <list> [stagger <seconds>]; trigger add <list> login | zonein [<zone words>] | every <hours>, trigger list | on <n|all> | off <n|all> | remove <n> | test <n>; level <list> <min>[-<max>] [adv | ts] | <list> off
-
-### `eb tasks [cmd]`
-
-The overnight chores per character (pony, plant, overseer): run, status, list.
-
-*also: `chores` - who: local, all, others, to*
-
-- `cmd` (enum, optional): run | status | list
-
-
-<a id="relay"></a>
-## Crew
-
-Sending a command to the crew (all / others / to <who>), invites, targets, announcements, and the oc lines of a mixed group.
-
-### `eb agent <id> [line]`
-
-A line from EB's agent server (the tool an agent program reads this box through), on EB for InnerSpace: the server hands it to this session through InnerSpace's relay, EB runs it as a line from outside - never a Lua line, never sent on to the crew, never moving a box you play by hand - and answers in one small file in your EB data folder, agent\<session>.json (the session, the agent's id, ok, the answer and the time; no character, no account). With no line it answers here and runs nothing. The agent's reads run at once; a line that would change something waits in your Ops Inbox for your Approve.
-
-- `id` (string): the agent's own word for its line (letters, digits, _ and -), written back beside the answer
-- `line` (string, optional): the EB line to run, as typed after eb; nothing: answer here and run nothing
-
-### `eb announce <text>`
-
-Say a line to the crew.
-
-*who: local, all, others, to*
-
-- `text` (string): the line
-
-### `eb emote [words]`
-
-An emote: one of the game's own by its word (bow, wave, cheer ...), or your own emote line ("<name> waves the crew on"). For a rule's or a timer's line too (eb timer add cheer 5m eb emote cheer). On a box played by hand only a line typed or pressed there goes. list names the game's emotes.
-
-*who: local, all, others, to*
-
-- `words` (string, optional): one of the game's emotes (eb emote list names them), or your own emote line of two words or more
-
-### `eb event [cmd] [name]`
-
-EB's events (chat, spawn, despawn, zone, dialog): listen to one, stop, list them, fire one.
-
-*who: local*
-
-- `cmd` (enum, optional): on | off | list | fire
-- `name` (string, optional): the event
-
-### `eb grab [what]`
-
-Say where you stand, the zone, your target, an NPC or a special spot - to paste into a quest or a route.
-
-*also: `g`, `grabcursor`, `gc` - who: local*
-
-- `what` (enum, optional): loc | zone | target | npc | special
-
-### `eb invite [cmd] [who]`
-
-Group up: with no name this box invites the crew; a name invites that character; raid <name> sends a raid invite; disband or leave takes this box out of its group.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): invite | disband | raid | leave
-- `who` (member, optional): the member
-
-### `eb irc [cmd] [text]`
-
-EB IRC: this box joins the IRC server set up in the EB IRC window (eb irc), leaves the channel and the server (eb irc end - also off or leave, the same as eb end irc), opens EB IRC to set it up (eb irc window), says where it is and what it heard (eb irc status), or says a line in the channel (eb irc say <words>). With nothing set up yet eb irc opens the window and says what is missing. eb all irc joins every box; eb relay all end irc takes every box off. A line heard there runs only from a nick you allow, and only the way EB runs a crew line. Who may send commands: allow <nick> adds one, disallow <nick> takes one back, disallowall takes them all back, allowlist names them. allowifinraid <nick> <character> allows that nick when the character is in this box's raid; raidallow makes the PCs of your raid in the channel allow each other's nicks (no character's name goes over IRC), raiddisallow takes those back. From the channel, a nick you allow may ask this PC for its sessions (-List_Sessions), its launch profiles (-List_AutoLoginProfiles), a launch (-LaunchAutoLogin <profile>, -LoadCharacter <character>) and change who may send commands with the channel's own words; one box of the PC answers, and no answer names a character. Ending a game session (-KillSession) is always refused.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): join (nothing) | end (also off, leave) | window | status | say | allow | disallow | disallowall | allowlist | allowifinraid | raidallow | raiddisallow
-- `text` (string, optional): say: the words; allow / disallow: a nick; allowifinraid: a nick and a character
-
-### `eb marked [state]`
-
-Mark this character so a line can pick it: eb to marked <command> runs on every box whose character is marked. on, off or toggle sets this character's mark (it is kept, and the crew sees it); status says whether this character is marked and which boxes of the crew are. eb to <name> marked on marks that character; eb all marked off takes every mark off.
-
-*who: local, all, others, to*
-
-- `state` (onoff, optional): on | off | toggle | status
-
-### `eb mentor <who>`
-
-Mentor a group member: this character drops to that member's level until eb unmentor. eb all mentor <name>: every box above that member's level mentors it (that member itself says no). Typed or pressed only - never a step of a quest line.
-
-*who: local, all, others, to*
-
-- `who` (member): the group member to mentor (one below your level)
-
-### `eb oc <line>`
-
-Send stop, pause, resume or zonedoor <door> as an oc line to the boxes of this character's group that take oc lines (a mixed group); with no oc line sender in this session it is not sent. It never moves a box for EB: a follow is eb follow, a camp spot eb leash.
-
-- `line` (string): stop | pause | resume | zonedoor <door>
-
-### `eb ocdo <line>`
-
-Do an oc line with EB's own systems: each -command whose who names this box (else the line's -cfw, the MCP's For Who) runs EB's version - follow, letsgo, holdup, pause, resume, assist, jump, zone, zonedoor, special, evac, cast, useitem, cancelmaintained, the reply and option buttons. eb all ocdo hands it to the crew and each box decides for itself; a command EB has no version of is listed back, never guessed.
-
-*who: local, all, others, to*
-
-- `line` (string): an oc line: !c -command who args ...
-
-### `eb relay <line>`
-
-Send a line to the crew, spelled out: eb relay all pause is eb all pause. here = every box standing in this box's zone (never a paused one, this box too): eb relay here walk 10,2,30 walks them all there. awake = every box that is not paused (a box you play by hand is left alone). stagger [seconds] = every box that is not paused, each in its turn: this box at once, then the others one after another, 2 seconds apart unless you say (at most 30): eb relay stagger 3 gha go. mygroup = this character's group, this box too; in no group, this box only. The older words work too: irc, other, zoneall, to <name>, stagger <seconds>.
-
-*also: `gr`, `grouprelay`*
-
-- `line` (string): all | others | to <who> | local | here | awake | stagger [seconds] | mygroup, then the command
-
-### `eb say <channel> <text>`
-
-A line said in group or raid chat (the game's own chat, not EB's crew line - that is eb announce). For a rule's or a timer's line too; on a box played by hand only a line typed or pressed there goes.
-
-*who: local, all, others, to*
-
-- `channel` (enum): group | raid
-- `text` (string): the words
-
-### `eb share [what] [arg]`
-
-Share through EB's hub, one thing at a time and only when you ask: plan <name> = a power-level plan, nogo [zone | all] = your keep-out spots, travelactor [<it> | all] = your own travel objects (eb travelactor add: their facts only, one in a guild hall as any guild hall, none naming a character); each gets a short code (no character names go). get <code> = fetch a share by its code (a plan joins your plans, keep-out spots join your walker's, travel objects join your own), list = your shares and the ones shared with you, grant / revoke <code> <account> = let another EB account read one or not, delete <code>. EB Setup on this PC carries each one to EB's hub for you; the answer comes on the console.
-
-*who: local*
-
-- `what` (enum, optional): plan | nogo | travelactor | get | list | grant | revoke | delete | status
-- `arg` (string, optional): plan: the plan's name; nogo: a zone or all; travelactor: one of your travel objects or all; get / delete: a share code; grant / revoke: a share code and an EB account; list: plan, nogo or travelactor
-
-### `eb tell <who> <text>`
-
-A tell to a character. For a rule's or a timer's line too; on a box played by hand only a line typed or pressed there goes.
-
-*who: local, all, others, to*
-
-- `who` (string): a character's name
-- `text` (string): the words
-
-### `eb tgt <id>`
-
-Target an actor by id or by name, on every box the line goes to.
-
-*also: `tar`, `settarget` - who: local, all, others, to*
-
-- `id` (actor): an actor's id or name
-
-### `eb unmentor`
-
-Stop mentoring: this character goes back to its own level. eb all unmentor stops it on every box.
-
-*who: local, all, others, to*
-
-
-<a id="ui"></a>
-## Windows
+- `eb roster [cmd]`: Your characters: list (every box of this PC and every character EB has seen, with class and level - never a login detail), status (who is online now and where), account (the characters of the account this box is logged into, as the game lists them - held until its live proof), window (the Roster window).
+  - This box only.
+  - `cmd` (enum; optional; one of list | status | account | window; default list): list | status | account | window
+- `eb features [what]`: The account's features - its unlocked expansions and membership unlocks - for the character on this box, in plain words: what it has, what it lacks, what is tied to no zone, and its flags. Kept per character on this PC; every trip plans around a zone of an expansion the account lacks and says why (needs \<expansion> - not on this account); not known never holds a trip back. refresh reads the game's own list now; import reads your other bots' files - the AccountFeatures snapshots and the account-features.json flags (on your press only); why \<zone> says the expansion a zone needs and what this account says; forget drops this character's list.
+  - Also typed as: `accountfeatures`, `acctfeatures`.
+  - For the crew: `all`, `others`, `to`.
+  - `what` (string; optional): nothing: what this character's account has; refresh; import; why \<zone>; forget
+- `eb membership [nonmember]`: This character's membership level as the game's own Persona window shows it (All Access, Free ...), said on this box's console: eb all membership asks every box, each says its own. nonmember: only a character that is not a member says it. Held until its live proof (the game's value has not been read by EB yet).
+  - Also typed as: `memberlevel`.
+  - For the crew: `all`, `others`, `to`.
+  - `nonmember` (flag; optional): nonmember: say it only when this character is not a member
+- `eb mercenary [cmd] [query]`: The mercenary: summon it (or the one whose name has these words), suspend it, swap to another, list them, check its buffs, status. EB never dismisses or hires one by itself.
+  - Also typed as: `merc`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of summon | dismiss | buff | status | suspend | list | swap; default status): summon | dismiss | buff | status | suspend | list | swap
+  - `query` (string; optional): summon / swap: words of the mercenary's name
+- `eb hirelings [cmd] [band]`: The guild hall's harvest hirelings (gatherer, miner, hunter), in your guild hall: run takes what each brought back and sends it out again; collect only takes back; send only sends out; status says what each did last, the levels it offered and when it is due back. look walks to each one, hails it and reads its state and the levels it offers, pressing only its way out (nothing taken, nothing sent), then says which are in sight, the band, the deposit and the auto visit; stop ends a visit under way; band \<level> keeps the band every visit sends them out at, band \<hireling> \<level> that one's own (same: back to every visit's); send \<hireling> on | off: whether a visit sends that one out (off: what it brought is still taken); deposit on | off: after a visit the harvest goes in the hall's Harvesting Supply Depot (on unless set off); auto on | off: a visit every 2 h 1 min while this box is idle in its guild hall.
+  - Also typed as: `hireling`.
+  - This box only.
+  - `cmd` (enum; optional; one of status | run | collect | send | look | stop | band | deposit | auto; default status): status | run | collect | send | look | stop | band | deposit | auto
+  - `band` (string; optional): send / run / band: the harvest level to ask for - ts (your tradeskill level), adv (your level), top, or a number; band \<hireling> \<level | same>: that one's own; send \<hireling> on | off; deposit / auto: on | off
+- `eb createchar [spec]`: Help making a new character: the steps at character select, the class (and race) you name checked against the game's own, and the box list ready for the new name. You make the character yourself; EB never types a password.
+  - This box only.
+  - `spec` (string; optional): a class (and a race), or nothing for the steps
+- `eb persona [cmd] [arg]`: Persona: one character, several classes. open (the bare form) opens the Persona window; \<class> (or as \<class>) changes the class of the character in the world through the game's own Persona window, the class it leaves keeping what it wears first (held until its live proof); status says the classes this character is known in, the profile each loads and why, the gear kept for each and the switches. rules lists the profile rules; rule \<server | all> \<class> \<file> says which cast-stack profile file a class loads on one server or every server (a server's short form works: the first letters of its words), rule ... clear removes it; char \<class> \<file> is this character's own rule there, over every class rule; a rule takes effect the next time that class loads, and a character with no rule and no file of its own starts from the class sample. remove \<n> takes a rule away and fix \<n> also opens the Cast Stack (no file is ever deleted); later puts the Profile not found view away. gear save | restore | clear \[\<class> | all\]: keep what a class wears, put it back on from the bags (a piece the game refuses is listed once and kept, the next best piece is tried), forget it; bags \<digits>: the bags that hold persona gear (all: every bag); noswap on | off: do not swap gear when changing class; adorn on | off: move adornments onto a class's bare gear after a change (on to start), recheck: the same for the gear worn now (each bare piece taken off, adorned, put back), stop. After a class change the old class's gear is kept, the new class's bare pieces get their adornments and its gear goes back on - held until that moment's live proof.
+  - Also typed as: `personas`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of open | status | as | rules | rule | char | remove | fix | later | gear | bags | noswap | adorn | stop; default open): open | status | as | rules | rule | char | remove | fix | later | gear | bags | noswap | adorn | stop
+  - `arg` (string; optional): a class; rule: \<server | all> \<class> \<file | clear>; char: \<class> \<file | clear>; remove / fix: \<n>; gear: save | restore | clear \[\<class> | all\]; bags: \<digits 1-6> | all; noswap: on | off; adorn: on | off | recheck | stop | status
+- `eb tasks [cmd]`: The overnight chores per character (pony, plant, overseer): run, status, list.
+  - Also typed as: `chores`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of run | status | list; default status): run | status | list
+- `eb tasklist [cmd] [name]`: A task list of the Tasks window run whole on this box, step after step: a quest line (until it ends), an instance run (until it ends; a run that stops ends the list), a command (and the chore it starts), a wait. run \<list>, stop, status, lists. eb all tasklist run \<list> runs each box's own list of that name (never on a box played by hand); add stagger \<seconds> and each box starts that long after the one before. trigger: a list run by itself on login, on a zone-in (any zone, or one whose name holds the words) or every N hours, kept across restarts; on, off, remove, test (run it now). level: the levels a list is for - a character under or over them skips it and says so. resume: a list EB went down in the middle of, picked up at its step (one kept a few minutes is picked up by itself); forget drops that place. The list called maintenance is the chore an instance run does between its runs (eb ic loop ... maintenance).
+  - Also typed as: `task`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of run | stop | status | lists | trigger | triggers | level | resume | forget; default status): run | stop | status | lists | trigger | triggers | level | resume | forget
+  - `name` (string; optional): the task list (its name in the Tasks window), then its words: run \<list> \[stagger \<seconds>\]; trigger add \<list> login | zonein \[\<zone words>\] | every \<hours>, trigger list | on \<n|all> | off \<n|all> | remove \<n> | test \<n>; level \<list> \<min>\[-\<max>\] \[adv | ts\] | \<list> off
+- `eb login [what]`: EB for InnerSpace: log this session in from your saved logins - the box its launch named, or the box you name. -s \<server> picks that character's login on that server (a short form works: ior); -c \<class> logs it in as that class: the class is picked at character select before Play, and when the pick cannot go Play is not pressed (it is said why). \<character>:\<server>:\<class> is the same with no spaces. With no word it says where the login is. boxes lists the box list (boxes save writes it in your logins' order); check reads the login form and types nothing.
+  - This box only.
+  - `what` (string; optional): a box (its id or character name) \[-s \<server>\] \[-c \<class>\] | \<character>:\<server>:\<class> | boxes | boxes save | check
+- `eb launch [what]`: EB for InnerSpace: open game sessions that log themselves in - one box, every box of the box list, or a whole team set up in ISBoxer (set \<team>). A window goes where you say (on x,y,w,h), else where the game puts it; avoid-primary keeps it off the main monitor.
+  - This box only.
+  - `what` (string; optional): a box \[on x,y,w,h\] \[avoid-primary\] | set \<team>; nothing = every box of the box list
+- `eb autologin [cmd] [rest]`: Launch profiles: named lists of boxes to log in, kept beside the box list on this PC (a row names a box, nothing secret). Each row is a box (or a character and its server), its session (is1 ... or any), a class to play at character select, and the PC it belongs to; a profile has its pause between two sessions opening and between two logins, and a character set of your multiboxing tool per PC. list names them, show \<name> its rows, dry \<name> says what start would do and does nothing, start \<name> opens this PC's rows one pause apart (pause, login and only change that one run and are never saved), save makes one (from boxes copies your box list; overwrite replaces a saved one), set picks a PC's character set, delete removes one, shortcut says how to make a shortcut that starts it from Windows.
+  - Also typed as: `launchprofile`.
+  - This box only.
+  - `cmd` (enum; optional; one of list | show | dry | start | save | delete | set | shortcut; default list): list | show | dry | start | save | delete | set | shortcut
+  - `rest` (string; optional): the profile's name, then: start \[pause \<s>\] \[login \<s>\] \[only is1,is2\]; save \<rows> \[pause \<s>\] \[login \<s>\] \[overwrite\] (a row: is1=\<box>, any=\<character>@\<server>/\<class>, \<pc>:is2=\<box>; then lead, on x,y,w,h, fill) or save \<name> from boxes; set \<pc | this> \<character set | none>
+
+## Commands: Crew
+
+Sending a command to the crew (all / others / to \<who>), invites, targets, announcements, and the oc lines of a mixed group.
+
+- `eb ocdo <line>`: Do an oc line with EB's own systems: each -command whose who names this box (else the line's -cfw, the MCP's For Who) runs EB's version - follow, letsgo, holdup, pause, resume, assist, jump, zone, zonedoor, special, evac, cast, useitem, cancelmaintained, the reply and option buttons. eb all ocdo hands it to the crew and each box decides for itself; a command EB has no version of is listed back, never guessed.
+  - For the crew: `all`, `others`, `to`.
+  - `line` (string; required): an oc line: !c -command who args ...
+- `eb relay <line>`: Send a line to the crew, spelled out: eb relay all pause is eb all pause. here = every box standing in this box's zone (never a paused one, this box too): eb relay here walk 10,2,30 walks them all there. awake = every box that is not paused (a box you play by hand is left alone). stagger \[seconds\] = every box that is not paused, each in its turn: this box at once, then the others one after another, 2 seconds apart unless you say (at most 30): eb relay stagger 3 gha go. mygroup = this character's group, this box too; in no group, this box only. The older words work too: irc, other, zoneall, to \<name>, stagger \<seconds>.
+  - Also typed as: `gr`, `grouprelay`.
+  - `line` (string; required): all | others | to \<who> | local | here | awake | stagger \[seconds\] | mygroup, then the command
+- `eb marked [state]`: Mark this character so a line can pick it: eb to marked \<command> runs on every box whose character is marked. on, off or toggle sets this character's mark (it is kept, and the crew sees it); status says whether this character is marked and which boxes of the crew are. eb to \<name> marked on marks that character; eb all marked off takes every mark off.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional; one of on | off | toggle | status; default status): on | off | toggle | status
+- `eb oc <line>`: Send stop, pause, resume or zonedoor \<door> as an oc line to the boxes of this character's group that take oc lines (a mixed group); with no oc line sender in this session it is not sent. It never moves a box for EB: a follow is eb follow, a camp spot eb leash.
+  - `line` (string; required): stop | pause | resume | zonedoor \<door>
+- `eb event [cmd] [name]`: EB's events (chat, spawn, despawn, zone, dialog): listen to one, stop, list them, fire one.
+  - This box only.
+  - `cmd` (enum; optional; one of on | off | list | fire; default list): on | off | list | fire
+  - `name` (string; optional): the event
+- `eb tgt <id>`: Target an actor by id or by name, on every box the line goes to.
+  - Also typed as: `tar`, `settarget`.
+  - For the crew: `all`, `others`, `to`.
+  - `id` (actor; required): an actor's id or name
+- `eb grab [what]`: Say where you stand, the zone, your target, an NPC or a special spot - to paste into a quest or a route.
+  - Also typed as: `g`, `grabcursor`, `gc`.
+  - This box only.
+  - `what` (enum; optional; one of loc | zone | target | npc | special; default loc): loc | zone | target | npc | special
+- `eb announce <text>`: Say a line to the crew.
+  - For the crew: `all`, `others`, `to`.
+  - `text` (string; required): the line
+- `eb emote [words]`: An emote: one of the game's own by its word (bow, wave, cheer ...), or your own emote line ("\<name> waves the crew on"). For a rule's or a timer's line too (eb timer add cheer 5m eb emote cheer). On a box played by hand only a line typed or pressed there goes. list names the game's emotes.
+  - For the crew: `all`, `others`, `to`.
+  - `words` (string; optional): one of the game's emotes (eb emote list names them), or your own emote line of two words or more
+- `eb tell <who> <text>`: A tell to a character. For a rule's or a timer's line too; on a box played by hand only a line typed or pressed there goes.
+  - For the crew: `all`, `others`, `to`.
+  - `who` (string; required): a character's name
+  - `text` (string; required): the words
+- `eb say <channel> <text>`: A line said in group or raid chat (the game's own chat, not EB's crew line - that is eb announce). For a rule's or a timer's line too; on a box played by hand only a line typed or pressed there goes.
+  - For the crew: `all`, `others`, `to`.
+  - `channel` (enum; required; one of group | raid): group | raid
+  - `text` (string; required): the words
+- `eb invite [cmd] [who]`: Group up: with no name this box invites the crew; a name invites that character; raid \<name> sends a raid invite; disband or leave takes this box out of its group.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of invite | disband | raid | leave; default invite): invite | disband | raid | leave
+  - `who` (member; optional): the member
+- `eb mentor <who>`: Mentor a group member: this character drops to that member's level until eb unmentor. eb all mentor \<name>: every box above that member's level mentors it (that member itself says no). Typed or pressed only - never a step of a quest line.
+  - For the crew: `all`, `others`, `to`.
+  - `who` (member; required): the group member to mentor (one below your level)
+- `eb unmentor`: Stop mentoring: this character goes back to its own level. eb all unmentor stops it on every box.
+  - For the crew: `all`, `others`, `to`.
+- `eb share [what] [arg]`: Share through EB's hub, one thing at a time and only when you ask: plan \<name> = a power-level plan, nogo \[zone | all\] = your keep-out spots, travelactor \[\<it> | all\] = your own travel objects (eb travelactor add: their facts only, one in a guild hall as any guild hall, none naming a character); each gets a short code (no character names go). get \<code> = fetch a share by its code (a plan joins your plans, keep-out spots join your walker's, travel objects join your own), list = your shares and the ones shared with you, grant / revoke \<code> \<account> = let another EB account read one or not, delete \<code>. EB Setup on this PC carries each one to EB's hub for you; the answer comes on the console.
+  - This box only.
+  - `what` (enum; optional; one of plan | nogo | travelactor | get | list | grant | revoke | delete | status; default status): plan | nogo | travelactor | get | list | grant | revoke | delete | status
+  - `arg` (string; optional): plan: the plan's name; nogo: a zone or all; travelactor: one of your travel objects or all; get / delete: a share code; grant / revoke: a share code and an EB account; list: plan, nogo or travelactor
+- `eb agent <id> [line]`: A line from EB's agent server (the tool an agent program reads this box through), on EB for InnerSpace: the server hands it to this session through InnerSpace's relay, EB runs it as a line from outside - never a Lua line, never sent on to the crew, never moving a box you play by hand - and answers in one small file in your EB data folder, agent\\\<session>.json (the session, the agent's id, ok, the answer and the time; no character, no account). With no line it answers here and runs nothing. The agent's reads run at once; a line that would change something waits in your Ops Inbox for your Approve.
+  - `id` (string; required): the agent's own word for its line (letters, digits, \_ and -), written back beside the answer
+  - `line` (string; optional): the EB line to run, as typed after eb; nothing: answer here and run nothing
+- `eb irc [cmd] [text]`: EB IRC: this box joins the IRC server set up in the EB IRC window (eb irc), leaves the channel and the server (eb irc end - also off or leave, the same as eb end irc), opens EB IRC to set it up (eb irc window), says where it is and what it heard (eb irc status), or says a line in the channel (eb irc say \<words>). With nothing set up yet eb irc opens the window and says what is missing. eb all irc joins every box; eb relay all end irc takes every box off. A line heard there runs only from a nick you allow, and only the way EB runs a crew line. Who may send commands: allow \<nick> adds one, disallow \<nick> takes one back, disallowall takes them all back, allowlist names them. allowifinraid \<nick> \<character> allows that nick when the character is in this box's raid; raidallow makes the PCs of your raid in the channel allow each other's nicks (no character's name goes over IRC), raiddisallow takes those back. From the channel, a nick you allow may ask this PC for its sessions (-List_Sessions), its launch profiles (-List_AutoLoginProfiles), a launch (-LaunchAutoLogin \<profile>, -LoadCharacter \<character>) and change who may send commands with the channel's own words; one box of the PC answers, and no answer names a character. Ending a game session (-KillSession) is always refused.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of join | end | window | status | say | allow | disallow | disallowall | allowlist | allowifinraid | raidallow | raiddisallow; default join): join (nothing) | end (also off, leave) | window | status | say | allow | disallow | disallowall | allowlist | allowifinraid | raidallow | raiddisallow
+  - `text` (string; optional): say: the words; allow / disallow: a nick; allowifinraid: a nick and a character
+
+## Commands: Windows
 
 EB's windows: the main window, the mini, the Master Control Panel, every window in one list (eb windows), and how they look.
 
-### `eb anon [state]`
-
-Stand-in names: every character name EB shows, in the windows and on the console, becomes Box 1, Box 2 ... eb all anon on does it on every box.
-
-*who: local, all, others, to*
-
-- `state` (onoff, optional): on | off
-
-### `eb battlestation [name]`
-
-A workspace: which windows are open, kept under a name. save <name> keeps the ones open now, delete <name> forgets it, a name opens it, nothing lists them.
-
-*also: `layout` - who: local*
-
-- `name` (string, optional): save <name> | delete <name> | a name | nothing
-
-### `eb boxes [what]`
-
-Black boxes over this game window, which hide parts of it and let every click through. draw (the bare word) opens the Black Boxes window to draw them or change them; clear removes every black box over this game window and closes the window; off takes them off the game window and keeps them, on puts them back; status says how many there are. Over the game, hold Ctrl+Shift and click a box to change or remove it.
-
-*also: `blackboxes` - who: local*
-
-- `what` (enum, optional): draw | clear | off | on | status
-
-### `eb console [cmd] [state]`
-
-EB Console from the console line: what its EB tab shows - typed (only what you type there, with its answers), commands (every EB command with who started it) or all (that and every line EB says, a few a second); inall on|off: EB's lines in the All tab too; stamps on|off: time stamps; clear empties it; open / close; status says how it stands.
-
-*who: local*
-
-- `cmd` (enum, optional): status | open | close | typed | commands | all | inall | stamps | clear
-- `state` (onoff, optional): on | off (after inall or stamps; nothing flips it)
-
-### `eb font [area] [px]`
-
-Text size per area on every EB window of the PC: eb font lists 14 sets the lists and rows to 14 px, eb font title off puts the window titles back at each window's own size, eb font reset does every area; no word says the sizes. Areas: title, tabs, lists, buttons, status (12 to 20 px). Kept like the look; UI Options > Looks > Text size per area has the same.
-
-*who: local*
-
-- `area` (enum, optional): show | title | tabs | lists | buttons | status | reset
-- `px` (string, optional): after an area: 12 to 20 (px), or off = each window's own size
-
-### `eb forwho [pick]`
-
-Who the MCP's buttons go to: all (every box), group (your group), others (every box but this one), me (this box only), or boxes and characters by name, several with commas. With no word the For Who window opens - one click flips the pick - and the MCP shows the same pick.
-
-*who: local*
-
-- `pick` (string, optional): all | group | others | me | a box or a character (several with commas) | status; nothing opens the For Who window
-
-### `eb front [name]`
-
-A game window to the front: eb front <name> brings that character's game window forward on this PC - a quick switch between your games. Off until you switch it on (eb front on; eb front off ends it); never a game window on the main monitor, never a guess between two games of one name, and when it cannot it says why. A bare eb front says how it stands.
-
-*who: local*
-
-- `name` (string, optional): on | off (the opt-in, off until you switch it on) | a character's name: that character's game window comes to the front
-
-### `eb inbox [cmd] [arg]`
-
-The ops inbox of the character you play: EB lines an agent or a script proposes, waiting for you. list shows them, approve <n> runs one on this box as if you typed it, dismiss <n> drops it, clear drops them all; add puts a line in. Nothing in it ever runs by itself. The Ops Inbox window shows the same.
-
-*also: `ops` - who: local*
-
-- `cmd` (enum, optional): list | add | approve | dismiss | clear
-- `arg` (string, optional): add: the EB line, then -- and why; approve / dismiss: the entry's number
-
-### `eb look [cmd] [name]`
-
-Your look as a file to share: save <name> writes the theme and your own colours to <EB>/data/looks/<name>.eblook.json (a theme and colours only - nothing in it names anyone); open <name> puts one on, a friend's file dropped into that folder too - a file that is not a look is refused, in words; files lists them; delete <name> removes one. UI Options > Looks > Share has the same.
-
-*who: local*
-
-- `cmd` (enum, optional): files | save | open | delete
-- `name` (string, optional): save / open / delete: the look file's name (letters, digits, spaces, _ and -)
-
-### `eb map [cmd] [words]`
-
-EB Map: you, the group, the zone's exits, travel and marks, its path layer and drawn areas - every word opens it. search <words> opens it on its List showing only what matches; level <min> [max] shows only who is around at those levels; search clear and level clear end them.
-
-*who: local*
-
-- `cmd` (enum, optional): show | marks | path | roam | search <words> | level <min> [max]
-- `words` (string, optional): search: a name or part of one (clear ends the search); level: <min> [max] or <min>-<max> (clear: any level)
-
-### `eb mcp [state] [button]`
-
-Open the Master Control Panel: a button for every EB command, for the whole crew or one box, and every EB window in its Windows tab. eb mcp press <label> presses a button of your own grid as a click does (For Who and all, its page shown or not, the MCP open or closed); press key <key> is what a key kept on a button runs.
-
-*who: local*
-
-- `state` (onoff, optional): show | hide | toggle | press
-- `button` (string, optional): after press: a button of your own grid - its label, or key <the key kept on it>
-
-### `eb mini [state] [list]`
-
-The EB mini (opens by itself on login): this box's own switches, with EB Main, the MCP, the cast stack, the Windows view and Stop group one click away. close keeps it closed on this character until eb mini (as its X does); show <list> picks what it shows (its cog does the same); stop is Stop group (every box of your group stops at once: walking, following, a run and casting) and go is Go on; group on makes each switch you press flip on every box of your group (group off: this box only); status says what it shows.
-
-*who: local*
-
-- `state` (onoff, optional): toggle | open | close | show [what it shows] | hide | stop | go | group | skip | status
-- `list` (string, optional): after show: what the bar shows - name, class, doing, each switch, main, mcp, cast, harvest, windows, stop, go, builder, zones, teams, adorn, mine; or default, all, none; +word / -word change it. After group: on | off
-
-### `eb mybutton [cmd] [arg]`
-
-Your own buttons: the HotBar, or its editor. eb hotkey and eb alert open Keys and Alerts.
-
-*also: `hotkey`, `alert` - who: local*
-
-- `cmd` (enum, optional): button | hotkey | alert
-- `arg` (string, optional): what to edit
-
-### `eb radar [state] [where]`
-
-What is around you: the Radar - a live picture from above, you the ringed dot, the wedge the way you face, a click on a dot targets it - opened (on) or shut (off); toggle flips it, status says what is up. track: EB Track (the list) instead; game: the radar drawn in the game window (EB for InnerSpace; held until it is proven live); both: the Radar and the game window's at once. The Radar's own words: quest on|off (npc, named and nokill only when they update one of your quests), questnpc on|off (quest givers always shown), noname on|off (actors with no name), names <letters> | off (every name cut short), zoom <m> (how far it reaches), height <m> (only that far above or below you; 0 = every floor), click on|off (the mouse goes through it to the game; off brings it back), target <id>, verify (the picture checked against the game), settings.
-
-*who: local*
-
-- `state` (onoff, optional): on | off | toggle | status - or the Radar's own words: quest | questnpc | noname | names | zoom | height | click | target | verify | settings
-- `where` (string, optional): radar (the Radar, the default) | track (EB Track) | game (the radar drawn in the game window) | both (the Radar and the game window's); after quest / questnpc / noname / click: on | off; after names: letters or off; after zoom / height: metres; after target: the actor's id
-
-### `eb rotationboard`
-
-The Rotation Board: every box running a saved rotation (eb rotation), on one board - who casts what next, the part it plays and when that ability is ready, with this box's saved rotations to start one. Every box's line comes over the crew relay while the board is open.
-
-*also: `rotboard` - who: local*
-
-### `eb site [page]`
-
-EB's hub page in your web browser: the front page, your account page, the download, the docs or every EB command. The page opens as a link would; nothing is sent from the game.
-
-*also: `web` - who: local*
-
-- `page` (enum, optional): home | account | download | docs | commands
-
-### `eb theme [name]`
-
-Pick one of five themes (Black & White is the default).
-
-*who: local*
-
-- `name` (enum, optional): bw | jqb | neutral | light | accent (3, 4 and 5 are the last three)
-
-### `eb title [tag]`
-
-This box's title bar: every EB window of this character shows the tag beside its name and a soft strip of the colour - eb title TANK #33ccff, eb title #33ccff (the colour alone), eb title off. Kept for the PC by character; the tag is never shown in streamer mode. UI Options > Per character does the same for every character of the crew.
-
-*who: local*
-
-- `tag` (string, optional): a short tag for this character's windows (1 to 8 letters, digits, spaces, ' or -) and / or #rrggbb, the title bar's colour; off clears both; nothing says what this character has
-
-### `eb track [what] [key]`
-
-Open a fight window: track = Track (what is around you), cd = Group Cooldowns (every box's long cooldowns), osa = Target (your target and every mob in the fight), with the threat readout on the console. eb osa and eb cd open their own window. eb osa pin | ignore <icon>/<backdrop> pins one of the target's effects to the front of the Target card or hides it (unpin / unignore undo it; clear pins | ignores | all), kept for this character - the same as a click on the effect. eb osa map range <m> | auto | big | names on|off | hidden | shown | detach sets EB Raid's minimap (how far round you it reaches, bigger, the names on its dots, put away or back) the way its own wheel and buttons do; detach opens EB Map. eb osa map who me | group | irc | all sets whom a Ctrl+Shift+click on a map walks there (EB Raid's minimap and EB Map: just me, my group, every box in this zone on every PC over EB IRC, or every box online in this zone - never one played by hand), the same as EB Raid's gear; eb osa map dets on | off shows the Detriments panel under EB Raid's rows (who has what, and what it does); both kept for this PC.
-
-*also: `osa`, `cd` - who: local*
-
-- `what` (enum, optional): track | cd | osa; after eb osa: pin | unpin | ignore | unignore | clear | map
-- `key` (string, optional): after pin / unpin / ignore / unignore: an effect's <icon>/<backdrop> (e.g. 2341/33083); after clear: pins | ignores | all; after map: range <m> | auto | big [on|off] | names [on|off] | hidden [on|off] | shown | detach | who me|group|irc|all | dets [on|off]
-
-### `eb ui [panel]`
-
-Open EB Main: the crew at a glance and the way into every window. eb ui windows opens its Windows view (every EB window by what it is for, and what EB runs on this box), eb ui dash its Dash (the cards you pick: the group, the queue, the fight, Quick Travel, your own buttons, the hirelings); a window's word opens that window, and <word> toggle opens or shuts it.
-
-*also: `main` - who: local*
-
-- `panel` (string, optional): crew | windows | dash | a window's word (add toggle | show | hide)
-
-### `eb uireset [cmd]`
-
-Every window's opacity, scale, click-through and lock back to the defaults (the theme stays; where each window sits is eb windows reset). popout / free say how a window leaves the game window (eb windows <word> out); sync sends this box's theme to the crew.
-
-*also: `popout`, `freewindows` - who: local*
-
-- `cmd` (enum, optional): reset | popout | free | sync
-
-### `eb windows [name]`
-
-List every EB window by what it is for, with the line that opens each; a window's word opens it (eb windows glance). After the word: toggle, show or hide it; out, in, max or restore moves it out of the game window, back in, maximizes or restores it; click off gives the mouse back to a click-through window (click on sets it). reload: every open EB window loads its page again (its newest files); restart: the window host itself starts again and opens the windows open now (after an update of the host, or when every window is stuck) - EB and the game keep running. reset: every EB window back at its default place and size - the open ones close and open again there, the shut ones open there next time (reset all does it for every character on this PC, the other boxes of the crew each doing their own); only where a window sits changes, never how it looks (eb uireset). <word> through <group>,<page> lets that game window through the EB window: where it lies under it, the game window shows and takes the click (off takes one or all away; bare: the ones it lets through). <word> mirror puts the window in a browser on this PC too (its link on your clipboard; mirror off ends it). The same list as EB Main's Windows view and the MCP's Windows tab.
-
-*also: `wins` - who: local*
-
-- `name` (string, optional): a window's word opens it; add toggle | show | hide, out | in | max | restore, or click off | on; all = every window, with the reason one does not open here; reload = every open window loads its page again; restart = the window host itself starts again; reset = every window back at its default place and size (this character's; reset all = every character on this PC); <word> through <group>,<page> [off] | through off = a game window shows through it; <word> mirror [off] = the window in a browser on this PC
-
-### `eb xp [cmd] [name]`
-
-Experience: the XP window (every box's level and how far into it, what each gained this session, its pace an hour and the time to its next level, and the XP potion each one has running) and a line a box on the console; board opens At a Glance on its XP column; reset starts the session numbers again from now; combat or quest flips the game's own combat or quest experience switch; ignore / track <name> takes a character off the XP window or puts it back; stop / start: every box stops or starts reading its XP while its XP window is closed.
-
-*who: local*
-
-- `cmd` (enum, optional): show | combat | quest | board | reset | ignore | track | stop | start
-- `name` (string, optional): after ignore / track: a character's name
-
-
-<a id="monitor"></a>
-## Monitor / analysis
+- `eb mini [state] [list]`: The EB mini (opens by itself on login): this box's own switches, with EB Main, the MCP, the cast stack, the Windows view and Stop group one click away. close keeps it closed on this character until eb mini (as its X does); show \<list> picks what it shows (its cog does the same); stop is Stop group (every box of your group stops at once: walking, following, a run and casting) and go is Go on; group on makes each switch you press flip on every box of your group (group off: this box only); status says what it shows.
+  - This box only.
+  - `state` (onoff; optional; one of toggle | open | close | show | hide | stop | go | group | skip | status; default toggle): toggle | open | close | show \[what it shows\] | hide | stop | go | group | skip | status
+  - `list` (string; optional): after show: what the bar shows - name, class, doing, each switch, main, mcp, cast, harvest, windows, stop, go, builder, zones, teams, adorn, mine; or default, all, none; +word / -word change it. After group: on | off
+- `eb console [cmd] [state]`: EB Console from the console line: what its EB tab shows - typed (only what you type there, with its answers), commands (every EB command with who started it) or all (that and every line EB says, a few a second); inall on|off: EB's lines in the All tab too; stamps on|off: time stamps; clear empties it; open / close; status says how it stands.
+  - This box only.
+  - `cmd` (enum; optional; one of status | open | close | typed | commands | all | inall | stamps | clear; default status): status | open | close | typed | commands | all | inall | stamps | clear
+  - `state` (onoff; optional): on | off (after inall or stamps; nothing flips it)
+- `eb ui [panel]`: Open EB Main: the crew at a glance and the way into every window. eb ui windows opens its Windows view (every EB window by what it is for, and what EB runs on this box), eb ui dash its Dash (the cards you pick: the group, the queue, the fight, Quick Travel, your own buttons, the hirelings); a window's word opens that window, and \<word> toggle opens or shuts it.
+  - Also typed as: `main`.
+  - This box only.
+  - `panel` (string; optional): crew | windows | dash | a window's word (add toggle | show | hide)
+- `eb mcp [state] [button]`: Open the Master Control Panel: a button for every EB command, for the whole crew or one box, and every EB window in its Windows tab. eb mcp press \<label> presses a button of your own grid as a click does (For Who and all, its page shown or not, the MCP open or closed); press key \<key> is what a key kept on a button runs.
+  - This box only.
+  - `state` (onoff; optional; one of show | hide | toggle | press; default show): show | hide | toggle | press
+  - `button` (string; optional): after press: a button of your own grid - its label, or key \<the key kept on it>
+- `eb forwho [pick]`: Who the MCP's buttons go to: all (every box), group (your group), others (every box but this one), me (this box only), or boxes and characters by name, several with commas. With no word the For Who window opens - one click flips the pick - and the MCP shows the same pick.
+  - This box only.
+  - `pick` (string; optional): all | group | others | me | a box or a character (several with commas) | status; nothing opens the For Who window
+- `eb windows [name]`: List every EB window by what it is for, with the line that opens each; a window's word opens it (eb windows glance). After the word: toggle, show or hide it; out, in, max or restore moves it out of the game window, back in, maximizes or restores it; click off gives the mouse back to a click-through window (click on sets it). reload: every open EB window loads its page again (its newest files); restart: the window host itself starts again and opens the windows open now (after an update of the host, or when every window is stuck) - EB and the game keep running. reset: every EB window back at its default place and size - the open ones close and open again there, the shut ones open there next time (reset all does it for every character on this PC, the other boxes of the crew each doing their own); only where a window sits changes, never how it looks (eb uireset). \<word> through \<group>,\<page> lets that game window through the EB window: where it lies under it, the game window shows and takes the click (off takes one or all away; bare: the ones it lets through). \<word> mirror puts the window in a browser on this PC too (its link on your clipboard; mirror off ends it). The same list as EB Main's Windows view and the MCP's Windows tab.
+  - Also typed as: `wins`.
+  - This box only.
+  - `name` (string; optional): a window's word opens it; add toggle | show | hide, out | in | max | restore, or click off | on; all = every window, with the reason one does not open here; reload = every open window loads its page again; restart = the window host itself starts again; reset = every window back at its default place and size (this character's; reset all = every character on this PC); \<word> through \<group>,\<page> \[off\] | through off = a game window shows through it; \<word> mirror \[off\] = the window in a browser on this PC
+- `eb front [name]`: A game window to the front: eb front \<name> brings that character's game window forward on this PC - a quick switch between your games. Off until you switch it on (eb front on; eb front off ends it); never a game window on the main monitor, never a guess between two games of one name, and when it cannot it says why. A bare eb front says how it stands.
+  - This box only.
+  - `name` (string; optional): on | off (the opt-in, off until you switch it on) | a character's name: that character's game window comes to the front
+- `eb boxes [what]`: Black boxes over this game window, which hide parts of it and let every click through. draw (the bare word) opens the Black Boxes window to draw them or change them; clear removes every black box over this game window and closes the window; off takes them off the game window and keeps them, on puts them back; status says how many there are. Over the game, hold Ctrl+Shift and click a box to change or remove it.
+  - Also typed as: `blackboxes`.
+  - This box only.
+  - `what` (enum; optional; one of draw | clear | off | on | status; default draw): draw | clear | off | on | status
+- `eb rotationboard`: The Rotation Board: every box running a saved rotation (eb rotation), on one board - who casts what next, the part it plays and when that ability is ready, with this box's saved rotations to start one. Every box's line comes over the crew relay while the board is open.
+  - Also typed as: `rotboard`.
+  - This box only.
+- `eb inbox [cmd] [arg]`: The ops inbox of the character you play: EB lines an agent or a script proposes, waiting for you. list shows them, approve \<n> runs one on this box as if you typed it, dismiss \<n> drops it, clear drops them all; add puts a line in. Nothing in it ever runs by itself. The Ops Inbox window shows the same.
+  - Also typed as: `ops`.
+  - This box only.
+  - `cmd` (enum; optional; one of list | add | approve | dismiss | clear; default list): list | add | approve | dismiss | clear
+  - `arg` (string; optional): add: the EB line, then -- and why; approve / dismiss: the entry's number
+- `eb site [page]`: EB's hub page in your web browser: the front page, your account page, the download, the docs or every EB command. The page opens as a link would; nothing is sent from the game.
+  - Also typed as: `web`.
+  - This box only.
+  - `page` (enum; optional; one of home | account | download | docs | commands; default home): home | account | download | docs | commands
+- `eb map [cmd] [words]`: EB Map: you, the group, the zone's exits, travel and marks, its path layer and drawn areas - every word opens it. search \<words> opens it on its List showing only what matches; level \<min> \[max\] shows only who is around at those levels; search clear and level clear end them.
+  - This box only.
+  - `cmd` (enum; optional; one of show | marks | path | roam | search | level; default show): show | marks | path | roam | search \<words> | level \<min> \[max\]
+  - `words` (string; optional): search: a name or part of one (clear ends the search); level: \<min> \[max\] or \<min>-\<max> (clear: any level)
+- `eb xp [cmd] [name]`: Experience: the XP window (every box's level and how far into it, what each gained this session, its pace an hour and the time to its next level, and the XP potion each one has running) and a line a box on the console; board opens At a Glance on its XP column; reset starts the session numbers again from now; combat or quest flips the game's own combat or quest experience switch; ignore / track \<name> takes a character off the XP window or puts it back; stop / start: every box stops or starts reading its XP while its XP window is closed.
+  - This box only.
+  - `cmd` (enum; optional; one of show | combat | quest | board | reset | ignore | track | stop | start; default show): show | combat | quest | board | reset | ignore | track | stop | start
+  - `name` (string; optional): after ignore / track: a character's name
+- `eb track [what] [key]`: Open a fight window: track = Track (what is around you), cd = Group Cooldowns (every box's long cooldowns), osa = Target (your target and every mob in the fight), with the threat readout on the console. eb osa and eb cd open their own window. eb osa pin | ignore \<icon>/\<backdrop> pins one of the target's effects to the front of the Target card or hides it (unpin / unignore undo it; clear pins | ignores | all), kept for this character - the same as a click on the effect. eb osa map range \<m> | auto | big | names on|off | hidden | shown | detach sets EB Raid's minimap (how far round you it reaches, bigger, the names on its dots, put away or back) the way its own wheel and buttons do; detach opens EB Map. eb osa map who me | group | irc | all sets whom a Ctrl+Shift+click on a map walks there (EB Raid's minimap and EB Map: just me, my group, every box in this zone on every PC over EB IRC, or every box online in this zone - never one played by hand), the same as EB Raid's gear; eb osa map dets on | off shows the Detriments panel under EB Raid's rows (who has what, and what it does); both kept for this PC.
+  - Also typed as: `osa`, `cd`.
+  - This box only.
+  - `what` (enum; optional; one of track | cd | osa | pin | unpin | ignore | unignore | clear | map; default track): track | cd | osa; after eb osa: pin | unpin | ignore | unignore | clear | map
+  - `key` (string; optional): after pin / unpin / ignore / unignore: an effect's \<icon>/\<backdrop> (e.g. 2341/33083); after clear: pins | ignores | all; after map: range \<m> | auto | big \[on|off\] | names \[on|off\] | hidden \[on|off\] | shown | detach | who me|group|irc|all | dets \[on|off\]
+- `eb look [cmd] [name]`: Your look as a file to share: save \<name> writes the theme and your own colours to \<EB>/data/looks/\<name>.eblook.json (a theme and colours only - nothing in it names anyone); open \<name> puts one on, a friend's file dropped into that folder too - a file that is not a look is refused, in words; files lists them; delete \<name> removes one. UI Options > Looks > Share has the same.
+  - This box only.
+  - `cmd` (enum; optional; one of files | save | open | delete; default files): files | save | open | delete
+  - `name` (string; optional): save / open / delete: the look file's name (letters, digits, spaces, \_ and -)
+- `eb title [tag]`: This box's title bar: every EB window of this character shows the tag beside its name and a soft strip of the colour - eb title TANK #33ccff, eb title #33ccff (the colour alone), eb title off. Kept for the PC by character; the tag is never shown in streamer mode. UI Options > Per character does the same for every character of the crew.
+  - This box only.
+  - `tag` (string; optional): a short tag for this character's windows (1 to 8 letters, digits, spaces, ' or -) and / or #rrggbb, the title bar's colour; off clears both; nothing says what this character has
+- `eb font [area] [px]`: Text size per area on every EB window of the PC: eb font lists 14 sets the lists and rows to 14 px, eb font title off puts the window titles back at each window's own size, eb font reset does every area; no word says the sizes. Areas: title, tabs, lists, buttons, status (12 to 20 px). Kept like the look; UI Options > Looks > Text size per area has the same.
+  - This box only.
+  - `area` (enum; optional; one of show | title | tabs | lists | buttons | status | reset; default show): show | title | tabs | lists | buttons | status | reset
+  - `px` (string; optional): after an area: 12 to 20 (px), or off = each window's own size
+- `eb radar [state] [where]`: What is around you: the Radar - a live picture from above, you the ringed dot, the wedge the way you face, a click on a dot targets it - opened (on) or shut (off); toggle flips it, status says what is up. track: EB Track (the list) instead; game: the radar drawn in the game window (EB for InnerSpace; held until it is proven live); both: the Radar and the game window's at once. The Radar's own words: quest on|off (npc, named and nokill only when they update one of your quests), questnpc on|off (quest givers always shown), noname on|off (actors with no name), names \<letters> | off (every name cut short), zoom \<m> (how far it reaches), height \<m> (only that far above or below you; 0 = every floor), click on|off (the mouse goes through it to the game; off brings it back), target \<id>, verify (the picture checked against the game), settings.
+  - This box only.
+  - `state` (onoff; optional; one of on | off | toggle | status | quest | questnpc | noname | names | zoom | height | click | target | verify | settings; default on): on | off | toggle | status - or the Radar's own words: quest | questnpc | noname | names | zoom | height | click | target | verify | settings
+  - `where` (string; optional): radar (the Radar, the default) | track (EB Track) | game (the radar drawn in the game window) | both (the Radar and the game window's); after quest / questnpc / noname / click: on | off; after names: letters or off; after zoom / height: metres; after target: the actor's id
+- `eb uireset [cmd]`: Every window's opacity, scale, click-through and lock back to the defaults (the theme stays; where each window sits is eb windows reset). popout / free say how a window leaves the game window (eb windows \<word> out); sync sends this box's theme to the crew.
+  - Also typed as: `popout`, `freewindows`.
+  - This box only.
+  - `cmd` (enum; optional; one of reset | popout | free | sync; default reset): reset | popout | free | sync
+- `eb mybutton [cmd] [arg]`: Your own buttons: the HotBar, or its editor. eb hotkey and eb alert open Keys and Alerts.
+  - Also typed as: `hotkey`, `alert`.
+  - This box only.
+  - `cmd` (enum; optional; one of button | hotkey | alert; default button): button | hotkey | alert
+  - `arg` (string; optional): what to edit
+- `eb battlestation [name]`: A workspace: which windows are open, kept under a name. save \<name> keeps the ones open now, delete \<name> forgets it, a name opens it, nothing lists them.
+  - Also typed as: `layout`.
+  - This box only.
+  - `name` (string; optional): save \<name> | delete \<name> | a name | nothing
+- `eb theme [name]`: Pick one of five themes (Black & White is the default).
+  - This box only.
+  - `name` (enum; optional; one of bw | jqb | neutral | light | accent | 3 | 4 | 5 | previous; default bw): bw | jqb | neutral | light | accent (3, 4 and 5 are the last three)
+- `eb anon [state]`: Stand-in names: every character name EB shows, in the windows and on the console, becomes Box 1, Box 2 ... eb all anon on does it on every box.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional; one of on | off; default on): on | off
+
+## Commands: Monitor / analysis
 
 What happened and what is happening: the fight meters, a fight's timeline and why, who the crew waits on, the crew board.
 
-### `eb anal [cmd] [arg]`
+- `eb anal [cmd] [arg]`: A fight as EB saw it: the EB Anal window, and on the console what it opened on (the tab worth opening on - a fight on or the newest one, the fights in the chat log, a timeline, what is watched, else what is around you - and what to do to fill it, or why it did not open), then the summary (show), the timeline, why (what held a cast back), fix (the cast-stack rows EB will not cast), export. watch \<target | me | mouse | id \<n> | a name> watches that actor in EB Anal, mark \[note\] marks this fight, save saves this run, status says what EB Anal watches and the fights and marks so far. timeline list reads the game's chat log for the named fights in it, timeline days \<n> sets how many days of the log are read (0 = all of it), timeline \<a boss> makes that boss's timeline from every pull of it in the log (EB Anal opens: it reads the log, a slice at a time, while open).
+  - Also typed as: `analysis`, `analyze`, `an`.
+  - This box only.
+  - `cmd` (enum; optional; one of timeline | show | why | fix | export | watch | mark | save | status; default show): timeline | show | why | fix | export | watch | mark | save | status
+  - `arg` (string; optional): after watch: target | me | mouse | id \<n> | a name; after mark: a note; after timeline: list | days \<n> | a boss's name (the game's chat log)
+- `eb meters [cmd]`: The crew's damage and healing meters: show the window; current says this fight's numbers.
+  - Also typed as: `dps`, `acttab`.
+  - This box only.
+  - `cmd` (enum; optional; one of show | current | export; default show): show | current | export
+- `eb announcements [cmd] [arg]`: The game's on-screen announcements this box got (the big lines across the middle of the screen: a quest update, a fight's next phase): the last ones, newest first, with how long ago. show on says each one here as it comes (show off stops it; kept for this character); clear forgets them; status says whether this box hears them. A coordination rule can answer one (its trigger: a line or an on-screen warning).
+  - Also typed as: `onscreen`.
+  - This box only.
+  - `cmd` (enum; optional; one of last | show | clear | status; default last): last | show | clear | status
+  - `arg` (string; optional): last: how many (10 when left out, at most 40); show: on | off
+- `eb waiting`: Who the crew is waiting on: each box and what it is doing, this box's goal and its run.
+  - This box only.
+- `eb crew [cmd] [arg]`: The crew board: show opens At a Glance; status says one line per box. link: several PCs in one crew, off unless you turn it on - on joins this box to the crew hub (the PC that keeps it), off leaves it, status says how it stands; hub \<address:port> names that PC (the same on every PC), host on on that PC only (a box there keeps the hub), key new makes the crew key in a file of this PC's own (copy the file to the same folder on each other PC; it is never shown), pc \<name> is the name this PC goes by. Boxes of other PCs show as \<pc>/\<box>; eb to \<pc>/\<box> reaches one of them. A box you play by hand still never moves for a line from another PC.
+  - Also typed as: `fleet`.
+  - This box only.
+  - `cmd` (enum; optional; one of show | status | link; default show): show | status | link
+  - `arg` (string; optional): link: on | off | status | hub \<address:port> | host on | off | key \[new | replace\] | pc \<name>
+- `eb sessionwatch [cmd] [value]`: Session watch: this PC's game sessions watched by their own crew - when one is not heard for the freeze seconds (30) it froze, when it is heard again it recovered, when it is not heard for the gone seconds (180) or its EB stopped it is gone. One box of the PC says each change on its console and raises the event SessionFrozen, SessionRecovered or SessionGone for your scripts. A zone load is not a freeze. Off until you turn it on, and saved for the whole PC: on / off, freeze \<s>, gone \<s> (every box of the PC takes it at once). status says how it stands, list each session (up, frozen or gone).
+  - Also typed as: `swatch`.
+  - This box only.
+  - `cmd` (enum; optional; one of status | list | on | off | freeze | gone; default status): status | list | on | off | freeze | gone
+  - `value` (string; optional): freeze / gone: whole seconds
+- `eb effects [cmd] [state]`: The Effect Tracker: what effects are called and what they say they do, zone by zone, for whoever writes the zone's fight files. With no word its window opens. on records the detriments that land on you (Player), npc on the effects on the mobs you fight (NPC: a name on its ignore list, a player's own cast, is left out), player on|off and npc on|off one each, off both. Each effect is asked its words once, ever; both are off every new session, and they stand still while the Scanner records. merge puts every character's record of the zone you are in together (merged\_\<zone>.json in your EB data folder's ebeffects, no character named in it); status says what records and how many effects this zone has on record.
+  - Also typed as: `effecttracker`.
+  - This box only.
+  - `cmd` (enum; optional; one of window | on | off | player | npc | merge | status; default window): window | on | off | player | npc | merge | status
+  - `state` (string; optional): after player / npc: on | off
 
-A fight as EB saw it: the EB Anal window, and on the console what it opened on (the tab worth opening on - a fight on or the newest one, the fights in the chat log, a timeline, what is watched, else what is around you - and what to do to fill it, or why it did not open), then the summary (show), the timeline, why (what held a cast back), fix (the cast-stack rows EB will not cast), export. watch <target | me | mouse | id <n> | a name> watches that actor in EB Anal, mark [note] marks this fight, save saves this run, status says what EB Anal watches and the fights and marks so far. timeline list reads the game's chat log for the named fights in it, timeline days <n> sets how many days of the log are read (0 = all of it), timeline <a boss> makes that boss's timeline from every pull of it in the log (EB Anal opens: it reads the log, a slice at a time, while open).
-
-*also: `analysis`, `analyze`, `an` - who: local*
-
-- `cmd` (enum, optional): timeline | show | why | fix | export | watch | mark | save | status
-- `arg` (string, optional): after watch: target | me | mouse | id <n> | a name; after mark: a note; after timeline: list | days <n> | a boss's name (the game's chat log)
-
-### `eb announcements [cmd] [arg]`
-
-The game's on-screen announcements this box got (the big lines across the middle of the screen: a quest update, a fight's next phase): the last ones, newest first, with how long ago. show on says each one here as it comes (show off stops it; kept for this character); clear forgets them; status says whether this box hears them. A coordination rule can answer one (its trigger: a line or an on-screen warning).
-
-*also: `onscreen` - who: local*
-
-- `cmd` (enum, optional): last | show | clear | status
-- `arg` (string, optional): last: how many (10 when left out, at most 40); show: on | off
-
-### `eb crew [cmd] [arg]`
-
-The crew board: show opens At a Glance; status says one line per box. link: several PCs in one crew, off unless you turn it on - on joins this box to the crew hub (the PC that keeps it), off leaves it, status says how it stands; hub <address:port> names that PC (the same on every PC), host on on that PC only (a box there keeps the hub), key new makes the crew key in a file of this PC's own (copy the file to the same folder on each other PC; it is never shown), pc <name> is the name this PC goes by. Boxes of other PCs show as <pc>/<box>; eb to <pc>/<box> reaches one of them. A box you play by hand still never moves for a line from another PC.
-
-*also: `fleet` - who: local*
-
-- `cmd` (enum, optional): show | status | link
-- `arg` (string, optional): link: on | off | status | hub <address:port> | host on | off | key [new | replace] | pc <name>
-
-### `eb effects [cmd] [state]`
-
-The Effect Tracker: what effects are called and what they say they do, zone by zone, for whoever writes the zone's fight files. With no word its window opens. on records the detriments that land on you (Player), npc on the effects on the mobs you fight (NPC: a name on its ignore list, a player's own cast, is left out), player on|off and npc on|off one each, off both. Each effect is asked its words once, ever; both are off every new session, and they stand still while the Scanner records. merge puts every character's record of the zone you are in together (merged_<zone>.json in your EB data folder's ebeffects, no character named in it); status says what records and how many effects this zone has on record.
-
-*also: `effecttracker` - who: local*
-
-- `cmd` (enum, optional): window | on | off | player | npc | merge | status
-- `state` (string, optional): after player / npc: on | off
-
-### `eb meters [cmd]`
-
-The crew's damage and healing meters: show the window; current says this fight's numbers.
-
-*also: `dps`, `acttab` - who: local*
-
-- `cmd` (enum, optional): show | current | export
-
-### `eb sessionwatch [cmd] [value]`
-
-Session watch: this PC's game sessions watched by their own crew - when one is not heard for the freeze seconds (30) it froze, when it is heard again it recovered, when it is not heard for the gone seconds (180) or its EB stopped it is gone. One box of the PC says each change on its console and raises the event SessionFrozen, SessionRecovered or SessionGone for your scripts. A zone load is not a freeze. Off until you turn it on, and saved for the whole PC: on / off, freeze <s>, gone <s> (every box of the PC takes it at once). status says how it stands, list each session (up, frozen or gone).
-
-*also: `swatch` - who: local*
-
-- `cmd` (enum, optional): status | list | on | off | freeze | gone
-- `value` (string, optional): freeze / gone: whole seconds
-
-### `eb waiting`
-
-Who the crew is waiting on: each box and what it is doing, this box's goal and its run.
-
-*who: local*
-
-
-<a id="coord"></a>
-## Coordination / tags
+## Commands: Coordination / tags
 
 Working together: ability tags, one cure and one rez per target across the crew, rules in plain words.
 
-### `eb chain [cmd] [words]`
+- `eb tags [cmd] [arg]`: Ability tags, so the boxes time things together: list them, add, remove, set \<tag> on|off, sync, check, backup, restore, status.
+  - Also typed as: `tm`, `tagmanager`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of list | add | remove | set | sync | cs | check | auto | backup | restore | status; default list): list | add | remove | set | sync | cs | check | auto | backup | restore | status
+  - `arg` (string; optional): a tag or an ability
+- `eb claim [cmd] [action]`: Who has taken a cure, a rez or a group action, so two boxes never do the same one: status, release.
+  - This box only.
+  - `cmd` (enum; optional; one of status | release; default status): status | release
+  - `action` (string; optional): cure, rez ...
+- `eb chain [cmd] [words]`: Chains: step lists run beside the fight, one step a tick - cast an ability (the checked cast; if \<condition> skips it), wait some seconds or until a condition holds, stop unless a condition holds, say a line (group / raid chat, or this console), fire a coordination tag, run an eb command, keep a checkpoint. Conditions: mob below / above \<N>, me below / above \<N>, power below / above \<N>, mobs \<N>, fight, no fight, tag \<name>, no tag \<name>, ready \<ability>. save keeps one, run starts it, stop ends it (or every one), resume starts it again after the last checkpoint it passed (kept across an eb reload) or the one named, status says what runs and what it waits for, show its steps, delete. A line another box sent never starts a chain on a box played by hand; EB paused on a box stops its chains.
+  - Also typed as: `chains`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of list | show | save | run | stop | resume | status | delete; default list): list | show | save | run | stop | resume | status | delete
+  - `words` (string; optional): show / run / delete: \<name>; save: \<name>: \<step> | \<step> | ... (cast \<ability> \[on \<who>\] \[if \<condition>\] | wait \<s> | wait until \<condition> \[\<s>\] | if \<condition> | say \[group|raid\] \<text> | tag \<tag> \[\<s>\] | do \<eb line> | checkpoint \<name>); resume: \<name> \[at \<checkpoint>\]; stop: \[\<name>\]
+- `eb rules [cmd] [arg]`: Rules in plain words: when \<something happens> do \<something> for \<who>. list, add, edit, remove, enable or disable one, show one, status, what fired lately, reload the file, import a cast stack's tags, fire a tag, run a rule now, lift a hold, the words a rule takes; builder opens the Coordination window.
+  - This box only.
+  - `cmd` (enum; optional; one of list | add | edit | remove | enable | disable | show | status | fired | reload | import | fire | run | lift | words | builder; default list): list | add | edit | remove | enable | disable | show | status | fired | reload | import | fire | run | lift | words | builder
+  - `arg` (string; optional): a rule, its id, a tag (fire), what to lift (all)
 
-Chains: step lists run beside the fight, one step a tick - cast an ability (the checked cast; if <condition> skips it), wait some seconds or until a condition holds, stop unless a condition holds, say a line (group / raid chat, or this console), fire a coordination tag, run an eb command, keep a checkpoint. Conditions: mob below / above <N>, me below / above <N>, power below / above <N>, mobs <N>, fight, no fight, tag <name>, no tag <name>, ready <ability>. save keeps one, run starts it, stop ends it (or every one), resume starts it again after the last checkpoint it passed (kept across an eb reload) or the one named, status says what runs and what it waits for, show its steps, delete. A line another box sent never starts a chain on a box played by hand; EB paused on a box stops its chains.
-
-*also: `chains` - who: local, all, others, to*
-
-- `cmd` (enum, optional): list | show | save | run | stop | resume | status | delete
-- `words` (string, optional): show / run / delete: <name>; save: <name>: <step> | <step> | ... (cast <ability> [on <who>] [if <condition>] | wait <s> | wait until <condition> [<s>] | if <condition> | say [group|raid] <text> | tag <tag> [<s>] | do <eb line> | checkpoint <name>); resume: <name> [at <checkpoint>]; stop: [<name>]
-
-### `eb claim [cmd] [action]`
-
-Who has taken a cure, a rez or a group action, so two boxes never do the same one: status, release.
-
-*who: local*
-
-- `cmd` (enum, optional): status | release
-- `action` (string, optional): cure, rez ...
-
-### `eb rules [cmd] [arg]`
-
-Rules in plain words: when <something happens> do <something> for <who>. list, add, edit, remove, enable or disable one, show one, status, what fired lately, reload the file, import a cast stack's tags, fire a tag, run a rule now, lift a hold, the words a rule takes; builder opens the Coordination window.
-
-*who: local*
-
-- `cmd` (enum, optional): list | add | edit | remove | enable | disable | show | status | fired | reload | import | fire | run | lift | words | builder
-- `arg` (string, optional): a rule, its id, a tag (fire), what to lift (all)
-
-### `eb tags [cmd] [arg]`
-
-Ability tags, so the boxes time things together: list them, add, remove, set <tag> on|off, sync, check, backup, restore, status.
-
-*also: `tm`, `tagmanager` - who: local, all, others, to*
-
-- `cmd` (enum, optional): list | add | remove | set | sync | cs | check | auto | backup | restore | status
-- `arg` (string, optional): a tag or an ability
-
-
-<a id="util"></a>
-## Utility
+## Commands: Utility
 
 Settings, presets, your own words for lines, timers, what EB costs a frame, logs and reports.
 
-### `eb alias [name] [expansion]`
-
-Your own word for a whole line: eb alias <word> <line>. @<role> <who> names a box for eb to. <word> off forgets it; nothing lists them.
-
-*who: local*
-
-- `name` (string, optional): the word, or @role
-- `expansion` (string, optional): the line it stands for (or off)
-
-### `eb debug [area] [state]`
-
-Extra lines on the console, area by area (brain, combat, coord, crew, economy, nav, overlay): on or off; nothing lists them.
-
-*also: `d` - who: local*
-
-- `area` (string, optional): the area
-- `state` (onoff, optional): on | off (nothing: flip it)
-
-### `eb debugreport`
-
-Write one report with what a fix needs: what came up, the windows, the frame cost, the last lines (character names left out).
-
-*who: local*
-
-### `eb dumplog [cmd] [arg]`
-
-Write what EB said this session to a file (dump), or forget it (clear); file on writes every line EB says to a file for this character all the time (written every 10 s), file off stops it.
-
-*also: `savelog`, `clearlog` - who: local*
-
-- `cmd` (enum, optional): dump | clear | file
-- `arg` (string, optional): after file: on | off
-
-### `eb errands [cmd] [what]`
-
-The writs (run them, list them) and the errand run. plan says what the errand run would do for this character, go does it: trainer (the class trainer's wares it does not know yet), portals (a wizard's or warlock's Translocate, a fury's or warden's Circle of Growth, from level 25), mount (the cheapest ground mount, when it owns none) - none named: trainer and portals; nogh: no Call to Guild Hall at the end; budget <coin>: the most the whole run may cost (1 platinum when none is named) - each ware's price is read off the merchant's own row first, and one that would pass it, or whose price does not read, is not bought. Each stop by EB's own travel, the walk to the NPC, the ware bought and used, then the ability export when a ware came in; stop ends it, status says where it is and what it spent. city says which city this character's errands go to - city <city> picks one (trainer or mount first for that errand only; auto = its side's home city again), kept on this PC per character; the Linguist trip goes to the trainer city's Linguist too.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): run | list | city | plan | go | stop | status
-- `what` (string, optional): plan / go: trainer, portals, mount (none: trainer and portals), nogh, budget <coin>; city: [trainer | mount] [<city> | auto]
-
-### `eb export [what]`
-
-Write a snapshot to a file: abilities, gear, settings or the log.
-
-*who: local*
-
-- `what` (enum, optional): abilities | gear | settings | log
-
-### `eb fps [cmd] [arg]`
-
-What EB costs: the frame rate and EB's share of a frame, with a verdict; framedump lists each job's time (and the machine), stallcheck the ones over budget, bench measures for 30 seconds; drops <ms> logs every frame that came later than that to a file; profile on says EB's jobs by their time every 3 s; ui lists each window's pushes; reads lists the game reads by kind (reset starts again); machine says what EB can tell of this PC.
-
-*also: `perf`, `framedump`, `fd` - who: local*
-
-- `cmd` (enum, optional): fps | framedump | stalldump | stallcheck | bench | drops | profile | ui | reads | machine
-- `arg` (string, optional): after drops: <ms> | off; after profile: on | off; after reads: reset
-
-### `eb grabloc [coords] [item]`
-
-Place an item at a spot (a house item).
-
-*also: `placeitem` - who: local, all, others, to*
-
-- `coords` (coords, optional): x y z
-- `item` (item, optional): the item
-
-### `eb graphics [cmd] [value]`
-
-The game's look on this box - what costs frames on a box you do not watch: the spell effects, glowing surfaces and scenery drawn or hidden (they stay set across sessions), and the game's graphics preset or particle priority (a setting that stays: EB says the game's own line for you to type, it never sends one by itself). status says how they stand.
-
-*also: `gfx` - who: local*
-
-- `cmd` (enum, optional): status | effects | glow | scenery | preset | low | particles
-- `value` (string, optional): effects / glow / scenery: on | off; preset: 0 (the highest) to 6 (the lowest); particles: the game's own number
-
-### `eb key [key] [how] [seconds]`
-
-A key on this box's game window: press (one tap, the default), hold (down - for some seconds, then let go - or until release), release. For a rule's or a timer's line too (eb timer add jumpy 30s eb key space). On a box played by hand only a line typed or pressed there goes. Nothing: the keys EB holds down; release alone lets go of every one.
-
-*also: `presskey` - who: local, all, others, to*
-
-- `key` (string, optional): a key name: F1, space, "Num 1", ctrl+f1 (release alone: every key EB holds)
-- `how` (enum, optional): press | hold | release
-- `seconds` (int, optional): hold: let go after so many seconds (30 at most)
-
-### `eb preset [cmd] [name]`
-
-Presets: list them, load one, save this box's values under a name, delete one.
-
-*also: `presets` - who: local, all, others, to*
-
-- `cmd` (enum, optional): save | load | delete | list
-- `name` (string, optional): the preset
-
-### `eb script [cmd] [words]`
-
-Your own scripts: Lua files in your scripts folder (and the shipped examples) whose header lines become real options in the Scripts window, with a panel, pages of their own and tests. eb script alone opens the Scripts window; list and info show them; run, stop and test on just me, my group, every PC over IRC or every box online (a box played by hand never starts one from another box, and a PC without the script says so); set and unset keep an option for every character or for one; new writes a starter script, copy puts an example in your folder (never over a file of yours), reload reads the folders now; button, page, pageclose and pick do what the window's do; sound, speak and banner play through EB's window host. Any other word runs that script.
-
-*also: `userscripts`, `myscripts` - who: local, all, others, to*
-
-- `cmd` (enum, optional): list | info | run | stop | test | results | set | unset | new | copy | reload | button | page | pageclose | pick | sound | speak | banner | open | close | toggle | who | edit | select | help; any other word runs that script
-- `words` (string, optional): the script's name, then its words: run / test <Name> [me | group | irc | all]; stop <Name> or all [who]; set <Name> <key> <value> [for me | all | <character>]; unset <Name> <key>; copy <Example> [new name]; button <Name> <n> [who]; page <Name> [n] [at <x> <y>]; pick <Name> <key>; results <Name> [clear]; sound <name> [volume] or stop; speak <words> or stop; banner <words> [kind] [seconds]
-
-### `eb set [key] [value]`
-
-Read or change a setting: with no key, what is set; a key alone reads it; a key and a value sets it (on | off, a number, or plain words - never quotes or brackets).
-
-*also: `get`, `settings` - who: local, all, others, to*
-
-- `key` (string, optional): the setting
-- `value` (string, optional): its new value (left out: read it); toggle flips an on / off one
-
-### `eb stat [kind] [name]`
-
-One stat or currency of this character as a line: eb stat potency, eb stat currency <name>. eb all stat potency = every box answers for itself.
-
-*who: local, all, others, to*
-
-- `kind` (enum, optional): stat | currency
-- `name` (string, optional): the stat (potency, crit bonus ...) or the currency
-
-### `eb streamer [state]`
-
-Streamer mode: stand-in names, and chat, tells and coin hidden in the windows. eb all streamer on does it on every box.
-
-*who: local, all, others, to*
-
-- `state` (onoff, optional): on | off
-
-### `eb timer [cmd] [arg]`
-
-Named timers: add one - a name, then when: a time (90, 5m, 1h30m) [every], at h:mm by this PC's clock [every day], level adv|ts|aa <n> (once this character reaches it), or journal <quest> then (once that quest is done) - and the eb line to run (or words to say); list them, clear.
-
-*also: `timers` - who: local*
-
-- `cmd` (enum, optional): add | list | clear
-- `arg` (string, optional): a name, then a time [every] | at h:mm [every day] | level adv|ts|aa n | journal <quest> then - and the eb line
-
-### `eb tlocheck [expr]`
-
-Check that a game read EB depends on works here, and how long it takes.
-
-*also: `tlc`, `tloprof` - who: local*
-
-- `expr` (string, optional): the read to try
-
-### `eb trainer [cmd] [what]`
-
-Your class trainer. list says this class's trainer in each city (the NPC, its zone and its spot), the one this character goes to (its errand city, else its side's home city) and the wares it would buy, the known ones said - then what the trainer's own window offers when EB reads it. go is the errand run's trainer errand alone: EB's own travel to that trainer, each ware not known yet bought and used, then the ability export and Call to Guild Hall (nogh: no hall; budget <coin>: the most it may cost, 1 platinum when none is named). train spends training points on the abilities your train list names.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): list | go | train
-- `what` (string, optional): go: nogh, budget <coin>
-
-### `eb tts [cmd] [text]`
-
-A tell read out loud, and EB's voice: on or off (off drops at once what waits to be said); from all, group or others (whose tells); the voice's rate, volume and voice; voices (the ones installed on this PC, as EB's window host lists them); test; debug (every chat line's type for 2 minutes); type (the chat type a player's tell is); mute (nothing played or spoken on this PC). With nothing after it, opens Keys and Alerts; with words, says them out loud on this PC, one line after another.
-
-*who: local, all, others, to*
-
-- `cmd` (enum, optional): status | on | off | from | test | rate | volume | voice | voices | debug | type | mute
-- `text` (string, optional): from: all | group | others; rate: -10..10; volume: 0..100; voice: a part of a voice's name; debug / mute: on | off; type: the chat type; no word first: words to say now
-
-### `eb uiscan [what] [window]`
-
-Read one of the game's windows as EB sees it: its parts, by their names.
-
-*who: local*
-
-- `what` (enum, optional): list | all
-- `window` (string, optional): the window's name
-
-### `eb update [cmd]`
-
-How EB updates: EB Setup does it, outside the game, each time it starts EB.
-
-*also: `u` - who: local*
-
-- `cmd` (enum, optional): check | apply
+- `eb set [key] [value]`: Read or change a setting: with no key, what is set; a key alone reads it; a key and a value sets it (on | off, a number, or plain words - never quotes or brackets).
+  - Also typed as: `get`, `settings`.
+  - For the crew: `all`, `others`, `to`.
+  - `key` (string; optional): the setting
+  - `value` (string; optional): its new value (left out: read it); toggle flips an on / off one
+- `eb preset [cmd] [name]`: Presets: list them, load one, save this box's values under a name, delete one.
+  - Also typed as: `presets`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of save | load | delete | list; default list): save | load | delete | list
+  - `name` (string; optional): the preset
+- `eb key [key] [how] [seconds]`: A key on this box's game window: press (one tap, the default), hold (down - for some seconds, then let go - or until release), release. For a rule's or a timer's line too (eb timer add jumpy 30s eb key space). On a box played by hand only a line typed or pressed there goes. Nothing: the keys EB holds down; release alone lets go of every one.
+  - Also typed as: `presskey`.
+  - For the crew: `all`, `others`, `to`.
+  - `key` (string; optional): a key name: F1, space, "Num 1", ctrl+f1 (release alone: every key EB holds)
+  - `how` (enum; optional; one of press | hold | release; default press): press | hold | release
+  - `seconds` (int; optional): hold: let go after so many seconds (30 at most)
+- `eb timer [cmd] [arg]`: Named timers: add one - a name, then when: a time (90, 5m, 1h30m) \[every\], at h:mm by this PC's clock \[every day\], level adv|ts|aa \<n> (once this character reaches it), or journal \<quest> then (once that quest is done) - and the eb line to run (or words to say); list them, clear.
+  - Also typed as: `timers`.
+  - This box only.
+  - `cmd` (enum; optional; one of add | list | clear; default list): add | list | clear
+  - `arg` (string; optional): a name, then a time \[every\] | at h:mm \[every day\] | level adv|ts|aa n | journal \<quest> then - and the eb line
+- `eb alias [name] [expansion]`: Your own word for a whole line: eb alias \<word> \<line>. @\<role> \<who> names a box for eb to. \<word> off forgets it; nothing lists them.
+  - This box only.
+  - `name` (string; optional): the word, or @role
+  - `expansion` (string; optional): the line it stands for (or off)
+- `eb tts [cmd] [text]`: A tell read out loud, and EB's voice: on or off (off drops at once what waits to be said); from all, group or others (whose tells); the voice's rate, volume and voice; voices (the ones installed on this PC, as EB's window host lists them); test; debug (every chat line's type for 2 minutes); type (the chat type a player's tell is); mute (nothing played or spoken on this PC). With nothing after it, opens Keys and Alerts; with words, says them out loud on this PC, one line after another.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of status | on | off | from | test | rate | volume | voice | voices | debug | type | mute): status | on | off | from | test | rate | volume | voice | voices | debug | type | mute
+  - `text` (string; optional): from: all | group | others; rate: -10..10; volume: 0..100; voice: a part of a voice's name; debug / mute: on | off; type: the chat type; no word first: words to say now
+- `eb stat [kind] [name]`: One stat or currency of this character as a line: eb stat potency, eb stat currency \<name>. eb all stat potency = every box answers for itself.
+  - For the crew: `all`, `others`, `to`.
+  - `kind` (enum; optional; one of stat | currency; default stat): stat | currency
+  - `name` (string; optional): the stat (potency, crit bonus ...) or the currency
+- `eb export [what]`: Write a snapshot to a file: abilities, gear, settings or the log.
+  - This box only.
+  - `what` (enum; optional; one of abilities | gear | settings | log; default abilities): abilities | gear | settings | log
+- `eb debug [area] [state]`: Extra lines on the console, area by area (brain, combat, coord, crew, economy, nav, overlay): on or off; nothing lists them.
+  - Also typed as: `d`.
+  - This box only.
+  - `area` (string; optional): the area
+  - `state` (onoff; optional): on | off (nothing: flip it)
+- `eb dumplog [cmd] [arg]`: Write what EB said this session to a file (dump), or forget it (clear); file on writes every line EB says to a file for this character all the time (written every 10 s), file off stops it.
+  - Also typed as: `savelog`, `clearlog`.
+  - This box only.
+  - `cmd` (enum; optional; one of dump | clear | file; default dump): dump | clear | file
+  - `arg` (string; optional): after file: on | off
+- `eb fps [cmd] [arg]`: What EB costs: the frame rate and EB's share of a frame, with a verdict; framedump lists each job's time (and the machine), stallcheck the ones over budget, bench measures for 30 seconds; drops \<ms> logs every frame that came later than that to a file; profile on says EB's jobs by their time every 3 s; ui lists each window's pushes; reads lists the game reads by kind (reset starts again); machine says what EB can tell of this PC.
+  - Also typed as: `perf`, `framedump`, `fd`.
+  - This box only.
+  - `cmd` (enum; optional; one of fps | framedump | stalldump | stallcheck | bench | drops | profile | ui | reads | machine; default fps): fps | framedump | stalldump | stallcheck | bench | drops | profile | ui | reads | machine
+  - `arg` (string; optional): after drops: \<ms> | off; after profile: on | off; after reads: reset
+- `eb uiscan [what] [window]`: Read one of the game's windows as EB sees it: its parts, by their names.
+  - This box only.
+  - `what` (enum; optional; one of list | all; default list): list | all
+  - `window` (string; optional): the window's name
+- `eb graphics [cmd] [value]`: The game's look on this box - what costs frames on a box you do not watch: the spell effects, glowing surfaces and scenery drawn or hidden (they stay set across sessions), and the game's graphics preset or particle priority (a setting that stays: EB says the game's own line for you to type, it never sends one by itself). status says how they stand.
+  - Also typed as: `gfx`.
+  - This box only.
+  - `cmd` (enum; optional; one of status | effects | glow | scenery | preset | low | particles; default status): status | effects | glow | scenery | preset | low | particles
+  - `value` (string; optional): effects / glow / scenery: on | off; preset: 0 (the highest) to 6 (the lowest); particles: the game's own number
+- `eb tlocheck [expr]`: Check that a game read EB depends on works here, and how long it takes.
+  - Also typed as: `tlc`, `tloprof`.
+  - This box only.
+  - `expr` (string; optional): the read to try
+- `eb script [cmd] [words]`: Your own scripts: Lua files in your scripts folder (and the shipped examples) whose header lines become real options in the Scripts window, with a panel, pages of their own and tests. eb script alone opens the Scripts window; list and info show them; run, stop and test on just me, my group, every PC over IRC or every box online (a box played by hand never starts one from another box, and a PC without the script says so); set and unset keep an option for every character or for one; new writes a starter script, copy puts an example in your folder (never over a file of yours), reload reads the folders now; button, page, pageclose and pick do what the window's do; sound, speak and banner play through EB's window host. Any other word runs that script.
+  - Also typed as: `userscripts`, `myscripts`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of list | info | run | stop | test | results | set | unset | new | copy | reload | button | page | pageclose | pick | sound | speak | banner | open | close | toggle | who | edit | select | help): list | info | run | stop | test | results | set | unset | new | copy | reload | button | page | pageclose | pick | sound | speak | banner | open | close | toggle | who | edit | select | help; any other word runs that script
+  - `words` (string; optional): the script's name, then its words: run / test \<Name> \[me | group | irc | all\]; stop \<Name> or all \[who\]; set \<Name> \<key> \<value> \[for me | all | \<character>\]; unset \<Name> \<key>; copy \<Example> \[new name\]; button \<Name> \<n> \[who\]; page \<Name> \[n\] \[at \<x> \<y>\]; pick \<Name> \<key>; results \<Name> \[clear\]; sound \<name> \[volume\] or stop; speak \<words> or stop; banner \<words> \[kind\] \[seconds\]
+- `eb grabloc [coords] [item]`: Place an item at a spot (a house item).
+  - Also typed as: `placeitem`.
+  - For the crew: `all`, `others`, `to`.
+  - `coords` (coords; optional): x y z
+  - `item` (item; optional): the item
+- `eb trainer [cmd] [what]`: Your class trainer. list says this class's trainer in each city (the NPC, its zone and its spot), the one this character goes to (its errand city, else its side's home city) and the wares it would buy, the known ones said - then what the trainer's own window offers when EB reads it. go is the errand run's trainer errand alone: EB's own travel to that trainer, each ware not known yet bought and used, then the ability export and Call to Guild Hall (nogh: no hall; budget \<coin>: the most it may cost, 1 platinum when none is named). train spends training points on the abilities your train list names.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of list | go | train; default list): list | go | train
+  - `what` (string; optional): go: nogh, budget \<coin>
+- `eb errands [cmd] [what]`: The writs (run them, list them) and the errand run. plan says what the errand run would do for this character, go does it: trainer (the class trainer's wares it does not know yet), portals (a wizard's or warlock's Translocate, a fury's or warden's Circle of Growth, from level 25), mount (the cheapest ground mount, when it owns none) - none named: trainer and portals; nogh: no Call to Guild Hall at the end; budget \<coin>: the most the whole run may cost (1 platinum when none is named) - each ware's price is read off the merchant's own row first, and one that would pass it, or whose price does not read, is not bought. Each stop by EB's own travel, the walk to the NPC, the ware bought and used, then the ability export when a ware came in; stop ends it, status says where it is and what it spent. city says which city this character's errands go to - city \<city> picks one (trainer or mount first for that errand only; auto = its side's home city again), kept on this PC per character; the Linguist trip goes to the trainer city's Linguist too.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of run | list | city | plan | go | stop | status; default run): run | list | city | plan | go | stop | status
+  - `what` (string; optional): plan / go: trainer, portals, mount (none: trainer and portals), nogh, budget \<coin>; city: \[trainer | mount\] \[\<city> | auto\]
+- `eb update [cmd]`: How EB updates: EB Setup does it, outside the game, each time it starts EB.
+  - Also typed as: `u`.
+  - This box only.
+  - `cmd` (enum; optional; one of check | apply; default check): check | apply
+- `eb debugreport`: Write one report with what a fix needs: what came up, the windows, the frame cost, the last lines (character names left out).
+  - This box only.
+- `eb streamer [state]`: Streamer mode: stand-in names, and chat, tells and coin hidden in the windows. eb all streamer on does it on every box.
+  - For the crew: `all`, `others`, `to`.
+  - `state` (onoff; optional): on | off

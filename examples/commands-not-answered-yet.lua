@@ -1,15 +1,19 @@
--- Which commands this box answers
+-- EB tested example: Which commands this box answers
+-- commands-not-answered-yet | snippet | topics: commands
 --
--- reg:unattached lists the declared commands nothing on this box answers yet (each part of EB attaches its commands as it starts; a part that did not start leaves its commands there, and eb status says which). Such a command - here a script's own, declared before it has a handler, in a registry built from EB's command list - is refused in plain words when typed, never run (EB Help marks such a row "this box does not answer it yet").
+-- What it does:  reg:unattached lists the declared commands nothing on this box answers yet (each part of EB attaches its
+--                commands as it starts; a part that did not start leaves its commands there, and eb status says which). Such a
+--                command - here a script's own, declared before it has a handler, in a registry built from EB's command list - is
+--                refused in plain words when typed, never run (EB Help marks such a row "this box does not answer it yet").
+-- Tested:        the core commands are answered on the booted box; the script's own command, declared without a handler, is
+--                listed by unattached and refused plainly (it does not answer on this box yet) until a handler is attached.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    the core commands are answered on the booted box; the script's own command, declared without a handler, is listed by unattached and refused plainly (it does not answer on this box yet) until a handler is attached.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.registry, commands.util
--- id:        commands-not-answered-yet
-
 -- offline stand-in: the whole of EB for InnerSpace booted by its real boot
 local a = DOCS.app()
 

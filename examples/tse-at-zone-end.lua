@@ -1,15 +1,18 @@
--- The T.S.E at the zone's end, inside
+-- EB tested example: The T.S.E at the zone's end, inside
+-- tse-at-zone-end | snippet | topics: instances, tasks
 --
--- Looping one zone, the chores run once at the END of each run, inside the copy where the run ended: every box runs its saved T.S.E pass first, then a repair trip if gear is low. Only then does the tank wait out the timer, leave by the exit and reset. Here the T.S.E call records the zone it ran in.
+-- What it does:  Looping one zone, the chores run once at the END of each run, inside the copy where the run ended: every box
+--                runs its saved T.S.E pass first, then a repair trip if gear is low. Only then does the tank wait out the timer,
+--                leave by the exit and reset. Here the T.S.E call records the zone it ran in.
+-- Tested:        The T.S.E runs once, for every box, while the tank is still inside the cleared copy; the loop then ends after
+--                its one lap.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The T.S.E runs once, for every box, while the tank is still inside the cleared copy; the loop then ends after its one lap.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        tse-at-zone-end
-
 local INSTANCE = {
     schema = "eb.ic/1", zone = "Fixture Hollow", short = "fixture_hollow",
     hub = { zone = "fixture_docks", entrance = { loc = { 0, 0, 0 }, tolerance = 8 },

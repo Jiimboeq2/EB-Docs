@@ -1,15 +1,18 @@
--- Swim corners, the water's surface and no dive in a fight
+-- EB tested example: Swim corners, the water's surface and no dive in a fight
+-- nav-swim-surface | snippet | topics: nav, fights
 --
--- The swim corner decision is pure: climb toward a higher corner, dive toward a lower one - but never dive while a fight is on. The mesh's liquid surface says whether you are under water. A goal under the surface that the mesh has no route to is NOT swum to: the walk fails, saying the spot is in open water the mesh does not reach.
+-- What it does:  The swim corner decision is pure: climb toward a higher corner, dive toward a lower one - but never dive while a
+--                fight is on. The mesh's liquid surface says whether you are under water. A goal under the surface that the mesh
+--                has no route to is NOT swum to: the walk fails, saying the spot is in open water the mesh does not reach.
+-- Tested:        A corner below is a dive; the same dive in a fight holds; you are under the surface; a goal under the water is
+--                said to be in open water the mesh does not reach - and never swum to straight.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A corner below is a dive; the same dive in a fight holds; you are under the surface; a goal under the water is said to be in open water the mesh does not reach - and never swum to straight.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav_swim, eb.nav_swimout, eb.navd
--- id:        nav-swim-surface
-
 -- offline stand-in: EB's mesh extension over a toy lake whose surface stands 1 m over the floor east of x = 60
 local w = DOCS.world({ me = { x = 70, y = -2, z = 0 } })
 require("nav.lib.ebnav").attach(w, { zone = "fixture_hollow", lavaAt = 1e9 })

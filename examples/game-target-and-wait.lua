@@ -1,15 +1,16 @@
--- Target an actor and wait for it to take
+-- EB tested example: Target an actor and wait for it to take
+-- game-target-and-wait | snippet | topics: game, combat, helpers
 --
--- TargetActor(id) sends the target; WaitTarget(id, seconds) confirms it took. A wait needs an EB task, so the whole step runs inside one.
+-- What it does:  TargetActor(id) sends the target; WaitTarget(id, seconds) confirms it took. A wait needs an EB task, so the
+--                whole step runs inside one.
+-- Tested:        The target changes to the chosen actor and WaitTarget confirms it inside the task.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The target changes to the chosen actor and WaitTarget confirms it inside the task.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game, eb.platform
--- id:        game-target-and-wait
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.addActor({ id = 220, name = "a fixture boar", distance = 9 })

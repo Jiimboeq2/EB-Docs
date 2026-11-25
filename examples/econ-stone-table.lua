@@ -1,15 +1,18 @@
--- Read a stone merchant's rows
+-- EB tested example: Read a stone merchant's rows
+-- econ-stone-table | snippet | topics: items
 --
--- merchantread turns the rows of a merchant that sells transmuter's stones for a currency into a table: the currency the stones cost, the stones cheapest first, and the exchange rows that turn another currency into it. pickStone chooses one, usableExchanges says which exchanges you can pay for, and stopReason says why a run should stop. All pure: they read what the window driver handed back, never the game.
+-- What it does:  merchantread turns the rows of a merchant that sells transmuter's stones for a currency into a table: the
+--                currency the stones cost, the stones cheapest first, and the exchange rows that turn another currency into it.
+--                pickStone chooses one, usableExchanges says which exchanges you can pay for, and stopReason says why a run
+--                should stop. All pure: they read what the window driver handed back, never the game.
+-- Tested:        The stones cost Fixture Crests; the 25-crest exchange is usable with crowns; a maxed skill stops the run.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The stones cost Fixture Crests; the 25-crest exchange is usable with crowns; a maxed skill stops the run.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.merchantread
--- id:        econ-stone-table
-
 -- the merchant's rows, as a window driver reads them
 local rows = {
     { index = 1, name = "Greater Transmuter's Stone", price = { amount = 12, currency = "Fixture Crest" } },

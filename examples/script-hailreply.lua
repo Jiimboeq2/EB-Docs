@@ -1,16 +1,17 @@
--- Hail and answer an NPC (complete script)
+-- EB tested example: Hail and answer an NPC (complete script)
+-- script-hailreply | complete script | topics: dialogs, quests, helpers, recipes
 --
--- A drop-in script that hails your target and walks a conversation by the words of each reply you want, in the speech bubble or the classic conversation window, then ends.
+-- What it does:  A drop-in script that hails your target and walks a conversation by the words of each reply you want, in the
+--                speech bubble or the classic conversation window, then ends.
+-- Where it goes: InnerSpace/Scripts/eb_hailreply.lua (save it as eb_hailreply.lua)
+-- Run it:        lua eb_hailreply "hollow" "help"
+-- Needs:         - EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
+--                - the NPC targeted and close enough to hail
+-- Tested:        Hails, picks the reply containing each wanted word in turn (bubble and classic), and reports what it chose.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_hailreply.lua
--- run:       lua eb_hailreply "hollow" "help"
--- needs:     EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
---            the NPC targeted and close enough to hail
--- expect:    Hails, picks the reply containing each wanted word in turn (bubble and classic), and reports what it chose.
--- verified:  on the offline stand-in for the game
--- id:        script-hailreply
-
 -- eb_hailreply.lua - hail your target and answer its conversation by words.
 --
 --   lua eb_hailreply "<words>" ["<words>" ...]    hail, then for each step pick the reply that contains <words>

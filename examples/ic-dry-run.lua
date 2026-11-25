@@ -1,15 +1,16 @@
--- Dry-run an instance file
+-- EB tested example: Dry-run an instance file
+-- ic-dry-run | snippet | topics: instances, helpers
 --
--- Run an instance with dry = true: every step reports what it would do and nothing is sent to the game - no walk, no door, no pull. Use it to check a new file before a real run.
+-- What it does:  Run an instance with dry = true: every step reports what it would do and nothing is sent to the game - no walk,
+--                no door, no pull. Use it to check a new file before a real run.
+-- Tested:        The dry run completes, prints its would-do lines, and the world records no movement and no fight.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The dry run completes, prints its would-do lines, and the world records no movement and no fight.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        ic-dry-run
-
 local INSTANCE = {
     schema = "eb.ic/1", zone = "Fixture Hollow", short = "fixture_hollow",
     hub = { zone = "fixture_docks", door = { actor = "a fixture rift", verb = "enter" } },

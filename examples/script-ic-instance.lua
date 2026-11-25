@@ -1,22 +1,25 @@
--- A whole instance file: hub, door, route, camp spots, pulls, loop (complete script)
+-- EB tested example: A whole instance file: hub, door, route, camp spots, pulls, loop (complete script)
+-- script-ic-instance | complete script | topics: instances, recipes, tasks
 --
--- The instance.lua of a complete instance run: the hub and its door, the route STEPS the tank runs (camp spots for the group, walks, the trash pull, the named fight, the chest, the exit), a run option and the loop settings. Drop it in with its two encounter files and type eb ic run fixture_hollow.
+-- What it does:  The instance.lua of a complete instance run: the hub and its door, the route STEPS the tank runs (camp spots for
+--                the group, walks, the trash pull, the named fight, the chest, the exit), a run option and the loop settings.
+--                Drop it in with its two encounter files and type eb ic run fixture_hollow.
+-- Where it goes: EB/data/eb/ic/<collection>/fixture_hollow/instance.lua (save it as instance.lua)
+-- Run it:        eb ic run fixture_hollow
+--                eb ic run fixture_hollow stay_inside=off
+--                eb ic loop fixture_hollow 120
+--                eb ic stop
+-- Needs:         - EB running on every box of the group, the tank's box typing the command
+--                - the folder fixture_hollow in one of the collection folders under data/eb/ic (EB has none of its own yet)
+--                - its encounters folder beside instance.lua: encounters/hollow_skitters.lua, encounters/overseer_of_fixtures.lua
+--                - every box already in the hub zone (fixture_docks); the tank walks to the door and zones the group in
+-- Tested:        EB's eb ic run finds the file and starts the run as the lead; the same files run to completion through the
+--                instance runner: zoned in by the tank, the pack pulled and cleared, the named killed, the chest taken, the run
+--                ending inside (or out by the exit door with stay_inside=off), and two laps of the loop with the wait inside.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      EB/data/eb/ic/<collection>/fixture_hollow/instance.lua
--- run:       eb ic run fixture_hollow
---            eb ic run fixture_hollow stay_inside=off
---            eb ic loop fixture_hollow 120
---            eb ic stop
--- needs:     EB running on every box of the group, the tank's box typing the command
---            the folder fixture_hollow in one of the collection folders under data/eb/ic (EB has none of its own yet)
---            its encounters folder beside instance.lua: encounters/hollow_skitters.lua, encounters/overseer_of_fixtures.lua
---            every box already in the hub zone (fixture_docks); the tank walks to the door and zones the group in
--- expect:    EB's eb ic run finds the file and starts the run as the lead; the same files run to completion through the instance runner: zoned in by the tank, the pack pulled and cleared, the named killed, the chest taken, the run ending inside (or out by the exit door with stay_inside=off), and two laps of the loop with the wait inside.
--- verified:  on the offline stand-in for the game
--- modules:   eb.ic, eb.app.ic
--- id:        script-ic-instance
-
 -- fixture_hollow/instance.lua - one instance as data: nothing runs when EB loads it. The tank's box runs it: every
 -- box gets to the hub on its own, the tank alone walks the hub to the door and zones the group in, then runs these
 -- steps inside while the group holds on the tank's camp spots. Characters move only by walking the mesh.

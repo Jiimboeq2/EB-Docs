@@ -1,15 +1,18 @@
--- Sell the T.S.E pick at the merchant instead
+-- EB tested example: Sell the T.S.E pick at the merchant instead
+-- tse-sell-pick | snippet | topics: tasks, items
 --
--- tse:sell (the T.S.E of the economy EB builds for the box) resolves the pick from the bags by the T.S.E config (a names list and/or a set of tiers), takes each pick item's adornments off and keeps them, opens the merchant in reach, sells the pick item by item through the rules-gated item action, and closes the window. With no pick configured it sells nothing. Items the game has not told the type of are never in a pick.
+-- What it does:  tse:sell (the T.S.E of the economy EB builds for the box) resolves the pick from the bags by the T.S.E config (a
+--                names list and/or a set of tiers), takes each pick item's adornments off and keeps them, opens the merchant in
+--                reach, sells the pick item by item through the rules-gated item action, and closes the window. With no pick
+--                configured it sells nothing. Items the game has not told the type of are never in a pick.
+-- Tested:        The two picked items are sold after one adornment is reclaimed; an empty config refuses to sell anything.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The two picked items are sold after one adornment is reclaimed; an empty config refuses to sell anything.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.tse
--- id:        tse-sell-pick
-
 local Model = require("eb.economy.ledgermodel")
 
 -- offline stand-in for the game's side of the economy (every name invented)

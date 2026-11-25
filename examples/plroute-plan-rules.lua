@@ -1,15 +1,15 @@
--- The pull and break rules behind a route
+-- EB tested example: The pull and break rules behind a route
+-- plroute-plan-rules | snippet | topics: tasks, combat, helpers
 --
--- eb.plroutes.plan holds a route's decisions as pure functions: resolveCap turns "aggro by group" into a mob count, packDecide says whether a pack pull keeps walking or turns to fight, needBreak says when to rest or wait for a member, and goalMet says when a step is done.
+-- What it does:  eb.plroutes.plan holds a route's decisions as pure functions: resolveCap turns "aggro by group" into a mob
+--                count, packDecide says whether a pack pull keeps walking or turns to fight, needBreak says when to rest or wait
+--                for a member, and goalMet says when a step is done.
+-- Tested:        A 3-box group caps a pack at 3, the pack turns at the cap, a member under 50% health calls a rest, and a level
+--                goal is met at its value.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A 3-box group caps a pack at 3, the pack turns at the cap, a member under 50% health calls a rest, and a level goal is met at its value.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.plroutes.plan
--- id:        plroute-plan-rules
-
 local Plan = require("eb.plroutes.plan")
 
 local cap = Plan.resolveCap("group", 1, 3)                              -- aggro_by group, 1 per member, 3 members

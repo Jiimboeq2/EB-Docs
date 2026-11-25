@@ -1,15 +1,17 @@
--- Shape combat for one encounter
+-- EB tested example: Shape combat for one encounter
+-- fight-encounter-override | snippet | topics: fights, combat, instances
 --
--- Name the encounter you are in, register an override that applies only to it - no AE near the boss, its big cast on the interrupt list - and clear it when the fight is over so the next pull is back to normal.
+-- What it does:  Name the encounter you are in, register an override that applies only to it - no AE near the boss, its big cast
+--                on the interrupt list - and clear it when the fight is over so the next pull is back to normal.
+-- Tested:        During the encounter the AE is held (disableAE switches the AE tag off) and the boss's Ashen Wail is
+--                interrupted; after the encounter is cleared the AE casts again.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    During the encounter the AE is held (disableAE switches the AE tag off) and the boss's Ashen Wail is interrupted; after the encounter is cleared the AE casts again.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat, eb.combat.overrides, game
--- id:        fight-encounter-override
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

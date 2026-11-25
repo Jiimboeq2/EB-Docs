@@ -1,15 +1,17 @@
--- Answer the purchase question in your own buy helper
+-- EB tested example: Answer the purchase question in your own buy helper
+-- econ-confirm-own-buy | snippet | topics: items, helpers, dialogs
 --
--- When your own helper buys something, answer the game's purchase question the way EB does: confirm.new(env) over a drive that can read the question (choice.purchasePrompt) and answer it (choice.answer), expect(item) before the buy, then resolve(item) - Yes only for the exact item, No for anything else, "none" while no question is up.
+-- What it does:  When your own helper buys something, answer the game's purchase question the way EB does: confirm.new(env) over
+--                a drive that can read the question (choice.purchasePrompt) and answer it (choice.answer), expect(item) before
+--                the buy, then resolve(item) - Yes only for the exact item, No for anything else, "none" while no question is up.
+-- Tested:        "none" with no question up, "confirmed" for our item, "declined" for another one.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    "none" with no question up, "confirmed" for our item, "declined" for another one.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.confirm
--- id:        econ-confirm-own-buy
-
 -- your script: the two drive actions the answerer needs (in game EB's drive has them)
 local question = nil
 local answers = {}

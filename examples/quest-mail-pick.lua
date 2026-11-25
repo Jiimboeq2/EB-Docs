@@ -1,15 +1,17 @@
--- Pick a letter for OpenMail
+-- EB tested example: Pick a letter for OpenMail
+-- quest-mail-pick | snippet | topics: quests, items
 --
--- The mail verbs pick a letter by its subject (and, when given, by the sender's whole name) at the nearest mailbox. The rules are pure: parseArgs reads the verb's arguments, shown takes the game's hidden key off a field, and pick finds the first letter that fits and counts how many do.
+-- What it does:  The mail verbs pick a letter by its subject (and, when given, by the sender's whole name) at the nearest
+--                mailbox. The rules are pure: parseArgs reads the verb's arguments, shown takes the game's hidden key off a
+--                field, and pick finds the first letter that fits and counts how many do.
+-- Tested:        The second letter fits the subject; the take word is read; the hidden key is taken off.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The second letter fits the subject; the take word is read; the hidden key is taken off.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.quest.verbs.mail
--- id:        quest-mail-pick
-
 local mail = require("eb.quest.verbs.mail").mail       -- loading it registers the verbs; .mail holds the rules
 
 -- the inbox rows, in the order the mailbox lists them (offline: invented letters)

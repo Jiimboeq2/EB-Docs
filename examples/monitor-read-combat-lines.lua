@@ -1,15 +1,16 @@
--- Read combat lines into records
+-- EB tested example: Read combat lines into records
+-- monitor-read-combat-lines | snippet | topics: combat, data
 --
--- combatlog.parse turns one line of combat text into a record - a hit, a damage-over-time tick, a heal, a ward, a miss, a death - with YOU resolved to your own name; anything else is nil.
+-- What it does:  combatlog.parse turns one line of combat text into a record - a hit, a damage-over-time tick, a heal, a ward, a
+--                miss, a death - with YOU resolved to your own name; anything else is nil.
+-- Tested:        Each combat line gives its kind, who, whom and how much; a chat line gives nil.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Each combat line gives its kind, who, whom and how much; a chat line gives nil.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ui.monitor.combatlog
--- id:        monitor-read-combat-lines
-
 -- your script
 local log = require("eb.ui.monitor.combatlog")
 local me = "Fixturae"

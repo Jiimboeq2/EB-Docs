@@ -1,15 +1,17 @@
--- Loop windows and the reset decision
+-- EB tested example: Loop windows and the reset decision
+-- loop-ic-args | snippet | topics: tasks, instances, commands
 --
--- eb ic loop <file> [minutes] [difficulty]: no minutes (or 0) loops until stopped. parseLoopArgs splits the line, loopMinutes picks the window (the command line over the file's loop.max_minutes), and decide says what the tank does between laps: reset now, wait the timer out, or end because the wait outlasts the window.
+-- What it does:  eb ic loop <file> [minutes] [difficulty]: no minutes (or 0) loops until stopped. parseLoopArgs splits the line,
+--                loopMinutes picks the window (the command line over the file's loop.max_minutes), and decide says what the tank
+--                does between laps: reset now, wait the timer out, or end because the wait outlasts the window.
+-- Tested:        The line splits into file, minutes and difficulty; the three decisions come out reset, wait and end.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The line splits into file, minutes and difficulty; the three decisions come out reset, wait and end.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        loop-ic-args
-
 local IC = require("eb.ic")
 local a = assert(IC.parseLoopArgs("fixture_hollow 480 [Heroic I]"))
 print(("%s for %d min at %s"):format(a.file, a.minutes, a.difficulty))

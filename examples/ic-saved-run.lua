@@ -1,15 +1,18 @@
--- Save a run and resume it at a step
+-- EB tested example: Save a run and resume it at a step
+-- ic-saved-run | snippet | topics: instances, data
 --
--- runner:saveRun snapshots a configured run (file, difficulty, loop window, chores, a resume pointer = a route step id, and the reuse timer) as a plain record. Store it however you like; runner:resumeRun restores it and starts at the pointer.
+-- What it does:  runner:saveRun snapshots a configured run (file, difficulty, loop window, chores, a resume pointer = a route
+--                step id, and the reuse timer) as a plain record. Store it however you like; runner:resumeRun restores it and
+--                starts at the pointer.
+-- Tested:        The record round-trips through decode, and the resumed run starts at step n2: the first named is never fought
+--                again.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The record round-trips through decode, and the resumed run starts at step n2: the first named is never fought again.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.ic, eb.ic.ic_saved
--- id:        ic-saved-run
-
 local INSTANCE = {
     schema = "eb.ic/1", zone = "Fixture Hollow", short = "fixture_hollow",
     route = {

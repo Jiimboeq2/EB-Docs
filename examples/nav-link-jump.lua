@@ -1,15 +1,19 @@
--- Where the mesh joins two floors: one jump tap
+-- EB tested example: Where the mesh joins two floors: one jump tap
+-- nav-link-jump | snippet | topics: nav
 --
--- Some routes cross a gap the mesh itself bridges with a link: a take-off corner, then the landing. The walk goes to the take-off, faces the landing, taps the jump key ONCE and walks on from the landing - the same goPoint, no other mover. A drop needs no key at all. EB never flies: a link is a jump, a climb, a drop or a door, never a flight.
+-- What it does:  Some routes cross a gap the mesh itself bridges with a link: a take-off corner, then the landing. The walk goes
+--                to the take-off, faces the landing, taps the jump key ONCE and walks on from the landing - the same goPoint, no
+--                other mover. A drop needs no key at all. EB never flies: a link is a jump, a climb, a drop or a door, never a
+--                flight.
+-- Tested:        The walk over a jump link arrives; the jump key was pressed exactly once, near the take-off and facing the
+--                landing; nav.onLink was told it was a jump.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The walk over a jump link arrives; the jump key was pressed exactly once, near the take-off and facing the landing; nav.onLink was told it was a jump.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav, eb.nav_steer, eb.navd
--- id:        nav-link-jump
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the mesh is real): a mesh whose way east crosses
 -- a gap at x 20..22 by a jump link - the take-off at x 19.5, the landing at x 25
 local w = DOCS.world({ me = { x = 0, y = 0, z = 0, heading = 90 } })

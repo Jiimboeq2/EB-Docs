@@ -1,15 +1,17 @@
--- Recipe: script a named fight
+-- EB tested example: Recipe: script a named fight
+-- recipe-named-fight | snippet | topics: recipes, fights, combat, events
 --
--- A complete named-fight script: the boss's emote sends you to a safe spot and back, half health switches the burn rows on, a detriment on a member is cured on cue, and the boss's big cast is interrupted on cue.
+-- What it does:  A complete named-fight script: the boss's emote sends you to a safe spot and back, half health switches the burn
+--                rows on, a detriment on a member is cured on cue, and the boss's big cast is interrupted on cue.
+-- Tested:        The emote moves you out of the fire and back home with the burn held meanwhile; phase 2 turns the burn on;
+--                Member1's detriment is cured; Ashen Wail is stunned; the script ends when the boss dies.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The emote moves you out of the fire and back home with the burn held meanwhile; phase 2 turns the burn on; Member1's detriment is cured; Ashen Wail is stunned; the script ends when the boss dies.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.events, eb.nav, eb.app.combat, eb.caststack.jsonstack_live, game, eb.platform
--- id:        recipe-named-fight
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real) -----------------------
 local w = DOCS.world({ me = { x = 0, y = 0, z = 0 } })
 require("nav.lib.navworld").attach(w, { zone = "fixture_lair" })

@@ -1,15 +1,17 @@
--- Does this station serve the recipe?
+-- EB tested example: Does this station serve the recipe?
+-- craft-station-serves | snippet | topics: items, helpers
 --
--- eb.economy.craft.serves(actorName, device) answers from EB's station data whether a crafting station in reach can make a recipe's device - and never mistakes a look-alike name for the real station.
+-- What it does:  eb.economy.craft.serves(actorName, device) answers from EB's station data whether a crafting station in reach
+--                can make a recipe's device - and never mistakes a look-alike name for the real station.
+-- Tested:        A forge serves a Forge recipe, a look-alike forge name and a festive bench do not, a station that serves every
+--                device always does, and an unknown device answers nil (cannot judge).
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A forge serves a Forge recipe, a look-alike forge name and a festive bench do not, a station that serves every device always does, and an unknown device answers nil (cannot judge).
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.craft
--- id:        craft-station-serves
-
 -- your script (pure: no game reads)
 local Craft = require("eb.economy.craft")
 local checks = {

@@ -1,15 +1,17 @@
--- Read an actor by its id
+-- EB tested example: Read an actor by its id
+-- tlo-actor-by-id | snippet | topics: tlos, game
 --
--- Actor[id,N] is the fast, exact way to read one actor; the game layer reads it through ActorPos / ActorDead / ActorTarget, once per frame however often you ask.
+-- What it does:  Actor[id,N] is the fast, exact way to read one actor; the game layer reads it through ActorPos / ActorDead /
+--                ActorTarget, once per frame however often you ask.
+-- Tested:        Reads the mob by id directly and through the game layer; both agree, and asking again in the same frame reads
+--                nothing more.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Reads the mob by id directly and through the game layer; both agree, and asking again in the same frame reads nothing more.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        tlo-actor-by-id
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.addActor({ id = 220, name = "a fixture boar", level = 98, distance = 7.5, targetId = 1 })

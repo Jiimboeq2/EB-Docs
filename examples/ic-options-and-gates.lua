@@ -1,15 +1,16 @@
--- Instance options and step gates
+-- EB tested example: Instance options and step gates
+-- ic-options-and-gates | snippet | topics: instances
 --
--- An instance declares an option that skips its bonus named by default; a run flips it with skip_bonus=off. A route step with its own when gate runs only when the gate holds. A skipped step is said and never run.
+-- What it does:  An instance declares an option that skips its bonus named by default; a run flips it with skip_bonus=off. A
+--                route step with its own when gate runs only when the gate holds. A skipped step is said and never run.
+-- Tested:        The default run skips the bonus named and the gated chest; the run with skip_bonus=off fights it.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The default run skips the bonus named and the gated chest; the run with skip_bonus=off fights it.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        ic-options-and-gates
-
 local INSTANCE = {
     schema = "eb.ic/1", zone = "Fixture Hollow", short = "fixture_hollow",
     options = { { id = "skip_bonus", label = "skip the bonus named", default = true, skip_steps = { "bonus" } } },

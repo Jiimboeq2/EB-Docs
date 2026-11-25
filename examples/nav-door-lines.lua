@@ -1,15 +1,16 @@
--- Fix a door's verb on this PC
+-- EB tested example: Fix a door's verb on this PC
+-- nav-door-lines | snippet | topics: nav, data
 --
--- A door line is "x y z verb name", tab separated. Write one with eb.nav_doors.line, merge a correction into a door file's text, and keep a live fix on this PC's own layer with saveLocal - the shipped file is never touched.
+-- What it does:  A door line is "x y z verb name", tab separated. Write one with eb.nav_doors.line, merge a correction into a
+--                door file's text, and keep a live fix on this PC's own layer with saveLocal - the shipped file is never touched.
+-- Tested:        The first save adds the door, a second save at the same spot is already listed, a new verb is "fixed".
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The first save adds the door, a second save at the same spot is already listed, a new verb is "fixed".
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav_doors, eb.nav_store
--- id:        nav-door-lines
-
 -- offline stand-in: EB's nav data kept in memory (in game: the mesh store and this PC's own nav folder)
 local w = DOCS.world()
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

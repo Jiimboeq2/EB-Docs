@@ -1,15 +1,17 @@
--- Test a helper's saves without a disk
+-- EB tested example: Test a helper's saves without a disk
+-- platform-files-memory-host | snippet | topics: data, helpers
 --
--- ebkit.files.memory is a files host over a table: give it to a helper's save function in a test and read back exactly what it wrote - including a failed write.
+-- What it does:  ebkit.files.memory is a files host over a table: give it to a helper's save function in a test and read back
+--                exactly what it wrote - including a failed write.
+-- Tested:        The save lands in the table, list and copy work on it, a forced failure is reported, and the platform's own host
+--                answers isDir and probeNative.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The save lands in the table, list and copy work on it, a forced failure is reported, and the platform's own host answers isDir and probeNative.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   ebkit.files, eb.platform
--- id:        platform-files-memory-host
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 

@@ -1,15 +1,16 @@
--- Meter a fight
+-- EB tested example: Meter a fight
+-- monitor-meter-a-fight | snippet | topics: combat, helpers
 --
--- Feed stamped combat lines to a parser and read the live fight: damage per second per character, the top character's abilities, and who took damage.
+-- What it does:  Feed stamped combat lines to a parser and read the live fight: damage per second per character, the top
+--                character's abilities, and who took damage.
+-- Tested:        Over a 10-second fight the crew does 6000 damage (600 per second), Fixturae leads, the tank took 900.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Over a 10-second fight the crew does 6000 damage (600 per second), Fixturae leads, the tank took 900.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ui.monitor.parser, eb.ui.monitor.combatlog
--- id:        monitor-meter-a-fight
-
 -- your script
 local Parser = require("eb.ui.monitor.parser")
 local log = require("eb.ui.monitor.combatlog")

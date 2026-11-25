@@ -1,15 +1,15 @@
--- Export the command list
+-- EB tested example: Export the command list
+-- commands-customer-schema | snippet | topics: commands, data
 --
--- reg:customerSchema() is every shipped command as a plain table; reg:customerJson() is the same as JSON.
+-- What it does:  reg:customerSchema() is every shipped command as a plain table; reg:customerJson() is the same as JSON.
+-- Tested:        The schema's counts match its lists, every row is shipped, and the JSON decodes back to the same count.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The schema's counts match its lists, every row is shipped, and the JSON decodes back to the same count.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.registry, ebkit.jsontable
--- id:        commands-customer-schema
-
 -- your script
 local reg = assert(require("eb.registry").default({ root = ".", fresh = true }))
 local J = require("ebkit.jsontable")

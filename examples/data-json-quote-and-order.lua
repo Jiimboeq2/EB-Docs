@@ -1,15 +1,16 @@
--- One JSON string, and the key order files use
+-- EB tested example: One JSON string, and the key order files use
+-- data-json-quote-and-order | snippet | topics: data
 --
--- ebkit.json.quote writes one string exactly as the codec does; ebkit.json.less is the key order every EB file is written in, so a file reads the same on every computer.
+-- What it does:  ebkit.json.quote writes one string exactly as the codec does; ebkit.json.less is the key order every EB file is
+--                written in, so a file reads the same on every computer.
+-- Tested:        Quotes, backslashes and newlines are escaped; keys sort by their bytes (capitals first).
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Quotes, backslashes and newlines are escaped; keys sort by their bytes (capitals first).
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   ebkit.json
--- id:        data-json-quote-and-order
-
 -- your script
 local J = require("ebkit.json")
 local q = J.quote('say "hi"\n')

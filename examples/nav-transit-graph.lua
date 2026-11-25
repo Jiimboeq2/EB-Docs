@@ -1,15 +1,16 @@
--- Read a zone's pads and plan a pad trip
+-- EB tested example: Read a zone's pads and plan a pad trip
+-- nav-transit-graph | snippet | topics: nav, data
 --
--- EB's pad data per zone: the pads, their networks, what each offers, the nearest one; then the pad graph - the fewest hops from where you stand to a station, the time it takes, and the flights that cross a zone line.
+-- What it does:  EB's pad data per zone: the pads, their networks, what each offers, the nearest one; then the pad graph - the
+--                fewest hops from where you stand to a station, the time it takes, and the flights that cross a zone line.
+-- Tested:        Two griffon hops reach the far tower; one flight crosses into the next zone; the rides add up to 75 s.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Two griffon hops reach the far tower; one flight crosses into the next zone; the rides add up to 75 s.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.transit_data, eb.transit_graph, eb.transit_store, eb.transit
--- id:        nav-transit-graph
-
 -- offline stand-in: one zone's pad file as data (in game: EB's own transit data, one file per zone)
 local w = DOCS.world()
 local NW = require("nav.lib.navworld")

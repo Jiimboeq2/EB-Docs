@@ -1,15 +1,16 @@
--- Aim at a role: Bard, DPS1, Healer1
+-- EB tested example: Aim at a role: Bard, DPS1, Healer1
+-- combat-roles | snippet | topics: combat, crew
 --
--- A cast-stack entry can aim at a role instead of a name; the engine resolves it over the group of the same frame by class order. Preview a buff on the Bard and a heal on DPS1.
+-- What it does:  A cast-stack entry can aim at a role instead of a name; the engine resolves it over the group of the same frame
+--                by class order. Preview a buff on the Bard and a heal on DPS1.
+-- Tested:        The buff aimed at Bard goes to the dirge, the heal aimed at DPS1 to the wizard (sorcerers come first).
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The buff aimed at Bard goes to the dirge, the heal aimed at DPS1 to the wizard (sorcerers come first).
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat.roles, eb.combat.heals, eb.combat
--- id:        combat-roles
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

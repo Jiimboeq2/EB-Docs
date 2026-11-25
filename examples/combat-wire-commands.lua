@@ -1,15 +1,18 @@
--- The combat commands, and answering one from a script
+-- EB tested example: The combat commands, and answering one from a script
+-- combat-wire-commands | snippet | topics: combat, commands, helpers
 --
--- EB answers the combat commands itself: eb mez off, eb combat off, eb cures off, eb interrupts on, eb embargo tag BURN 15 and eb ho off each change EB's own engine, in the console and for the crew. A script can still take one command over with its own handler (replace = true); a second owner without replace is refused.
+-- What it does:  EB answers the combat commands itself: eb mez off, eb combat off, eb cures off, eb interrupts on, eb embargo tag
+--                BURN 15 and eb ho off each change EB's own engine, in the console and for the crew. A script can still take one
+--                command over with its own handler (replace = true); a second owner without replace is refused.
+-- Tested:        Each typed line changes the engine: mez off, casting paused, cures off, interrupt-all on, the BURN tag held for
+--                15 seconds, the heroic part off. After the script takes eb mez over, eb mez off runs the script's handler.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Each typed line changes the engine: mez off, casting paused, cures off, interrupt-all on, the BURN tag held for 15 seconds, the heroic part off. After the script takes eb mez over, eb mez off runs the script's handler.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   commands.combat, eb.registry, eb.app.combat, eb.combat
--- id:        combat-wire-commands
-
 -- offline stand-in: the whole of EB for InnerSpace booted by its real boot (in game you type in the console)
 local a = DOCS.app()
 

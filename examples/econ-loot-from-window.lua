@@ -1,15 +1,16 @@
--- A loot helper: read the window, apply the rules, take the lot
+-- EB tested example: A loot helper: read the window, apply the rules, take the lot
+-- econ-loot-from-window | snippet | topics: items, helpers, recipes, events, loot
 --
--- When the game reports a loot window, read its type and item names, let the loot rules decide, and take everything only when every item is wanted.
+-- What it does:  When the game reports a loot window, read its type and item names, let the loot rules decide, and take
+--                everything only when every item is wanted.
+-- Tested:        The LootOpened event arrives, both items are wanted, and the helper sends Loot All.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The LootOpened event arrives, both items are wanted, and the helper sends Loot All.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.lootrules, game, eb.events
--- id:        econ-loot-from-window
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local events = w.events()               -- in game EB's boot has already attached the game's events and ticks them

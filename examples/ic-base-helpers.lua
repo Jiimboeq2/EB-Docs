@@ -1,15 +1,17 @@
--- The runner's small helpers in a custom action
+-- EB tested example: The runner's small helpers in a custom action
+-- ic-base-helpers | snippet | topics: instances, helpers
 --
--- eb.ic.ic_base carries what every part of the runner uses: a log line in the runner's own voice, the flat distance doors and exits are measured with, the short countdown text and how often a long wait reports. Use them in an fn = function(ctx) action so your step reads like the runner's own.
+-- What it does:  eb.ic.ic_base carries what every part of the runner uses: a log line in the runner's own voice, the flat
+--                distance doors and exits are measured with, the short countdown text and how often a long wait reports. Use them
+--                in an fn = function(ctx) action so your step reads like the runner's own.
+-- Tested:        The custom action logs one runner line with the distance to the lever and the countdown text.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The custom action logs one runner line with the distance to the lever and the countdown text.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ic.ic_base, eb.ic
--- id:        ic-base-helpers
-
 local base = require("eb.ic.ic_base")
 
 -- offline stand-in for the game

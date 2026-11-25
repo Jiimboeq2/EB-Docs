@@ -1,15 +1,15 @@
--- Keep a null in a JSON document
+-- EB tested example: Keep a null in a JSON document
+-- data-jsontable-null | snippet | topics: data
 --
--- decode turns null into J.null (a key with no value stays a key); J.val(v) turns it back into nil.
+-- What it does:  decode turns null into J.null (a key with no value stays a key); J.val(v) turns it back into nil.
+-- Tested:        The null keeps its key, reads as nil through J.val, and encodes back as null.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The null keeps its key, reads as nil through J.val, and encodes back as null.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   ebkit.jsontable
--- id:        data-jsontable-null
-
 -- your script
 local J = require("ebkit.jsontable")
 local doc = J.decode('{"target":null,"zone":"a_test_hall"}')

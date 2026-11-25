@@ -1,15 +1,14 @@
--- The tank zones the group in
+-- EB tested example: The tank zones the group in
+-- ic-tank-zones-group-in | snippet | topics: instances, crew
 --
--- Every box reaches the hub on its own; the tank waits for the whole group there, re-sends a member that is still elsewhere its own travel, walks the hub approach alone and uses the door once for everyone.
+-- What it does:  Every box reaches the hub on its own; the tank waits for the whole group there, re-sends a member that is still
+--                elsewhere its own travel, walks the hub approach alone and uses the door once for everyone.
+-- Tested:        The straggler is sent its own travel once, the door is used once with who = group, and every member ends up
+--                inside.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The straggler is sent its own travel once, the door is used once with who = group, and every member ends up inside.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        ic-tank-zones-group-in
-
 local INSTANCE = {
     schema = "eb.ic/1", zone = "Fixture Hollow", short = "fixture_hollow",
     hub = { zone = "fixture_docks", difficulty = "[Heroic I]",

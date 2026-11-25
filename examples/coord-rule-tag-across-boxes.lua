@@ -1,15 +1,16 @@
--- When the tank shouts, the healer reacts
+-- EB tested example: When the tank shouts, the healer reacts
+-- coord-rule-tag-across-boxes | snippet | topics: crew, fights, helpers
 --
--- Two boxes, two rules: the tank's cast fires a tag to the group, the healer's own rule turns the tag into a cast intent - one relay message, one reaction.
+-- What it does:  Two boxes, two rules: the tank's cast fires a tag to the group, the healer's own rule turns the tag into a cast
+--                intent - one relay message, one reaction.
+-- Tested:        The tank sends one tag; the healer's box gets exactly one cast intent and the tank's gets none.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The tank sends one tag; the healer's box gets exactly one cast intent and the tank's gets none.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.coord.rules, eb.coord.relaylink
--- id:        coord-rule-tag-across-boxes
-
 -- offline stand-in: an in-memory relay between two boxes (in game each box's link rides the crew relay)
 local bus = require("eb.relay.events").bus()
 local now = 0

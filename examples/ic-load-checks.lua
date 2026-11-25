@@ -1,15 +1,17 @@
--- What runner:load refuses
+-- EB tested example: What runner:load refuses
+-- ic-load-checks | snippet | topics: instances
 --
--- The loader checks an instance file before anything runs: its schema, a hub route that would move the group, an option that skips a step the route does not have, and an encounter file that will not load. Each refusal says why.
+-- What it does:  The loader checks an instance file before anything runs: its schema, a hub route that would move the group, an
+--                option that skips a step the route does not have, and an encounter file that will not load. Each refusal says
+--                why.
+-- Tested:        Four broken files are refused with their reasons; the fixed file loads with its encounter attached.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Four broken files are refused with their reasons; the fixed file loads with its encounter attached.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        ic-load-checks
-
 local IC = require("eb.ic")
 local env = require("instances.lib.icworld").make()           -- offline interfaces (the loader needs none of them)
 

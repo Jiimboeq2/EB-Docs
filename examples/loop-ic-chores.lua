@@ -1,15 +1,18 @@
--- Chores at the end of each run
+-- EB tested example: Chores at the end of each run
+-- loop-ic-chores | snippet | topics: tasks, instances, items
 --
--- A loop's between option turns chores on (all off by default): each box's saved T.S.E first, then a repair trip when this box's gear is under 90%, then the maintenance cycle. They run once at the END of each run, inside where it ended, and a chore that cannot be done is said and skipped - it never stops the loop.
+-- What it does:  A loop's between option turns chores on (all off by default): each box's saved T.S.E first, then a repair trip
+--                when this box's gear is under 90%, then the maintenance cycle. They run once at the END of each run, inside
+--                where it ended, and a chore that cannot be done is said and skipped - it never stops the loop.
+-- Tested:        After lap 1 the T.S.E ran and the gear at 62% was repaired; maintenance is unwired here, so it is skipped and
+--                said.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    After lap 1 the T.S.E ran and the gear at 62% was repaired; maintenance is unwired here, so it is skipped and said.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        loop-ic-chores
-
 local INSTANCE = {
     schema = "eb.ic/1", zone = "Fixture Hollow", short = "fixture_hollow",
     route = { { id = "n1", act = "encounter", name = "captain_fixturo" } },

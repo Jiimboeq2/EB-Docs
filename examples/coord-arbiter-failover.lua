@@ -1,15 +1,17 @@
--- When the winner never finishes
+-- EB tested example: When the winner never finishes
+-- coord-arbiter-failover | snippet | topics: crew, combat
 --
--- The box that won a rez casts it but never reports it landed; after the failover time the next box takes the rez, so a member is never left lying.
+-- What it does:  The box that won a rez casts it but never reports it landed; after the failover time the next box takes the rez,
+--                so a member is never left lying.
+-- Tested:        is1 wins and acts, then goes silent; 2.5 s later the rez is open again, is2 bids anew and, once its bid's short
+--                window has passed, its request answers go.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    is1 wins and acts, then goes silent; 2.5 s later the rez is open again, is2 bids anew and, once its bid's short window has passed, its request answers go.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.coord.arbiter, eb.coord.relaylink
--- id:        coord-arbiter-failover
-
 -- offline stand-in: an in-memory relay between two boxes
 local bus = require("eb.relay.events").bus()
 local now = 0

@@ -1,15 +1,17 @@
--- When does a combat wait end?
+-- EB tested example: When does a combat wait end?
+-- ic-combat-hold | snippet | topics: instances, combat, fights
 --
--- The instance runner's combat wait decides with a small pure rule: a fight on the group or a straggler nobody fights HOLDS the wait; a clear, or a combat flag with nothing behind it for 5 seconds, lets it go. A lone in-combat flag never holds a run forever.
+-- What it does:  The instance runner's combat wait decides with a small pure rule: a fight on the group or a straggler nobody
+--                fights HOLDS the wait; a clear, or a combat flag with nothing behind it for 5 seconds, lets it go. A lone
+--                in-combat flag never holds a run forever.
+-- Tested:        The four cases decide fight, straggler, clear and stuck; only the first two hold the wait.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The four cases decide fight, straggler, clear and stuck; only the first two hold the wait.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.ic.ic_hold
--- id:        ic-combat-hold
-
 local HOLD = require("eb.ic.ic_hold").HOLD
 
 -- decide(inCombat, anyHated, nearby NPCs, ms the bare flag has held)

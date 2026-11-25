@@ -1,15 +1,17 @@
--- Mail items and coin to another character
+-- EB tested example: Mail items and coin to another character
+-- econ-mail-send | snippet | topics: items, crew
 --
--- eco.mail:send(to, { names | filter, count, copper }) needs a recipient (one character name) and an explicit pick - it never mails "everything". Bound items cannot be mailed and protected items stay unless named exactly and allowed. One item per letter; the coin rides on the first letter.
+-- What it does:  eco.mail:send(to, { names | filter, count, copper }) needs a recipient (one character name) and an explicit pick
+--                - it never mails "everything". Bound items cannot be mailed and protected items stay unless named exactly and
+--                allowed. One item per letter; the coin rides on the first letter.
+-- Tested:        A two-word recipient and an empty pick are refused; the ore and 500 copper go out in one letter.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A two-word recipient and an empty pick are refused; the ore and 500 copper go out in one letter.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.mail
--- id:        econ-mail-send
-
 -- offline stand-in for the game's windows (in game EB builds the drive)
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world({ bags = { { name = "Fixture Ore", qty = 30 }, { name = "Fixture Bound Ring", noTrade = true } } })

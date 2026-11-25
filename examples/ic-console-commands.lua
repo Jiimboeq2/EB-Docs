@@ -1,15 +1,19 @@
--- The instance commands from the console
+-- EB tested example: The instance commands from the console
+-- ic-console-commands | snippet | topics: instances, commands
 --
--- Boot EB offline and type the instance commands the way you would in game: eb ic status, eb lockouts and eb resetzone. Each answers at once; a run itself is an EB task that eb ic status reports on. Resetting a zone (and reading which zones you are saved to) is held back until EB has proven that call in the game: the answer names the zone and says so.
+-- What it does:  Boot EB offline and type the instance commands the way you would in game: eb ic status, eb lockouts and eb
+--                resetzone. Each answers at once; a run itself is an EB task that eb ic status reports on. Resetting a zone (and
+--                reading which zones you are saved to) is held back until EB has proven that call in the game: the answer names
+--                the zone and says so.
+-- Tested:        eb ic status says the runner is idle, eb lockouts answers, and eb resetzone names the zone and says its reset is
+--                held back until it is proven live; with no zone it asks which.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    eb ic status says the runner is idle, eb lockouts answers, and eb resetzone names the zone and says its reset is held back until it is proven live; with no zone it asks which.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   commands.ic, eb.app.ic
--- id:        ic-console-commands
-
 -- offline stand-in: the whole of EB for InnerSpace booted by its real boot
 local a = DOCS.app()
 

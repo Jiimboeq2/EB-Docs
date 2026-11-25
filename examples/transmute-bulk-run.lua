@@ -1,15 +1,18 @@
--- Run a bulk salvage - and the guards that refuse a careless one
+-- EB tested example: Run a bulk salvage - and the guards that refuse a careless one
+-- transmute-bulk-run | snippet | topics: items
 --
--- eco.transmute:tse(pick) transmutes, salvages, extracts or destroys the items a pick selects, each through the safety rules. A pick that does not say what goes is refused before anything is touched; dry = true only previews; a destroy without go = true only previews too.
+-- What it does:  eco.transmute:tse(pick) transmutes, salvages, extracts or destroys the items a pick selects, each through the
+--                safety rules. A pick that does not say what goes is refused before anything is touched; dry = true only
+--                previews; a destroy without go = true only previews too.
+-- Tested:        An empty pick is refused, a destroy without go only previews, and the salvage of treasured items up to level 50
+--                takes the two that may go and keeps the heirloom.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    An empty pick is refused, a destroy without go only previews, and the salvage of treasured items up to level 50 takes the two that may go and keeps the heirloom.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.transmute, eb.economy
--- id:        transmute-bulk-run
-
 -- offline stand-in: three treasured bag items
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({ bags = {

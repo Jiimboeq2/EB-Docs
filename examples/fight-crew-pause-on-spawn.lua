@@ -1,15 +1,16 @@
--- Pause the crew when the named appears
+-- EB tested example: Pause the crew when the named appears
+-- fight-crew-pause-on-spawn | snippet | topics: fights, events, crew, helpers
 --
--- Watch for the named from a cheap pulse job, raise your own event on the edge, and turn it into ONE deliberate crew line: everyone pauses.
+-- What it does:  Watch for the named from a cheap pulse job, raise your own event on the edge, and turn it into ONE deliberate
+--                crew line: everyone pauses.
+-- Tested:        No line while the room is empty; when the named spawns the event fires once and "eb pause" goes to all boxes.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    No line while the room is empty; when the named spawns the event fires once and "eb pause" goes to all boxes.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.events, game, eb.platform
--- id:        fight-crew-pause-on-spawn
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game EB sets the relay to the crew)
 local w = DOCS.world()
 local events = w.events()

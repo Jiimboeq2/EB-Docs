@@ -1,15 +1,16 @@
--- Read what you and your target are casting, and cancel
+-- EB tested example: Read what you and your target are casting, and cancel
+-- game-cast-bars | snippet | topics: game, combat, fights
 --
--- CastingName() is your own cast bar; TargetCasting() is your target's spell name and id; CancelCast() stops your cast.
+-- What it does:  CastingName() is your own cast bar; TargetCasting() is your target's spell name and id; CancelCast() stops your
+--                cast.
+-- Tested:        Reads both cast bars, then cancels your own cast.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Reads both cast bars, then cancels your own cast.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        game-cast-bars
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.self.isCasting, w.self.castingName = true, "Fixture Mend"

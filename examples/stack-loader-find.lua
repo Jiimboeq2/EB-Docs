@@ -1,15 +1,17 @@
--- Find a character's cast stack by name
+-- EB tested example: Find a character's cast stack by name
+-- stack-loader-find | snippet | topics: combat, data
 --
--- eb.caststack.loader finds the character's imported profile by its name, builds it with the class facts and serves it from a live holder; a character with no profile gets a plain reason.
+-- What it does:  eb.caststack.loader finds the character's imported profile by its name, builds it with the class facts and
+--                serves it from a live holder; a character with no profile gets a plain reason.
+-- Tested:        The loader finds Fixturae's profile and builds its two rows with the warden's facts; a name with no profile is
+--                refused with why.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The loader finds Fixturae's profile and builds its two rows with the warden's facts; a name with no profile is refused with why.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.caststack.loader
--- id:        stack-loader-find
-
 -- offline stand-in: the profiles folder, in a files host of your own (in game: EB's files service and your profiles)
 local disk = {
     ["stacks/Main/Fixture Server_Fixturae.json"] = [[{"_v": 1, "default": "Main", "profiles": {"Main": {"sections":

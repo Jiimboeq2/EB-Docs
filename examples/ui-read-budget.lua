@@ -1,15 +1,15 @@
--- Spread a big scan over several frames
+-- EB tested example: Spread a big scan over several frames
+-- ui-read-budget | snippet | topics: perf, ui, helpers
 --
--- A scan that reads the game counts its reads and stops at the budget, then carries on next frame.
+-- What it does:  A scan that reads the game counts its reads and stops at the budget, then carries on next frame.
+-- Tested:        20 rows are read 8 per frame: the scan takes 3 frames and no frame goes over 8 reads.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    20 rows are read 8 per frame: the scan takes 3 frames and no frame goes over 8 reads.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   ebkit.push_budget
--- id:        ui-read-budget
-
 -- your script
 local budget = require("ebkit.push_budget")
 local rows, nextRow, frames, peak = {}, 1, 0, 0

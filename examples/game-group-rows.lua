@@ -1,15 +1,16 @@
--- Read your group and find who is hurt
+-- EB tested example: Read your group and find who is hurt
+-- game-group-rows | snippet | topics: game, crew, helpers
 --
--- Group() answers the other members of your group (slots 1 to 5) in one batched read: health and power in percent, in the zone or not, distance, dead.
+-- What it does:  Group() answers the other members of your group (slots 1 to 5) in one batched read: health and power in percent,
+--                in the zone or not, distance, dead.
+-- Tested:        Finds the most hurt member in the zone and skips the one out of the zone.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Finds the most hurt member in the zone and skips the one out of the zone.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        game-group-rows
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.addMember({ name = "Tankfixture", id = 11, class = "guardian", healthPct = 72, powerPct = 60, inZone = true })

@@ -1,30 +1,30 @@
-# EB docs for players and their AI helpers
+# EB docs for AI helpers
 
-EB is an EverQuest II bot you can script in Lua. This repository holds EB's scripting docs as plain files, so you
-can hand them to an AI helper (Claude, ChatGPT or any other) and ask it for the EB script you want. The docs to
-read in a browser are on [eb.jiimbo.dev](https://eb.jiimbo.dev/docs.html). Everything here is written for EB for InnerSpace, the
-build EB Setup picks for you.
+EB is a private EverQuest II bot for a small group of testers. These files are its scripting docs for an AI helper that writes EB scripts for you: the guides of the EB website (https://eb.jiimbo.dev/docs.html), with every tested example in full and the whole reference. Repository: https://github.com/Jiimboeq2/EB-Docs
 
-## What is here
+## Give it to your AI
+
+1. Give it the one-file guide: [EB_Scripting_Guide.md](EB_Scripting_Guide.md) (2067 KB). Attach the file, or give it this link if it reads the web: https://raw.githubusercontent.com/Jiimboeq2/EB-Docs/main/EB_Scripting_Guide.md
+2. Ask for the script you want: what it watches, what it does, and on which characters.
+3. Ask it to use only what the guide lists, and to say where each file goes, the line that starts it and what it needs.
+4. Try what it gives you on one box first.
+
+If your AI cannot take a file that size, give it [llms.txt](https://eb.jiimbo.dev/llms.txt) and let it open the parts it needs, or give it [commands.md](commands.md) and the examples of your topic. An assistant that works in a folder can clone the repository: `git clone https://github.com/Jiimboeq2/EB-Docs`
+
+## The files
 
 | File | What it is |
-|---|---|
-| [commands.md](commands.md) | Every console command EB ships (296), grouped, with what each takes. |
-| [examples/](examples/) | Every tested example (408: 22 complete scripts and 386 snippets), one `.lua` file each. Each one runs and passes against EB's offline stand-in for the game before it is published. |
-| [reference/lua_api.json](reference/lua_api.json) | The whole scripting reference: 196 modules, 2242 functions, the TLOs and the examples (schema `eb.luadoc/1`). |
+| --- | --- |
+| [EB_Scripting_Guide.md](EB_Scripting_Guide.md) | THE one file to give an AI: every guide, every tested example in full, the Lua library, the TLOs and the commands (2067 KB). |
+| [commands.md](commands.md) | every console command EB ships, by group (189 KB). |
+| [examples/](examples/README.md) | the 406 tested examples (22 complete scripts), one .lua file each, with an index. |
+| [reference/lua_api.json](reference/lua_api.json) | the reference as data: modules, functions with their parameters and returns, the examples, the topics and the TLOs (2710 KB). |
+| [llms.txt](https://eb.jiimbo.dev/llms.txt) | the website's index of these files, in the llms.txt format, for an AI that reads the web; [llms-full.txt](https://eb.jiimbo.dev/llms-full.txt) is the one-file guide again. |
 
-The whole guide in one file, `EB_Scripting_Guide.md`, is on its way: it lands here with the docs rewrite.
+## About the examples
 
-## Give it to your AI helper
+Every example ran end to end on EB's offline stand-in for the game before it was published (verified: fake-host), not in the live game: try one on one box first. A complete script runs as it is. The guide shows a snippet's script, then how it was tested; a real script leaves the offline stand-in and the checks out, and any line of the script that uses `DOCS`, `w.` or `a.` too.
 
-1. Give it the files above: attach them, or paste their raw links, e.g.
-   `https://raw.githubusercontent.com/Jiimboeq2/EB-Docs/main/commands.md` and `https://raw.githubusercontent.com/Jiimboeq2/EB-Docs/main/reference/lua_api.json`.
-2. Tell it what you want in plain words: what the script should do, and your class.
-3. Ask it to use only the functions and commands in these files, and to start from the closest tested example.
-4. Run what it gives you the way that example's header says (where the file goes, the exact `run` line), and send
-   it back what EB printed if something is off.
+## Where these files come from
 
-A snippet carries its own test: in game, use only the code under `-- your script`. `DOCS` exists only in the docs
-test runner, so it never goes into a script of yours ([examples/README.md](examples/README.md) says more).
-
-Made from EB's own docs on 2026-11-25; when EB changes, these files are made again.
+They are built from the EB website's docs and EB's reference of 2026-11-25, so they match each other. A fix goes into the docs, and the files are built again.

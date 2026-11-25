@@ -1,15 +1,18 @@
--- Clear junk without a vendor trip
+-- EB tested example: Clear junk without a vendor trip
+-- econ-junk-by-rule | snippet | topics: items
 --
--- The brain's junk() frees bag slots by rule: an item whose tier is in cfg.vendor.junkTiers is sold when a merchant window is open, destroyed otherwise. With no junk rule it does nothing at all and says "done". An item whose type or tier the game has not told is never junked.
+-- What it does:  The brain's junk() frees bag slots by rule: an item whose tier is in cfg.vendor.junkTiers is sold when a
+--                merchant window is open, destroyed otherwise. With no junk rule it does nothing at all and says "done". An item
+--                whose type or tier the game has not told is never junked.
+-- Tested:        Without a rule nothing moves; with the Junk tier listed the two junk stacks are destroyed and the good item
+--                stays.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Without a rule nothing moves; with the Junk tier listed the two junk stacks are destroyed and the good item stays.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy, eb.economy.inventory
--- id:        econ-junk-by-rule
-
 -- offline stand-in for the game's windows (in game EB builds the drive)
 local Fake = require("economy.lib.drivefake")
 local function bags()

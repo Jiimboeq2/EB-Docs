@@ -1,15 +1,18 @@
--- A route's actions, one bite at a time
+-- EB tested example: A route's actions, one bite at a time
+-- plroute-actions | snippet | topics: tasks
 --
--- An actions step is a list of single actions; eb.plroutes.actions runs one per call and says where it is. A go in another zone hands the zone back as need_travel; a wait counts on the snapshot's clock; a click goes to the act adapter. resolveTarget and actionTarget say what a step or an action is about without running it.
+-- What it does:  An actions step is a list of single actions; eb.plroutes.actions runs one per call and says where it is. A go in
+--                another zone hands the zone back as need_travel; a wait counts on the snapshot's clock; a click goes to the act
+--                adapter. resolveTarget and actionTarget say what a step or an action is about without running it.
+-- Tested:        The go asks for travel first, the wait finishes after its seconds, the click is done, and an instance step
+--                queues one run through the instance adapter.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The go asks for travel first, the wait finishes after its seconds, the click is done, and an instance step queues one run through the instance adapter.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.plroutes.actions, eb.plroutes.runner
--- id:        plroute-actions
-
 local A = require("eb.plroutes.actions")
 local runner = require("eb.plroutes.runner")
 

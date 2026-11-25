@@ -1,15 +1,16 @@
--- The economy's bags-full check
+-- EB tested example: The economy's bags-full check
+-- econ-bags-full-contract | snippet | topics: items, helpers
 --
--- economy.new{ drive = ... }:contract() is the table EB's brain calls between goals. bagsFull(snap) compares the free slots with your threshold (3 by default); with a world snapshot it reads no game at all.
+-- What it does:  economy.new{ drive = ... }:contract() is the table EB's brain calls between goals. bagsFull(snap) compares the
+--                free slots with your threshold (3 by default); with a world snapshot it reads no game at all.
+-- Tested:        Two free slots is full, ten is not; the free-slot count comes from the game.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Two free slots is full, ten is not; the free-slot count comes from the game.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy, game
--- id:        econ-bags-full-contract
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.world.bagsFree = 2

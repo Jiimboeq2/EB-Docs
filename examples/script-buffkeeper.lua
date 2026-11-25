@@ -1,18 +1,19 @@
--- Buff keeper (complete script)
+-- EB tested example: Buff keeper (complete script)
+-- script-buffkeeper | complete script | topics: helpers, combat
 --
--- A drop-in script that keeps your own buffs up: when one of them is not maintained, is ready, and you are out of combat, standing still and not casting, it casts it.
+-- What it does:  A drop-in script that keeps your own buffs up: when one of them is not maintained, is ready, and you are out of
+--                combat, standing still and not casting, it casts it.
+-- Where it goes: InnerSpace/Scripts/eb_buffkeeper.lua (save it as eb_buffkeeper.lua)
+-- Run it:        lua eb_buffkeeper "Fixture Ward" "Fixture Haste"
+--                endlua eb_buffkeeper
+-- Needs:         - EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
+--                - buffs you cast on yourself or on the whole group, named exactly as in your knowledge book
+--                - the same buffs left out of your cast stack, so the two do not cast over each other
+-- Tested:        Casts each missing buff once, waits while a fight is on, and casts a buff again after it drops.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_buffkeeper.lua
--- run:       lua eb_buffkeeper "Fixture Ward" "Fixture Haste"
---            endlua eb_buffkeeper
--- needs:     EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
---            buffs you cast on yourself or on the whole group, named exactly as in your knowledge book
---            the same buffs left out of your cast stack, so the two do not cast over each other
--- expect:    Casts each missing buff once, waits while a fight is on, and casts a buff again after it drops.
--- verified:  on the offline stand-in for the game
--- id:        script-buffkeeper
-
 -- eb_buffkeeper.lua - keep your own maintained buffs up.
 --
 --   lua eb_buffkeeper "Fixture Ward" "Fixture Haste"     start it (InnerSpace console): one or more buff names

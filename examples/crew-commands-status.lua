@@ -1,15 +1,17 @@
--- The crew and coordination commands in this release
+-- EB tested example: The crew and coordination commands in this release
+-- crew-commands-status | snippet | topics: commands, crew
 --
--- eb announce is answered; eb relay spells a crew line out (eb relay all pause is eb all pause); the targeting, invite, event and coordination commands answer, or say plainly that this box does not answer them yet.
+-- What it does:  eb announce is answered; eb relay spells a crew line out (eb relay all pause is eb all pause); the targeting,
+--                invite, event and coordination commands answer, or say plainly that this box does not answer them yet.
+-- Tested:        announce answers; eb relay all pause pauses this box and sends one line to the crew; the seven others each
+--                answer or say "not wired yet".
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    announce answers; eb relay all pause pauses this box and sends one line to the crew; the seven others each answer or say "not wired yet".
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   commands.relay, commands.coord
--- id:        crew-commands-status
-
 -- offline stand-in: the whole of EB for InnerSpace booted by its real boot
 local a = DOCS.app()
 

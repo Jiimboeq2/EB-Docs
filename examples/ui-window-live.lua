@@ -1,15 +1,16 @@
--- Refresh a window from data that moves on its own
+-- EB tested example: Refresh a window from data that moves on its own
+-- ui-window-live | snippet | topics: ui, perf
 --
--- A live() signature is read at most every liveSec; a new signature rebuilds the state, an equal one costs nothing.
+-- What it does:  A live() signature is read at most every liveSec; a new signature rebuilds the state, an equal one costs
+--                nothing.
+-- Tested:        The window rebuilds when the snapshot's health changes and not while it stays the same.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The window rebuilds when the snapshot's health changes and not while it stays the same.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   ebkit.window, eb.world, game
--- id:        ui-window-live
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ pulse = false, me = { healthPct = 90 } })
 

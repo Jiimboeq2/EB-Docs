@@ -1,15 +1,17 @@
--- Loot a corpse by rule
+-- EB tested example: Loot a corpse by rule
+-- econ-loot-grab-corpse | snippet | topics: items, helpers, loot
 --
--- The brain's lootGrab() opens the nearest corpse or chest, applies the rule to every drop, closes the window and answers "done", or "empty" when there is nothing to loot. lootPending() says whether there is something to loot. Each drop taken is a ledger line.
+-- What it does:  The brain's lootGrab() opens the nearest corpse or chest, applies the rule to every drop, closes the window and
+--                answers "done", or "empty" when there is nothing to loot. lootPending() says whether there is something to loot.
+--                Each drop taken is a ledger line.
+-- Tested:        The gem is taken, the rag is left, and the next call answers "empty".
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The gem is taken, the rag is left, and the next call answers "empty".
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy, eb.economy.loot
--- id:        econ-loot-grab-corpse
-
 -- offline stand-in for the game's windows (in game EB builds the drive)
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world({ corpse = { id = 77, name = "a fixture brute's corpse" },

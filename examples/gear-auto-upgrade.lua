@@ -1,15 +1,16 @@
--- Wear the best gear in the bags (auto-upgrade)
+-- EB tested example: Wear the best gear in the bags (auto-upgrade)
+-- gear-auto-upgrade | snippet | topics: items
 --
--- eco.gearup:aup(opts) compares every bag piece with what is worn in its slot, equips each upgrade, carries the old piece's adornments over, and repeats (up to 5 passes) until a pass changes nothing.
+-- What it does:  eco.gearup:aup(opts) compares every bag piece with what is worn in its slot, equips each upgrade, carries the
+--                old piece's adornments over, and repeats (up to 5 passes) until a pass changes nothing.
+-- Tested:        The better vest is worn and keeps the old vest's rune; the worse hat stays in the bags.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The better vest is worn and keeps the old vest's rune; the worse hat stays in the bags.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.gearup, eb.economy
--- id:        gear-auto-upgrade
-
 -- offline stand-in: worn gear (the old vest is adorned) and two bag pieces
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({

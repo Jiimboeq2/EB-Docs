@@ -1,15 +1,15 @@
--- Save a spot and walk back to it
+-- EB tested example: Save a spot and walk back to it
+-- nav-saved-spot | snippet | topics: nav, helpers
 --
--- Save where you stand under a name with eb.nav.cmd, walk away, then walk back by name with eb.nav.gotoNamed.
+-- What it does:  Save where you stand under a name with eb.nav.cmd, walk away, then walk back by name with eb.nav.gotoNamed.
+-- Tested:        "camp" is saved at the start; after a walk east the box walks back to it by name.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    "camp" is saved at the start; after a walk east the box walks back to it by name.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav, eb.nav_marks
--- id:        nav-saved-spot
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { x = 5, y = 0, z = 5 } })
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

@@ -1,15 +1,17 @@
--- Recipe: an instance route with steps, pulls and a camp spot
+-- EB tested example: Recipe: an instance route with steps, pulls and a camp spot
+-- recipe-ic-route | snippet | topics: recipes, instances
 --
--- Write an instance file (hub, door, route steps, two encounter scripts), load it and run it end to end: the tank zones in, camps the group, walks, pulls a named, clears the trash, loots, announces and leaves by the exit door.
+-- What it does:  Write an instance file (hub, door, route steps, two encounter scripts), load it and run it end to end: the tank
+--                zones in, camps the group, walks, pulls a named, clears the trash, loots, announces and leaves by the exit door.
+-- Tested:        The run completes: the named is killed, the trash cleared, the chest looted, the door used once and the exit
+--                taken back to the hub.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The run completes: the named is killed, the trash cleared, the chest looted, the door used once and the exit taken back to the hub.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        recipe-ic-route
-
 -- the instance file: what instance.lua returns (pure data, nothing runs at load)
 local INSTANCE = {
     schema = "eb.ic/1",

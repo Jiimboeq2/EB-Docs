@@ -1,15 +1,15 @@
--- Pause the brain and read its status
+-- EB tested example: Pause the brain and read its status
+-- world-brain-pause | snippet | topics: helpers, ui
 --
--- brain:pause() freezes goals (a fight still runs in the combat engine); status() is one line for a window.
+-- What it does:  brain:pause() freezes goals (a fight still runs in the combat engine); status() is one line for a window.
+-- Tested:        A paused brain answers "paused" and does not tick; resumed, it ticks again and status() names its goal.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A paused brain answers "paused" and does not tick; resumed, it ticks again and status() names its goal.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.brain
--- id:        world-brain-pause
-
 -- offline stand-in: a world the brain can snapshot
 local world = { snapshot = function() return { inGame = true, name = "Tankard", class = "guardian", zone = "a_test_hall",
     hpPct = 88, powerPct = 100, x = 0, y = 0, z = 0, group = { count = 0, members = {} } } end }

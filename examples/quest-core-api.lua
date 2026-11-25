@@ -1,15 +1,17 @@
--- Run a pack on the runner's core, with only your own verbs
+-- EB tested example: Run a pack on the runner's core, with only your own verbs
+-- quest-core-api | snippet | topics: quests
 --
--- eb.quest.quests is the runner without the verb families loaded: register the verbs you want, bind the core to your adapters, and step a pack. Here a two-step pack of one custom verb runs to completion, and stepTarget reads a move step's point without running it.
+-- What it does:  eb.quest.quests is the runner without the verb families loaded: register the verbs you want, bind the core to
+--                your adapters, and step a pack. Here a two-step pack of one custom verb runs to completion, and stepTarget reads
+--                a move step's point without running it.
+-- Tested:        Both chime steps finish, the pack completes, and stepTarget names the move step's point.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Both chime steps finish, the pack completes, and stepTarget names the move step's point.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.quest.quests, eb.quest.verbs
--- id:        quest-core-api
-
 local Q = require("eb.quest.quests")
 local verbs = require("eb.quest.verbs")
 local chimes = 0

@@ -1,15 +1,17 @@
--- Put icons on a window's rows
+-- EB tested example: Put icons on a window's rows
+-- ui-icons-for-rows | snippet | topics: ui
 --
--- eb.ui.icons resolves an ability, item or class name to an icon a page draws (or nil, and the page keeps its glyph); iconmap gives the sheet math. Static tables, no game reads.
+-- What it does:  eb.ui.icons resolves an ability, item or class name to an icon a page draws (or nil, and the page keeps its
+--                glyph); iconmap gives the sheet math. Static tables, no game reads.
+-- Tested:        The ability resolves with its backdrop, the item and the class resolve, an unknown name is nil; EB's own tables
+--                load thousands of ability icons.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The ability resolves with its backdrop, the item and the class resolve, an unknown name is nil; EB's own tables load thousands of ability icons.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ui.icons.icons, eb.ui.icons.iconmap
--- id:        ui-icons-for-rows
-
 -- your script: in a window, make the resolver once and use it while you build the state
 local Icons = require("eb.ui.icons.icons")
 local map = require("eb.ui.icons.iconmap")

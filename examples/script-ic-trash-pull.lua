@@ -1,16 +1,16 @@
--- A trash pull encounter (complete script)
+-- EB tested example: A trash pull encounter (complete script)
+-- script-ic-trash-pull | complete script | topics: instances, recipes
 --
--- encounters/hollow_skitters.lua of the complete instance: a gate that skips the step when no pack is up, a pull that brings the pack to the group's camp spot, then a clear of whatever is left within reach.
+-- What it does:  encounters/hollow_skitters.lua of the complete instance: a gate that skips the step when no pack is up, a pull
+--                that brings the pack to the group's camp spot, then a clear of whatever is left within reach.
+-- Where it goes: EB/data/eb/ic/<collection>/fixture_hollow/encounters/hollow_skitters.lua (save it as hollow_skitters.lua)
+-- Run it:        eb ic run fixture_hollow
+-- Needs:         - the instance file fixture_hollow/instance.lua beside its encounters folder
+-- Tested:        With four skitters up, the pack is pulled once and cleared; with none up, the step is skipped by its gate.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      EB/data/eb/ic/<collection>/fixture_hollow/encounters/hollow_skitters.lua
--- run:       eb ic run fixture_hollow
--- needs:     the instance file fixture_hollow/instance.lua beside its encounters folder
--- expect:    With four skitters up, the pack is pulled once and cleared; with none up, the step is skipped by its gate.
--- verified:  on the offline stand-in for the game
--- modules:   eb.ic
--- id:        script-ic-trash-pull
-
 -- fixture_hollow/encounters/hollow_skitters.lua - conditions -> actions, as data. The route's "trash" step runs it.
 return {
     schema = "eb.ic/1",

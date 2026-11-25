@@ -1,15 +1,18 @@
--- Class facts fill in what a heal row leaves out
+-- EB tested example: Class facts fill in what a heal row leaves out
+-- stack-class-facts | snippet | topics: combat, data
 --
--- A row says when and on whom; it does not say whether a heal is a single or a group spell. With no class facts EB builds the row from its own Target, % and # (a single-target heal at the default weight); with the class's facts the same row builds as the group heal it is.
+-- What it does:  A row says when and on whom; it does not say whether a heal is a single or a group spell. With no class facts EB
+--                builds the row from its own Target, % and # (a single-target heal at the default weight); with the class's facts
+--                the same row builds as the group heal it is.
+-- Tested:        Without facts the heal row builds from the row alone, as a single-target heal; with the templar's facts it
+--                builds as a group heal. Nothing is held either way.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Without facts the heal row builds from the row alone, as a single-target heal; with the templar's facts it builds as a group heal. Nothing is held either way.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.caststack.classfacts, eb.caststack.jsonstack
--- id:        stack-class-facts
-
 -- your script
 local JS = require("eb.caststack.jsonstack")
 local CF = require("eb.caststack.classfacts")

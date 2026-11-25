@@ -1,15 +1,17 @@
--- A tour of the platform services
+-- EB tested example: A tour of the platform services
+-- platform-services-tour | snippet | topics: data, perf, ui
 --
--- The target and the install folder, the eb global, the crew transport's box id, the frame loop's own status line, folders and queued saves, and the window bridge's helpers - each in one line.
+-- What it does:  The target and the install folder, the eb global, the crew transport's box id, the frame loop's own status line,
+--                folders and queued saves, and the window bridge's helpers - each in one line.
+-- Tested:        The target is isx, eb.now is the platform clock, the transport names this box, a queued save is written by
+--                flushAll, and the window bridge gives an empty list that is sent as [].
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The target is isx, eb.now is the platform clock, the transport names this box, a queued save is written by flushAll, and the window bridge gives an empty list that is sent as [].
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.platform
--- id:        platform-services-tour
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real), its files on a table
 local w = DOCS.world({ me = { name = "Fixturae" } })
 local disk = require("data.lib.memdisk").install()

@@ -1,15 +1,17 @@
--- Who is still elsewhere, and one copy for the door
+-- EB tested example: Who is still elsewhere, and one copy for the door
+-- ic-group-stragglers | snippet | topics: instances, crew
 --
--- Before the door the tank waits for the group in the hub. runner:stragglers names every member still in another zone (by role or box id, never by character), and runner:sameCopy asks the brain to bring a group split across copies of the hub into the tank's copy - nobody walks for it.
+-- What it does:  Before the door the tank waits for the group in the hub. runner:stragglers names every member still in another
+--                zone (by role or box id, never by character), and runner:sameCopy asks the brain to bring a group split across
+--                copies of the hub into the tank's copy - nobody walks for it.
+-- Tested:        One member is still on its way; after the brain gathers the group into one copy the door can go ahead.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    One member is still on its way; after the brain gathers the group into one copy the door can go ahead.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        ic-group-stragglers
-
 -- offline stand-in for the game: the tank in the hub, a healer still travelling, the group split across two copies
 local ICW = require("instances.lib.icworld")
 local env, world = ICW.make({ group = { { id = "is2", role = "healer", zone = "fixture_vale" },

@@ -1,15 +1,17 @@
--- Take a work order, craft every step, hand it in
+-- EB tested example: Take a work order, craft every step, hand it in
+-- writ-run | snippet | topics: items
 --
--- eco.writs:run{ count, kind } asks the Work Order Clipboard (or the rush-order giver) for an order, crafts what each step asks for, verifies a guessed recipe by watching the step move, and hands the order in.
+-- What it does:  eco.writs:run{ count, kind } asks the Work Order Clipboard (or the rush-order giver) for an order, crafts what
+--                each step asks for, verifies a guessed recipe by watching the step move, and hands the order in.
+-- Tested:        One order with two steps is finished and handed in; the guessed spelling "a Fixture Spoon" is learned as Fixture
+--                Spoon for next time.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    One order with two steps is finished and handed in; the guessed spelling "a Fixture Spoon" is learned as Fixture Spoon for next time.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.writs, eb.economy
--- id:        writ-run
-
 -- offline stand-in: a clipboard, a work bench, and the order it hands out
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({ station = { name = "Work Bench" }, writGiver = { name = "Work Order Clipboard" },

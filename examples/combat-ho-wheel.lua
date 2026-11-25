@@ -1,15 +1,17 @@
--- Open and advance a heroic opportunity
+-- EB tested example: Open and advance a heroic opportunity
+-- combat-ho-wheel | snippet | topics: combat, fights
 --
--- With no wheel up the engine opens a heroic opportunity with the stack's opener; with your wheel up it casts the art whose icon the wheel needs, holds rotation arts that would disturb it, and never uses an excluded ability.
+-- What it does:  With no wheel up the engine opens a heroic opportunity with the stack's opener; with your wheel up it casts the
+--                art whose icon the wheel needs, holds rotation arts that would disturb it, and never uses an excluded ability.
+-- Tested:        The opener goes first, then Fixture Smash (icon 9) advances the wheel; Fixture Strike (icon 7) is held while the
+--                wheel runs; an excluded ability is never picked; switched off, nothing heroic is cast.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The opener goes first, then Fixture Smash (icon 9) advances the wheel; Fixture Strike (icon 7) is held while the wheel runs; an excluded ability is never picked; switched off, nothing heroic is cast.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat.ho, eb.combat
--- id:        combat-ho-wheel
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

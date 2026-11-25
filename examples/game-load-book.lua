@@ -1,15 +1,16 @@
--- Load your ability book once
+-- EB tested example: Load your ability book once
+-- game-load-book | snippet | topics: game, combat, perf
 --
--- LoadAbilities() reads the knowledge book once, in small rounds, while the game fetches each ability's details from the server; FindAbility() then answers by name with no further read.
+-- What it does:  LoadAbilities() reads the knowledge book once, in small rounds, while the game fetches each ability's details
+--                from the server; FindAbility() then answers by name with no further read.
+-- Tested:        Loads the three fixture abilities inside a task, then finds one by name with its cast time from the book.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Loads the three fixture abilities inside a task, then finds one by name with its cast time from the book.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game, eb.platform
--- id:        game-load-book
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.addAbility({ id = 5001, name = "Fixture Strike", ready = true, castTime = 0.5 })

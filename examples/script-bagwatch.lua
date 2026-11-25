@@ -1,18 +1,18 @@
--- Pause EB when the bags are full (complete script)
+-- EB tested example: Pause EB when the bags are full (complete script)
+-- script-bagwatch | complete script | topics: items, helpers, crew
 --
--- A drop-in script that pauses EB (this box, or the whole crew) when your bags drop under a number of free slots, and resumes it once there is room again.
+-- What it does:  A drop-in script that pauses EB (this box, or the whole crew) when your bags drop under a number of free slots,
+--                and resumes it once there is room again.
+-- Where it goes: InnerSpace/Scripts/eb_bagwatch.lua (save it as eb_bagwatch.lua)
+-- Run it:        lua eb_bagwatch free=3
+--                lua eb_bagwatch free=3 crew
+--                endlua eb_bagwatch
+-- Needs:         - EB for InnerSpace running in this session (eb status answers)
+-- Tested:        Pauses EB once when the free slots fall under the mark and resumes it once when you made room.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_bagwatch.lua
--- run:       lua eb_bagwatch free=3
---            lua eb_bagwatch free=3 crew
---            endlua eb_bagwatch
--- needs:     EB for InnerSpace running in this session (eb status answers)
--- expect:    Pauses EB once when the free slots fall under the mark and resumes it once when you made room.
--- verified:  on the offline stand-in for the game
--- modules:   commands.core
--- id:        script-bagwatch
-
 -- eb_bagwatch.lua - stop EB filling bags it cannot empty. Every two seconds it reads how many bag slots are free (one
 -- read). Under the mark it sends EB "pause" through EB's console word - "all pause" with the word crew, so every box
 -- stops - and once you made room (two slots past the mark, so it does not flip back and forth) it sends "resume".

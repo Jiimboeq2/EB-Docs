@@ -1,15 +1,17 @@
--- Where a secondary skill stands, and the books a trip would buy
+-- EB tested example: Where a secondary skill stands, and the books a trip would buy
+-- skill-level-status | snippet | topics: items
 --
--- eco.skilllevel:status(id) reads the skill live and answers its state, the levelling band it is in (the books and the recipe rows of that band) and the books a book trip would buy ahead.
+-- What it does:  eco.skilllevel:status(id) reads the skill live and answers its state, the levelling band it is in (the books and
+--                the recipe rows of that band) and the books a book trip would buy ahead.
+-- Tested:        Tinkering at 25 of 100 is in the tier-2 band; a trip buys that band's book and the next ones that start below
+--                the cap (8 books).
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Tinkering at 25 of 100 is in the tier-2 band; a trip buys that band's book and the next ones that start below the cap (8 books).
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.skilllevel, eb.economy
--- id:        skill-level-status
-
 -- offline: the skill seam answers 25 of 100 (in game the game layer answers it)
 local eco = require("eb.economy").new({ drive = {}, me = { level = 20 },
     shim = { Skill = function(id) if id == "tinkering" then return 25, 100 end end, TSLevel = function() return 20 end } })

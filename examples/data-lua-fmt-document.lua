@@ -1,15 +1,15 @@
--- Write a Lua data file
+-- EB tested example: Write a Lua data file
+-- data-lua-fmt-document | snippet | topics: data, quests, instances
 --
--- ebkit.lua_fmt writes a table as a stable "return { ... }" file that load() reads back with no environment.
+-- What it does:  ebkit.lua_fmt writes a table as a stable "return { ... }" file that load() reads back with no environment.
+-- Tested:        The document starts with return, keeps the chosen key order, and loads back to the same values.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The document starts with return, keeps the chosen key order, and loads back to the same values.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   ebkit.lua_fmt
--- id:        data-lua-fmt-document
-
 -- your script
 local LF = require("ebkit.lua_fmt")
 local route = { name = "a test hall", steps = { { kind = "walk", at = { 12.5, 0, -40 } }, { kind = "camp", at = { 30, 0, -12 } } } }

@@ -1,15 +1,16 @@
--- Where EB's nav data lives
+-- EB tested example: Where EB's nav data lives
+-- nav-store-layout | snippet | topics: nav, data
 --
--- Two roots: the mesh store that ships with EB (read-only at run time) and this PC's own nav data. Point both at a files host of your own - here one kept in memory - and read and write nav data through the one door.
+-- What it does:  Two roots: the mesh store that ships with EB (read-only at run time) and this PC's own nav data. Point both at a
+--                files host of your own - here one kept in memory - and read and write nav data through the one door.
+-- Tested:        Paths join under each root; a JSON document written to the local root reads back as plain tables.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Paths join under each root; a JSON document written to the local root reads back as plain tables.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav_store
--- id:        nav-store-layout
-
 -- offline stand-in for the game (only the docs runner has DOCS); the files host here keeps everything in memory
 local w = DOCS.world()
 

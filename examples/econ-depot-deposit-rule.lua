@@ -1,15 +1,17 @@
--- Deposit by a rule, keep the keep list
+-- EB tested example: Deposit by a rule, keep the keep list
+-- econ-depot-deposit-rule | snippet | topics: items
 --
--- eco.depot:deposit() moves NOTHING without a rule - a list, an opts.only predicate, a filter in cfg.depot.depositRule, or all = true. Whatever the rule picks, the keep list (cfg.depot.keep) and every protected item stay in the bags; each item goes to its own depot kind.
+-- What it does:  eco.depot:deposit() moves NOTHING without a rule - a list, an opts.only predicate, a filter in
+--                cfg.depot.depositRule, or all = true. Whatever the rule picks, the keep list (cfg.depot.keep) and every
+--                protected item stay in the bags; each item goes to its own depot kind.
+-- Tested:        With no rule it refuses; with a rule for ore the ore goes to the harvest depot and the kept arrows stay.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    With no rule it refuses; with a rule for ore the ore goes to the harvest depot and the kept arrows stay.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.depot, eb.economy.filter
--- id:        econ-depot-deposit-rule
-
 -- offline stand-in for the game's windows (in game EB builds the drive)
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world({

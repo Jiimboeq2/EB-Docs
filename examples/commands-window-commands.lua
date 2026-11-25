@@ -1,15 +1,19 @@
--- The window and monitor commands in this release
+-- EB tested example: The window and monitor commands in this release
+-- commands-window-commands | snippet | topics: commands, ui
 --
--- Types each window and monitor command on a booted EB and reads its answer: each opens its window through the window bridge (eb ui, eb mini, eb map, eb xp, eb track, eb radar, eb meters, eb crew, eb anal, eb mybutton), lists the kept workspaces (eb battlestation) or prints its readout (eb waiting, eb crew status); eb windows lists every window with the line that opens it. (eb uireset, eb anon and eb streamer answer too; they change the user's own files, so a doc example does not press them.)
+-- What it does:  Types each window and monitor command on a booted EB and reads its answer: each opens its window through the
+--                window bridge (eb ui, eb mini, eb map, eb xp, eb track, eb radar, eb meters, eb crew, eb anal, eb mybutton),
+--                lists the kept workspaces (eb battlestation) or prints its readout (eb waiting, eb crew status); eb windows
+--                lists every window with the line that opens it. (eb uireset, eb anon and eb streamer answer too; they change the
+--                user's own files, so a doc example does not press them.)
+-- Tested:        every window and monitor command is answered; eb windows lists every window with the line that opens it.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    every window and monitor command is answered; eb windows lists every window with the line that opens it.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   commands.ui, commands.monitor
--- id:        commands-window-commands
-
 -- offline stand-in: the whole of EB for InnerSpace booted by its real boot
 local a = DOCS.app()
 

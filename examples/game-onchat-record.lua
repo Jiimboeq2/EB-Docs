@@ -1,15 +1,16 @@
--- Record chat lines from the game's own chat event
+-- EB tested example: Record chat lines from the game's own chat event
+-- game-onchat-record | snippet | topics: game, events
 --
--- OnChat(fn) gives your function every chat line the moment the game raises it. That runs inside the game's event, so the function only records; the frame code acts on what it recorded.
+-- What it does:  OnChat(fn) gives your function every chat line the moment the game raises it. That runs inside the game's event,
+--                so the function only records; the frame code acts on what it recorded.
+-- Tested:        The handler records the two lines; the frame code then counts the one from the named speaker.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The handler records the two lines; the frame code then counts the one from the named speaker.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game, eb.events
--- id:        game-onchat-record
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 

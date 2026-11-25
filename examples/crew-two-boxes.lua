@@ -1,15 +1,15 @@
--- Two boxes, one crew
+-- EB tested example: Two boxes, one crew
+-- crew-two-boxes | snippet | topics: crew, helpers
 --
--- eb.relay carries scoped lines between boxes: all reaches everyone once, others skips the sender, to names who.
+-- What it does:  eb.relay carries scoped lines between boxes: all reaches everyone once, others skips the sender, to names who.
+-- Tested:        all runs once on each box, others only on the other one, to is2 only on is2.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    all runs once on each box, others only on the other one, to is2 only on is2.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.relay, eb.relay.events
--- id:        crew-two-boxes
-
 -- offline stand-in: an offline relay bus between two boxes (in game each box's relay rides InnerSpace's own)
 local bus = require("eb.relay.events").bus()
 

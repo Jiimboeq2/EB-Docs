@@ -1,15 +1,16 @@
--- Turn an event into one command for the crew
+-- EB tested example: Turn an event into one command for the crew
+-- events-crew-line | snippet | topics: events, crew, helpers
 --
--- Events never travel to the other boxes by themselves: a handler that wants the crew to act sends ONE deliberate eb line with events.crew().
+-- What it does:  Events never travel to the other boxes by themselves: a handler that wants the crew to act sends ONE deliberate
+--                eb line with events.crew().
+-- Tested:        The announcement of a named makes the handler send exactly one "eb pause" line to every box.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The announcement of a named makes the handler send exactly one "eb pause" line to every box.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.events
--- id:        events-crew-line
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local events = w.events()

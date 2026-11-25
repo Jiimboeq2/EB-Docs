@@ -1,15 +1,17 @@
--- Read a cast stack's tags as rules
+-- EB tested example: Read a cast stack's tags as rules
+-- coord-tag-import | snippet | topics: combat, crew, data
 --
--- An imported cast stack's ability tag and embargo tag become plain rules; imported into an engine, the tag fires and the hold works.
+-- What it does:  An imported cast stack's ability tag and embargo tag become plain rules; imported into an engine, the tag fires
+--                and the hold works.
+-- Tested:        Two rows with tags give three rules; casting the trigger ability fires the tag, which casts the listener; the
+--                embargo trigger holds the bound ability.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Two rows with tags give three rules; casting the trigger ability fires the tag, which casts the listener; the embargo trigger holds the bound ability.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.coord.tagimport, eb.coord.rules
--- id:        coord-tag-import
-
 -- your script
 local Import = require("eb.coord.tagimport")
 local Coord = require("eb.coord.rules")

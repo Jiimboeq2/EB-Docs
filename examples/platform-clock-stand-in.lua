@@ -1,15 +1,16 @@
--- Drive the clock in a test
+-- EB tested example: Drive the clock in a test
+-- platform-clock-stand-in | snippet | topics: data, perf
 --
--- clock.use hands EB's clock a source you step; the clock never runs backwards - when its source steps back it holds - and seconds() is the same clock.
+-- What it does:  clock.use hands EB's clock a source you step; the clock never runs backwards - when its source steps back it
+--                holds - and seconds() is the same clock.
+-- Tested:        1000, then 1000 again when the source steps back, then 3000; P.now() reads the same clock.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    1000, then 1000 again when the source steps back, then 3000; P.now() reads the same clock.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   clock, eb.platform
--- id:        platform-clock-stand-in
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 

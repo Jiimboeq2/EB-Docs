@@ -1,15 +1,16 @@
--- Diagnose a zone's mesh
+-- EB tested example: Diagnose a zone's mesh
+-- nav-mesh-reports | snippet | topics: nav, ui
 --
--- Does EB have a mesh for the zone, how many floors stack at a spot, which piece of the mesh a point is on, and the mesh's own notes and statistics - the questions a diagnostics window asks.
+-- What it does:  Does EB have a mesh for the zone, how many floors stack at a spot, which piece of the mesh a point is on, and
+--                the mesh's own notes and statistics - the questions a diagnostics window asks.
+-- Tested:        The zone has a mesh file; two floors stack at the spot; the reports read back as text.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The zone has a mesh file; two floors stack at the spot; the reports read back as text.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.navd
--- id:        nav-mesh-reports
-
 -- offline stand-in: EB's own mesh extension over a toy floor with a second storey 12 m up (in game: the zone's mesh)
 local w = DOCS.world()
 local fake = require("nav.lib.ebnav").attach(w, { zone = "fixture_hollow", loadFrames = 0 })

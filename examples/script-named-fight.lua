@@ -1,17 +1,21 @@
--- A named fight with a gate, phases, a reaction and a win test (complete script)
+-- EB tested example: A named fight with a gate, phases, a reaction and a win test (complete script)
+-- script-named-fight | complete script | topics: fights, recipes, instances
 --
--- encounters/overseer_of_fixtures.lua of the complete instance: the fight starts only when the named is up and nobody is fighting; the tank fights it to death while reactive phases answer its emote (the group steps onto a safe ledge and back), clear its adds and cast the finisher under 30%; the fight counts as won only when it is dead.
+-- What it does:  encounters/overseer_of_fixtures.lua of the complete instance: the fight starts only when the named is up and
+--                nobody is fighting; the tank fights it to death while reactive phases answer its emote (the group steps onto a
+--                safe ledge and back), clear its adds and cast the finisher under 30%; the fight counts as won only when it is
+--                dead.
+-- Where it goes: EB/data/eb/ic/<collection>/fixture_hollow/encounters/overseer_of_fixtures.lua (save it as
+--                overseer_of_fixtures.lua)
+-- Run it:        eb ic run fixture_hollow
+-- Needs:         - the instance file fixture_hollow/instance.lua, whose route step "boss" names this file
+--                - Fixture Burst (or your own finisher's name) in the tank's knowledge book
+-- Tested:        The emote moves the group to the safe ledge once and back, the adds are cleared, the finisher is cast once under
+--                30%, and the verdict is killed; with the named not up, the gate skips the fight.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      EB/data/eb/ic/<collection>/fixture_hollow/encounters/overseer_of_fixtures.lua
--- run:       eb ic run fixture_hollow
--- needs:     the instance file fixture_hollow/instance.lua, whose route step "boss" names this file
---            Fixture Burst (or your own finisher's name) in the tank's knowledge book
--- expect:    The emote moves the group to the safe ledge once and back, the adds are cleared, the finisher is cast once under 30%, and the verdict is killed; with the named not up, the gate skips the fight.
--- verified:  on the offline stand-in for the game
--- modules:   eb.ic
--- id:        script-named-fight
-
 -- fixture_hollow/encounters/overseer_of_fixtures.lua - one named fight as conditions -> actions. The phases without a
 -- "when" run in order; a phase with "when" + "repeat_ = true" is a REACTION, checked between phases and on every tick
 -- of the fight; "once = true" fires a reaction one time per pull.

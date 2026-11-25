@@ -1,15 +1,16 @@
--- Level Tinkering to its cap
+-- EB tested example: Level Tinkering to its cap
+-- skill-level-run | snippet | topics: items
 --
--- eco.skilllevel:level("tinkering") reads the skill live before every round, crafts the band's rows, reads again, and stops when the skill caps - or blocks with the reason when a round gains nothing.
+-- What it does:  eco.skilllevel:level("tinkering") reads the skill live before every round, crafts the band's rows, reads again,
+--                and stops when the skill caps - or blocks with the reason when a round gains nothing.
+-- Tested:        Tinkering goes from 18 to its cap of 20 in one round of the band's recipe and the run answers done.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Tinkering goes from 18 to its cap of 20 in one round of the band's recipe and the run answers done.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.skilllevel, eb.economy
--- id:        skill-level-run
-
 -- offline stand-in: a work bench, and a skill that rises by one for each item made (the game does that)
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({ station = { name = "Work Bench" }, anyRecipe = true })

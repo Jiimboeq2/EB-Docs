@@ -1,15 +1,17 @@
--- The T.S.E hand-over: a member gives its pick to the leader
+-- EB tested example: The T.S.E hand-over: a member gives its pick to the leader
+-- tse-handover | snippet | topics: tasks, items, crew
 --
--- At the zone's end, inside, each member hands its T.S.E pick to the leader before the leader's pass: twelve items to a trade, leaving out what cannot change hands and anything wished for in a loot roll. The give is a pollable job; when it ends the member's answer tells the leader it is finished.
+-- What it does:  At the zone's end, inside, each member hands its T.S.E pick to the leader before the leader's pass: twelve items
+--                to a trade, leaving out what cannot change hands and anything wished for in a loot roll. The give is a pollable
+--                job; when it ends the member's answer tells the leader it is finished.
+-- Tested:        The heirloom and the wished-for mantle stay; the two tradeable lines go in one trade; the member answers done.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The heirloom and the wished-for mantle stay; the two tradeable lines go in one trade; the member answers done.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.tse
--- id:        tse-handover
-
 local TSE = require("eb.economy.tse")                        -- its plan helpers; the pillar itself comes from the economy
 
 -- offline stand-in for the game's side of the economy: the bags, the trade window, the group (every name invented)

@@ -1,19 +1,22 @@
--- Loop an instance once the group is ready (complete script)
+-- EB tested example: Loop an instance once the group is ready (complete script)
+-- script-ic-loop-task | complete script | topics: tasks, instances, helpers, recipes
 --
--- A drop-in script for the tank's box: it waits until every member is in this zone, alive, healthy and rested, then types eb ic loop for you and ends. EB runs the loop: each run ends inside the cleared copy, the tank waits out the reset timer there, leaves by the exit, resets the copy from outside and goes back in.
+-- What it does:  A drop-in script for the tank's box: it waits until every member is in this zone, alive, healthy and rested,
+--                then types eb ic loop for you and ends. EB runs the loop: each run ends inside the cleared copy, the tank waits
+--                out the reset timer there, leaves by the exit, resets the copy from outside and goes back in.
+-- Where it goes: InnerSpace/Scripts/eb_icloop.lua (save it as eb_icloop.lua)
+-- Run it:        lua eb_icloop fixture_hollow 120
+--                endlua eb_icloop
+--                eb ic stop
+-- Needs:         - EB running on every box of the group; start this on the tank's box (the box that types the loop leads it)
+--                - the instance installed (the complete instance file fixture_hollow and its encounters)
+--                - every box already in the hub zone (fixture_docks)
+-- Tested:        It waits while a member is hurt, starts eb ic loop fixture_hollow 120 the moment the group is ready, and ends;
+--                the loop then runs two laps with the reset wait inside the copy.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_icloop.lua
--- run:       lua eb_icloop fixture_hollow 120
---            endlua eb_icloop
---            eb ic stop
--- needs:     EB running on every box of the group; start this on the tank's box (the box that types the loop leads it)
---            the instance installed (the complete instance file fixture_hollow and its encounters)
---            every box already in the hub zone (fixture_docks)
--- expect:    It waits while a member is hurt, starts eb ic loop fixture_hollow 120 the moment the group is ready, and ends; the loop then runs two laps with the reset wait inside the copy.
--- verified:  on the offline stand-in for the game
--- id:        script-ic-loop-task
-
 -- eb_icloop.lua - start an instance loop when the group is ready: everyone in this zone, alive, health at least 90%
 -- and power at least 50%. Then it types `eb ic loop <instance> <minutes>` for you (through EB's console word) and
 -- ends. EB runs the loop; `eb ic stop` ends it.

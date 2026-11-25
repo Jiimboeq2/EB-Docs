@@ -1,15 +1,16 @@
--- What a walk costs
+-- EB tested example: What a walk costs
+-- nav-perf-one-route | snippet | topics: nav, perf
 --
--- A walk plans ONE route up front and then only reads your position each frame: count the route requests and the game reads per frame.
+-- What it does:  A walk plans ONE route up front and then only reads your position each frame: count the route requests and the
+--                game reads per frame.
+-- Tested:        A 50 m walk asks for one route, and no frame of it reads the game more than 8 times.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A 50 m walk asks for one route, and no frame of it reads the game more than 8 times.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav, eb.move
--- id:        nav-perf-one-route
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { x = 0, y = 0, z = 0 } })
 local mesh = require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

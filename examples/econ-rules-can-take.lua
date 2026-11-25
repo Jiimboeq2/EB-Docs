@@ -1,15 +1,17 @@
--- Ask the safety gate before destroying or selling
+-- EB tested example: Ask the safety gate before destroying or selling
+-- econ-rules-can-take | snippet | topics: items, helpers
 --
--- rules.canTake(action, item, ctx) is the one gate every destroy, transmute, salvage and sell goes through. It fails safe: an item whose details were not read, a protected item, or a no-trade item you did not opt in is refused, with the reason.
+-- What it does:  rules.canTake(action, item, ctx) is the one gate every destroy, transmute, salvage and sell goes through. It
+--                fails safe: an item whose details were not read, a protected item, or a no-trade item you did not opt in is
+--                refused, with the reason.
+-- Tested:        The plain junk item may go; the unread, the protected and the no-trade items are refused with their reasons.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The plain junk item may go; the unread, the protected and the no-trade items are refused with their reasons.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.rules
--- id:        econ-rules-can-take
-
 -- your script
 local R = require("eb.economy.rules")
 local cfg = R.load({})

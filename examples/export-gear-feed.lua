@@ -1,15 +1,17 @@
--- Share gear exports across the crew
+-- EB tested example: Share gear exports across the crew
+-- export-gear-feed | snippet | topics: crew, items
 --
--- Each box's gear feed builds its own export and publishes it on the crew relay; every box takes in its peers' and holds the group table a loot or gear decision reads. Here two feeds are joined by a tiny in-memory transport standing in for EB's relay, and a tick on each shares both exports.
+-- What it does:  Each box's gear feed builds its own export and publishes it on the crew relay; every box takes in its peers' and
+--                holds the group table a loot or gear decision reads. Here two feeds are joined by a tiny in-memory transport
+--                standing in for EB's relay, and a tick on each shares both exports.
+-- Tested:        Each box ends up with both exports, a re-tick with nothing changed sends nothing, and the roster lists both.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Each box ends up with both exports, a re-tick with nothing changed sends nothing, and the roster lists both.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.exports.gearfeed
--- id:        export-gear-feed
-
 local gearfeed = require("eb.exports.gearfeed")
 
 -- a transport pair standing in for EB's relay (in game pass opts.relay = the crew relay)

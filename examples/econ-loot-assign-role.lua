@@ -1,15 +1,16 @@
--- Give a drop to a role: @priest, @fighter ...
+-- EB tested example: Give a drop to a role: @priest, @fighter ...
+-- econ-loot-assign-role | snippet | topics: items, crew, loot
 --
--- An "assign" rule's "to" may name a role with @ (fighter, priest, scout, mage, a class or a subclass). On a need-or-greed window each box rolls need when it fits the role and passes when it does not.
+-- What it does:  An "assign" rule's "to" may name a role with @ (fighter, priest, scout, mage, a class or a subclass). On a
+--                need-or-greed window each box rolls need when it fits the role and passes when it does not.
+-- Tested:        The templar box needs the priest item and the guardian box passes on it.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The templar box needs the priest item and the guardian box passes on it.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.lootrules
--- id:        econ-loot-assign-role
-
 -- your script
 local LR = require("eb.economy.lootrules")
 local d = LR.parse({ rules = { { match = "exact", item = "Fixture Censer", act = "assign", to = "@priest" } } })

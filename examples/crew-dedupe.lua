@@ -1,15 +1,15 @@
--- A line heard twice runs once
+-- EB tested example: A line heard twice runs once
+-- crew-dedupe | snippet | topics: crew
 --
--- Every crew line carries a message id; a box acts on an id once, however many times the line arrives.
+-- What it does:  Every crew line carries a message id; a box acts on an id once, however many times the line arrives.
+-- Tested:        The same message id is new the first time and a duplicate after; a different id is new again.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The same message id is new the first time and a duplicate after; a different id is new again.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.relay.wire
--- id:        crew-dedupe
-
 -- your script
 local wire = require("eb.relay.wire")
 local seen = wire.seenSet(64)              -- a bounded set: it forgets the oldest ids past 64

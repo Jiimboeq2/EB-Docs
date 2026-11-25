@@ -1,15 +1,15 @@
--- Wait for the group at a mark
+-- EB tested example: Wait for the group at a mark
+-- crew-group-barrier | snippet | topics: crew, instances
 --
--- group.barrier(name) is non-blocking: call it each tick until every member here has reached the same mark.
+-- What it does:  group.barrier(name) is non-blocking: call it each tick until every member here has reached the same mark.
+-- Tested:        The barrier waits while one member is missing, is ready once both marks are in, and times out on its own.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The barrier waits while one member is missing, is ready once both marks are in, and times out on its own.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.relay.group
--- id:        crew-group-barrier
-
 -- offline stand-in: the group as the world snapshot reports it, and a clock you step
 local t = { now = 0 }
 local world = { snapshot = function()

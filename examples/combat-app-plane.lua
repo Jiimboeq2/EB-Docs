@@ -1,15 +1,16 @@
--- The combat plane EB runs
+-- EB tested example: The combat plane EB runs
+-- combat-app-plane | snippet | topics: combat
 --
--- eb.app.combat is what EB builds once per box: the cast stack holder, the engine and the facade, plus the pump the pulse calls 4 times a second.
+-- What it does:  eb.app.combat is what EB builds once per box: the cast stack holder, the engine and the facade, plus the pump
+--                the pulse calls 4 times a second.
+-- Tested:        With no stack it says so; after a stack is bound the holder serves its 2 entries, and a pump sends one cast.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    With no stack it says so; after a stack is bound the holder serves its 2 entries, and a pump sends one cast.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.app.combat
--- id:        combat-app-plane
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

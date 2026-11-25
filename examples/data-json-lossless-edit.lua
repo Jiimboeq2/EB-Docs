@@ -1,15 +1,15 @@
--- Change one field in a JSON file another program owns
+-- EB tested example: Change one field in a JSON file another program owns
+-- data-json-lossless-edit | snippet | topics: data
 --
--- ebkit.json reads losslessly: change one value, write it back, and the rest stays exactly as it was spelled.
+-- What it does:  ebkit.json reads losslessly: change one value, write it back, and the rest stays exactly as it was spelled.
+-- Tested:        Only the edited value changes; a number spelled 1.50 and a key the script never touched come back the same.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Only the edited value changes; a number spelled 1.50 and a key the script never touched come back the same.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   ebkit.json
--- id:        data-json-lossless-edit
-
 -- your script
 local J = require("ebkit.json")
 local file = '{\n  "scale": 1.50,\n  "theme": "bw",\n  "volume": 0.5\n}'

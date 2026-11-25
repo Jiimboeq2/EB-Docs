@@ -1,15 +1,15 @@
--- Write an empty list as []
+-- EB tested example: Write an empty list as []
+-- data-jsontable-empty-list | snippet | topics: data, ui
 --
--- An empty Lua table encodes as {}; give an empty LIST the __tojson marker and it writes [] instead.
+-- What it does:  An empty Lua table encodes as {}; give an empty LIST the __tojson marker and it writes [] instead.
+-- Tested:        A plain empty table writes {}; one with the __tojson marker writes [], inside a bigger state too.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A plain empty table writes {}; one with the __tojson marker writes [], inside a bigger state too.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   ebkit.jsontable
--- id:        data-jsontable-empty-list
-
 -- your script
 local J = require("ebkit.jsontable")
 local EMPTY_LIST = { __tojson = function() return "[]" end }

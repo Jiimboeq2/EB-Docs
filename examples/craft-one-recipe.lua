@@ -1,15 +1,17 @@
--- Craft one order at the station in reach
+-- EB tested example: Craft one order at the station in reach
+-- craft-one-recipe | snippet | topics: items
 --
--- eco.craft:craftOne(order) selects the recipe, checks fuel, runs each combine with reaction arts and closes the station. It is pollable: call it every tick with the same order until it answers "done".
+-- What it does:  eco.craft:craftOne(order) selects the recipe, checks fuel, runs each combine with reaction arts and closes the
+--                station. It is pollable: call it every tick with the same order until it answers "done".
+-- Tested:        Two Fixture Lanterns are made at the work bench, reaction arts were cast during the combines, and the station
+--                window is closed at the end.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Two Fixture Lanterns are made at the work bench, reaction arts were cast during the combines, and the station window is closed at the end.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.craft, eb.economy
--- id:        craft-one-recipe
-
 -- offline stand-in: a work bench in reach and a recipe book (the game's windows, faked)
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({ station = { name = "Work Bench" },

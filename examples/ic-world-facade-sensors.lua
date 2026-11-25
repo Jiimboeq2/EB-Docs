@@ -1,15 +1,18 @@
--- Read a fight's sensors through the world facade
+-- EB tested example: Read a fight's sensors through the world facade
+-- ic-world-facade-sensors | snippet | topics: instances, fights
 --
--- Every condition in an encounter reads through runner:worldFacade(): fight timers, a curable detriment, a chat or emote line since the pull, an item in the bags, an actor's type. Here each sensor is wired to a small fake and read directly, the way a custom fn = function(ctx) action reads ctx.w.
+-- What it does:  Every condition in an encounter reads through runner:worldFacade(): fight timers, a curable detriment, a chat or
+--                emote line since the pull, an item in the bags, an actor's type. Here each sensor is wired to a small fake and
+--                read directly, the way a custom fn = function(ctx) action reads ctx.w.
+-- Tested:        The timer counts from its reset, the detriment, emote and item sensors answer what the fakes hold, and the
+--                actor's type comes from the combat interface's row.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The timer counts from its reset, the detriment, emote and item sensors answer what the fakes hold, and the actor's type comes from the combat interface's row.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        ic-world-facade-sensors
-
 -- offline stand-in for the game: the combat and events interfaces the sensors read through
 local ICW = require("instances.lib.icworld")
 local env, world = ICW.make({ start = "copy", alive = { ["Overseer of Fixtures"] = 80 } })

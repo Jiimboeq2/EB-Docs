@@ -1,15 +1,17 @@
--- Press EB Main's buttons from a script
+-- EB tested example: Press EB Main's buttons from a script
+-- ui-control-presses | snippet | topics: ui, commands
 --
--- eb.control is what EB Main and the mini press through: summary and toggles for what they show, act for a press - each press becomes a command line through the one registry.
+-- What it does:  eb.control is what EB Main and the mini press through: summary and toggles for what they show, act for a press -
+--                each press becomes a command line through the one registry.
+-- Tested:        The pause press pauses the brain and the toggle shows it; the start press resumes; a verb with no action says
+--                not wired yet.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The pause press pauses the brain and the toggle shows it; the start press resumes; a verb with no action says not wired yet.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.app.windows
--- id:        ui-control-presses
-
 -- offline stand-in: the whole of EB for InnerSpace booted by its real boot
 local a = DOCS.app()
 

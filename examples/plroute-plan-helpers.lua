@@ -1,15 +1,17 @@
--- A route's plan helpers: skipped steps, repeats, stalls, rates
+-- EB tested example: A route's plan helpers: skipped steps, repeats, stalls, rates
+-- plroute-plan-helpers | snippet | topics: tasks
 --
--- The route planner is pure: firstOnFrom skips the steps a route switched off, repeatsAt says whether a back-and-forth step goes round again at this level, stallCheck notices a run that stopped making progress, and perHour turns a count into an hourly rate.
+-- What it does:  The route planner is pure: firstOnFrom skips the steps a route switched off, repeatsAt says whether a
+--                back-and-forth step goes round again at this level, stallCheck notices a run that stopped making progress, and
+--                perHour turns a count into an hourly rate.
+-- Tested:        Step 2 is the first one on; the repeat holds below its target level; a quiet run stalls after its limit.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Step 2 is the first one on; the repeat holds below its target level; a quiet run stalls after its limit.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.plroutes.plan
--- id:        plroute-plan-helpers
-
 local plan = require("eb.plroutes.plan")
 
 -- a route's steps, as normalize leaves them (offline: invented steps)

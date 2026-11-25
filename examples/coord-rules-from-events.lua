@@ -1,15 +1,16 @@
--- A rule that listens to the game
+-- EB tested example: A rule that listens to the game
+-- coord-rules-from-events | snippet | topics: helpers, events, crew
 --
--- bindEvents feeds a rules engine from eb.events: a tell or an emote line triggers a crew rule, and the intent becomes one eb command line.
+-- What it does:  bindEvents feeds a rules engine from eb.events: a tell or an emote line triggers a crew rule, and the intent
+--                becomes one eb command line.
+-- Tested:        The emote line in chat triggers the rule; its crew intent carries "eb all pause".
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The emote line in chat triggers the rule; its crew intent carries "eb all pause".
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.coord.rules, eb.events
--- id:        coord-rules-from-events
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local events = w.events()

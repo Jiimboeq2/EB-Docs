@@ -1,15 +1,17 @@
--- Stop a walk cleanly
+-- EB tested example: Stop a walk cleanly
+-- nav-stop-a-walk | snippet | topics: nav, helpers
 --
--- Start a long walk as a pulse task, then end it from outside with eb.nav.stop: the walk returns "stopped" and every key is released.
+-- What it does:  Start a long walk as a pulse task, then end it from outside with eb.nav.stop: the walk returns "stopped" and
+--                every key is released.
+-- Tested:        The walk is under way after a second, eb.nav.stop ends it, goPoint answers false, "stopped", and nothing is
+--                held.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The walk is under way after a second, eb.nav.stop ends it, goPoint answers false, "stopped", and nothing is held.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav, eb.platform
--- id:        nav-stop-a-walk
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { x = 0, y = 0, z = 0 } })
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

@@ -1,15 +1,17 @@
--- Is it ready? Then cast it
+-- EB tested example: Is it ready? Then cast it
+-- combat-ready-and-cast | snippet | topics: combat, game
 --
--- Ask the game layer whether an ability is ready and how long until it is, then cast it at your target or on a group member by name.
+-- What it does:  Ask the game layer whether an ability is ready and how long until it is, then cast it at your target or on a
+--                group member by name.
+-- Tested:        Fixture Strike is ready and goes out at the target; Fixture Ward is 8 s away; Fixture Mend goes out on the
+--                member by name.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Fixture Strike is ready and goes out at the target; Fixture Ward is 8 s away; Fixture Mend goes out on the member by name.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        combat-ready-and-cast
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

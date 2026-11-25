@@ -1,17 +1,18 @@
--- Tell me when a yes/no question waits (complete script)
+-- EB tested example: Tell me when a yes/no question waits (complete script)
+-- script-choicealert | complete script | topics: dialogs, helpers, events
 --
--- A drop-in script that notices the game's yes/no windows (a revive offer, an invite, a trade question) and says what is asked, on the console and in group chat, so you can answer it - it never clicks one itself.
+-- What it does:  A drop-in script that notices the game's yes/no windows (a revive offer, an invite, a trade question) and says
+--                what is asked, on the console and in group chat, so you can answer it - it never clicks one itself.
+-- Where it goes: InnerSpace/Scripts/eb_choicealert.lua (save it as eb_choicealert.lua)
+-- Run it:        lua eb_choicealert group
+--                endlua eb_choicealert
+-- Needs:         - EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
+--                - you, to answer the window: EB does not click yes/no windows on this release
+-- Tested:        Says the question and its two answers once per window and clicks nothing.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_choicealert.lua
--- run:       lua eb_choicealert group
---            endlua eb_choicealert
--- needs:     EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
---            you, to answer the window: EB does not click yes/no windows on this release
--- expect:    Says the question and its two answers once per window and clicks nothing.
--- verified:  on the offline stand-in for the game
--- id:        script-choicealert
-
 -- eb_choicealert.lua - say when a yes/no question is waiting for you.
 --
 --   lua eb_choicealert [group]     start it; with "group" the question also goes to group chat (your crew's

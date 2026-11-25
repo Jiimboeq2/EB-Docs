@@ -1,15 +1,16 @@
--- Preview and ride a trip from the console
+-- EB tested example: Preview and ride a trip from the console
+-- nav-travel-commands | snippet | topics: nav, commands
 --
--- eb route previews a cross-zone trip without moving; eb transit lists this zone's pads, and with a station rides the pads to it; eb goto starts the trip itself. Each answers at once.
+-- What it does:  eb route previews a cross-zone trip without moving; eb transit lists this zone's pads, and with a station rides
+--                the pads to it; eb goto starts the trip itself. Each answers at once.
+-- Tested:        eb route names the bell hop; eb transit lists both pads; eb goto and eb transit <station> answer "issued".
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    eb route names the bell hop; eb transit lists both pads; eb goto and eb transit <station> answer "issued".
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   commands.travel, eb.nav_register, eb.nav_travel, eb.transit
--- id:        nav-travel-commands
-
 -- offline stand-in: a travel network and two pads as data (in game: EB's own travel and transit data)
 local w = DOCS.world()
 local NW = require("nav.lib.navworld")

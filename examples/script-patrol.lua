@@ -1,21 +1,21 @@
--- Patrol between saved marks (complete script)
+-- EB tested example: Patrol between saved marks (complete script)
+-- script-patrol | complete script | topics: nav, helpers
 --
--- A drop-in script that walks you between marks you saved with eb marks set, for as many laps as you ask: it hands each walk to EB (eb marks go) and watches you arrive before it sends the next.
+-- What it does:  A drop-in script that walks you between marks you saved with eb marks set, for as many laps as you ask: it hands
+--                each walk to EB (eb marks go) and watches you arrive before it sends the next.
+-- Where it goes: InnerSpace/Scripts/eb_patrol.lua (save it as eb_patrol.lua)
+-- Run it:        eb marks set alpha
+--                eb marks set beta
+--                lua eb_patrol alpha beta laps=2
+--                endlua eb_patrol
+-- Needs:         - EB for InnerSpace running in this session (eb status answers)
+--                - each mark saved first with eb marks set <name>, standing on the spot, in this zone
+--                - a mesh for this zone (EB walks the mesh and nothing else: a mark the mesh has no route to is not walked to)
+-- Tested:        Walks to each mark in turn for the laps asked, says where it is after each walk, and ends on the last mark.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_patrol.lua
--- run:       eb marks set alpha
---            eb marks set beta
---            lua eb_patrol alpha beta laps=2
---            endlua eb_patrol
--- needs:     EB for InnerSpace running in this session (eb status answers)
---            each mark saved first with eb marks set <name>, standing on the spot, in this zone
---            a mesh for this zone (EB walks the mesh and nothing else: a mark the mesh has no route to is not walked to)
--- expect:    Walks to each mark in turn for the laps asked, says where it is after each walk, and ends on the last mark.
--- verified:  on the offline stand-in for the game
--- modules:   commands.nav
--- id:        script-patrol
-
 -- eb_patrol.lua - walk between your saved marks. For each mark it sends EB the line "marks go <mark>" through EB's
 -- console word (luacall EBISX_cmd: EB answers in the console, a script hears no reply), then watches you: the walk has
 -- started once you move, and it is over once you stood still for a second. Then the next mark, lap after lap.

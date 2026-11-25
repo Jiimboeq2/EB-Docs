@@ -1,15 +1,19 @@
--- Give up a fight that cannot be won
+-- EB tested example: Give up a fight that cannot be won
+-- combat-giveup-unwinnable | snippet | topics: combat, fights
 --
--- The engine measures each fight's kill time from two health readings; past the grace window, a mob it picked itself whose kill time stays over the limit is benched for the session. What the tank or you fight (and an ordered kill) is never given up - a training dummy is there to be hit. An override caps both for a hard zone.
+-- What it does:  The engine measures each fight's kill time from two health readings; past the grace window, a mob it picked
+--                itself whose kill time stays over the limit is benched for the session. What the tank or you fight (and an
+--                ordered kill) is never given up - a training dummy is there to be hit. An override caps both for a hard zone.
+-- Tested:        With a 1-second grace and a 2-second cap, a mob EB picked whose health never moves is given up ("tooStrong") and
+--                benched until forgetStrong(); the dummy you targeted is still fought; the kill time of a mob that does lose
+--                health is measured.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    With a 1-second grace and a 2-second cap, a mob EB picked whose health never moves is given up ("tooStrong") and benched until forgetStrong(); the dummy you targeted is still fought; the kill time of a mob that does lose health is measured.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat, eb.combat.overrides
--- id:        combat-giveup-unwinnable
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

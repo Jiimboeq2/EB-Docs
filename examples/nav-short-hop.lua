@@ -1,15 +1,16 @@
--- A short hop needs no route
+-- EB tested example: A short hop needs no route
+-- nav-short-hop | snippet | topics: nav, perf
 --
--- A point under 10 m away whose straight line the zone's own mesh proves clear (the .nav's raycast, on this zone's loaded mesh) is walked without a route; a line the mesh cannot prove is planned like any walk.
+-- What it does:  A point under 10 m away whose straight line the zone's own mesh proves clear (the .nav's raycast, on this zone's
+--                loaded mesh) is walked without a route; a line the mesh cannot prove is planned like any walk.
+-- Tested:        The 6 m walk says "short hop", arrives, and the mesh was asked for no route at all.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The 6 m walk says "short hop", arrives, and the mesh was asked for no route at all.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav
--- id:        nav-short-hop
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { x = 0, y = 0, z = 0 } })
 local mesh = require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

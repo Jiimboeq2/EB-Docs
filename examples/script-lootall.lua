@@ -1,17 +1,19 @@
--- Take loot windows by your rules (complete script)
+-- EB tested example: Take loot windows by your rules (complete script)
+-- script-lootall | complete script | topics: loot, events, helpers
 --
--- A drop-in script that takes a loot window the moment the game opens one: free-for-all windows by default, never a window holding an item on your leave list, and with an only= list just the windows that hold one of those.
+-- What it does:  A drop-in script that takes a loot window the moment the game opens one: free-for-all windows by default, never
+--                a window holding an item on your leave list, and with an only= list just the windows that hold one of those.
+-- Where it goes: InnerSpace/Scripts/eb_lootall.lua (save it as eb_lootall.lua)
+-- Run it:        lua eb_lootall "leave=Cursed Fixture Idol"
+--                endlua eb_lootall
+-- Needs:         - EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
+--                - EB's own looting off, so the two do not both act on one window
+-- Tested:        Takes the free-for-all window, leaves the lottery window and the window holding a leave-list item open for you,
+--                and says why for each.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_lootall.lua
--- run:       lua eb_lootall "leave=Cursed Fixture Idol"
---            endlua eb_lootall
--- needs:     EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
---            EB's own looting off, so the two do not both act on one window
--- expect:    Takes the free-for-all window, leaves the lottery window and the window holding a leave-list item open for you, and says why for each.
--- verified:  on the offline stand-in for the game
--- id:        script-lootall
-
 -- eb_lootall.lua - take loot windows by your rules. It does nothing until the game says a loot window opened (the
 -- loot-window event; a loot window is never polled - with no window up that read is slow), then reads the window's
 -- type and every item name in ONE read and decides:

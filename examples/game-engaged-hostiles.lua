@@ -1,15 +1,16 @@
--- Count the mobs fighting you
+-- EB tested example: Count the mobs fighting you
+-- game-engaged-hostiles | snippet | topics: game, combat, fights
 --
--- CountEngagedHostiles(radius) answers how many living NPCs in combat are aggro on you, and how many are in combat at all, from one sweep a frame shared by every combat read.
+-- What it does:  CountEngagedHostiles(radius) answers how many living NPCs in combat are aggro on you, and how many are in combat
+--                at all, from one sweep a frame shared by every combat read.
+-- Tested:        Counts two aggro mobs and three in combat inside 30 m; the idle one and the far one are not counted.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Counts two aggro mobs and three in combat inside 30 m; the idle one and the far one are not counted.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        game-engaged-hostiles
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.self.inCombat = true

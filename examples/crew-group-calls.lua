@@ -1,15 +1,17 @@
--- Call the group back, evacuate, read the group
+-- EB tested example: Call the group back, evacuate, read the group
+-- crew-group-calls | snippet | topics: crew, instances
 --
--- eb.relay.group's calls over a real relay: send a line, read the group from the world snapshot, record a member's mark, call stuck members back (catchup) and evacuate (evac); then leave the relay.
+-- What it does:  eb.relay.group's calls over a real relay: send a line, read the group from the world snapshot, record a member's
+--                mark, call stuck members back (catchup) and evacuate (evac); then leave the relay.
+-- Tested:        The healer's box hears the pause, the catch-up order and the evacuation order; the group lists the healer with
+--                its role; leave marks the relay as no longer joined.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The healer's box hears the pause, the catch-up order and the evacuation order; the group lists the healer with its role; leave marks the relay as no longer joined.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.relay.group, eb.relay
--- id:        crew-group-calls
-
 -- offline stand-in: an in-memory relay between two boxes, and the group as the world snapshot reports it
 local bus = require("eb.relay.events").bus()
 local world = { snapshot = function()

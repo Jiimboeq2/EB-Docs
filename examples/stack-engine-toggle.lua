@@ -1,15 +1,16 @@
--- Switch a tag from the engine
+-- EB tested example: Switch a tag from the engine
+-- stack-engine-toggle | snippet | topics: combat, fights
 --
--- engine:toggle switches a whole category (ae, mez, ho, dumbfires) or any custom tag; a custom tag also switches the holder's tagged rows.
+-- What it does:  engine:toggle switches a whole category (ae, mez, ho, dumbfires) or any custom tag; a custom tag also switches
+--                the holder's tagged rows.
+-- Tested:        toggle("burn", false) holds the tagged row, so the engine casts the next one; toggle("ae", false) skips the AE.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    toggle("burn", false) holds the tagged row, so the engine casts the next one; toggle("ae", false) skips the AE.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat, eb.caststack.jsonstack_live
--- id:        stack-engine-toggle
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

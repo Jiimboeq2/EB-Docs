@@ -1,15 +1,18 @@
--- Write long work as a pollable job
+-- EB tested example: Write long work as a pollable job
+-- econ-job-steps | snippet | topics: tasks, items, helpers
 --
--- An economy Job cuts long work into steps and runs one bite per call: a step answers "stay" (still on it), "next" (move on), "done" (finish early) or "blocked" with a reason, and keeps its progress in job.mem. Call job:tick once per tick - from a pulse job is fine, a tick never waits - until it is no longer "working".
+-- What it does:  An economy Job cuts long work into steps and runs one bite per call: a step answers "stay" (still on it), "next"
+--                (move on), "done" (finish early) or "blocked" with a reason, and keeps its progress in job.mem. Call job:tick
+--                once per tick - from a pulse job is fine, a tick never waits - until it is no longer "working".
+-- Tested:        The three-step job reports working for each bite, then done; a step that raises ends the job as blocked instead
+--                of breaking the frame.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The three-step job reports working for each bite, then done; a step that raises ends the job as blocked instead of breaking the frame.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.job
--- id:        econ-job-steps
-
 local Job = require("eb.economy.job")
 
 -- your script: walk to the vendor, sell three items one per tick, close the window

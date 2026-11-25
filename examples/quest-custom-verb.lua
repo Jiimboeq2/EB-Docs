@@ -1,15 +1,18 @@
--- Add your own pack verb
+-- EB tested example: Add your own pack verb
+-- quest-custom-verb | snippet | topics: quests, helpers
 --
--- eb.quest.verbs.register(keys, fn, about, group) adds a verb every pack can use. The handler gets the step's context: ctx.cmd (the parsed line), ctx:zone(), ctx.state (this step's own scratch table) and answers with ctx:done, ctx:work, ctx:travel, ctx:combat, ctx:loot, ctx:block or ctx:stop. It must return at once and never wait.
+-- What it does:  eb.quest.verbs.register(keys, fn, about, group) adds a verb every pack can use. The handler gets the step's
+--                context: ctx.cmd (the parsed line), ctx:zone(), ctx.state (this step's own scratch table) and answers with
+--                ctx:done, ctx:work, ctx:travel, ctx:combat, ctx:loot, ctx:block or ctx:stop. It must return at once and never
+--                wait.
+-- Tested:        The custom verb waits two ticks while it rings, then the pack goes on and completes.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The custom verb waits two ticks while it rings, then the pack goes on and completes.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.quest.verbs, eb.quest
--- id:        quest-custom-verb
-
 local verbs = require("eb.quest.verbs")
 verbs.register({ "ringgong", "gong" }, function(ctx)
     local times = tonumber(verbs.csv(ctx.cmd.rest)[1]) or 1

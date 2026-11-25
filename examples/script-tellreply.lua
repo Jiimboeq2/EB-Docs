@@ -1,16 +1,18 @@
--- Answer tells while you are away (complete script)
+-- EB tested example: Answer tells while you are away (complete script)
+-- script-tellreply | complete script | topics: helpers, events
 --
--- A drop-in script that answers each player who sends you a tell with your away line, once per person per ten minutes, and ignores group, raid, say and NPC lines.
+-- What it does:  A drop-in script that answers each player who sends you a tell with your away line, once per person per ten
+--                minutes, and ignores group, raid, say and NPC lines.
+-- Where it goes: InnerSpace/Scripts/eb_tellreply.lua (save it as eb_tellreply.lua)
+-- Run it:        lua eb_tellreply "Away for a bit - back soon" 10
+--                endlua eb_tellreply
+-- Needs:         - EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
+-- Tested:        Answers the first tell from each player once, stays quiet for repeats inside the window, and never answers an
+--                NPC.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_tellreply.lua
--- run:       lua eb_tellreply "Away for a bit - back soon" 10
---            endlua eb_tellreply
--- needs:     EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
--- expect:    Answers the first tell from each player once, stays quiet for repeats inside the window, and never answers an NPC.
--- verified:  on the offline stand-in for the game
--- id:        script-tellreply
-
 -- eb_tellreply.lua - answer tells while you are away.
 --
 --   lua eb_tellreply "<your away line>" [minutes]    start it: the line to send, and how long before the same person

@@ -1,15 +1,20 @@
--- EB Overseer from the console
+-- EB tested example: EB Overseer from the console
+-- overseer-command | snippet | topics: quests, commands
 --
--- eb overseer is the Overseer's one command: run a pass, stop it, read where it stands, set this character's options (a season or a colour is ONE choice), keep the PC's preferences (who a click is for, after each run), and buy missions with words a crew line carries to every box (eb all overseer buy season 3 colour blue ...). A word whose part is not on this box yet says so; a game read that waits for its live proof answers held, in words.
+-- What it does:  eb overseer is the Overseer's one command: run a pass, stop it, read where it stands, set this character's
+--                options (a season or a colour is ONE choice), keep the PC's preferences (who a click is for, after each run),
+--                and buy missions with words a crew line carries to every box (eb all overseer buy season 3 colour blue ...). A
+--                word whose part is not on this box yet says so; a game read that waits for its live proof answers held, in
+--                words.
+-- Tested:        set neutral on reads back and options lists it; who mygroup is kept for every box of the PC; the buy's dash
+--                flags read as EB's words; status says the pass is idle; stop finds nothing running.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    set neutral on reads back and options lists it; who mygroup is kept for every box of the PC; the buy's dash flags read as EB's words; status says the pass is idle; stop finds nothing running.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   commands.quest
--- id:        overseer-command
-
 -- offline stand-in: the whole of EB for InnerSpace booted by its real boot
 local a = DOCS.app()
 

@@ -1,15 +1,16 @@
--- Effect names are server requests - never poll them
+-- EB tested example: Effect names are server requests - never poll them
+-- tlo-effect-info-server | snippet | topics: tlos, perf
 --
--- Me.Effect[n].ToEffectInfo.Name asks the SERVER whenever it is read. Reading it for every effect every frame floods the server; read the plain fields (ID, Type) per frame and look a name up once per new effect id.
+-- What it does:  Me.Effect[n].ToEffectInfo.Name asks the SERVER whenever it is read. Reading it for every effect every frame
+--                floods the server; read the plain fields (ID, Type) per frame and look a name up once per new effect id.
+-- Tested:        Polling names directly costs a server request per effect per frame; the cached way costs one per effect, once.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Polling names directly costs a server request per effect per frame; the cached way costs one per effect, once.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   game
--- id:        tlo-effect-info-server
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.world.effects = {

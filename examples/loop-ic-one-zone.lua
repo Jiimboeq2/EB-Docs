@@ -1,15 +1,18 @@
--- Loop one instance: wait inside until it can be reset
+-- EB tested example: Loop one instance: wait inside until it can be reset
+-- loop-ic-one-zone | snippet | topics: tasks, instances
 --
--- runner:loop runs one instance again and again (until stopped by default; laps caps it here). Looping ONE zone, the tank waits out the reuse timer INSIDE the cleared copy where the run ended, then leaves by the exit door, resets the copy from outside and goes back in. The first lap is a rerun of the copy we stand in.
+-- What it does:  runner:loop runs one instance again and again (until stopped by default; laps caps it here). Looping ONE zone,
+--                the tank waits out the reuse timer INSIDE the cleared copy where the run ended, then leaves by the exit door,
+--                resets the copy from outside and goes back in. The first lap is a rerun of the copy we stand in.
+-- Tested:        Two laps run; the 5-minute wait happens inside the copy, every reset is done from outside, and the loop ends
+--                with "laps done".
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Two laps run; the 5-minute wait happens inside the copy, every reset is done from outside, and the loop ends with "laps done".
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        loop-ic-one-zone
-
 local INSTANCE = {
     schema = "eb.ic/1", zone = "Fixture Hollow", short = "fixture_hollow",
     hub = { zone = "fixture_docks", entrance = { loc = { 0, 0, 0 }, tolerance = 8 },

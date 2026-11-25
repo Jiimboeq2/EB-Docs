@@ -1,15 +1,18 @@
--- A pack's gates: level, a held sibling, a zone's wing
+-- EB tested example: A pack's gates: level, a held sibling, a zone's wing
+-- quest-gates | snippet | topics: quests
 --
--- Before the first step the runner checks the pack's gates: level_required stops a character that is too low (with the reason), skip_if_holding skips the quest while a sibling from the same giver is held. Zone names compare the hub-aware way: a hub is never its own instance wing.
+-- What it does:  Before the first step the runner checks the pack's gates: level_required stops a character that is too low (with
+--                the reason), skip_if_holding skips the quest while a sibling from the same giver is held. Zone names compare the
+--                hub-aware way: a hub is never its own instance wing.
+-- Tested:        The level gate blocks at level 20, the sibling gate completes as skipped, and the zone compares answer as the
+--                game names zones.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The level gate blocks at level 20, the sibling gate completes as skipped, and the zone compares answer as the game names zones.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.quest, eb.quest.gates
--- id:        quest-gates
-
 local function firstStep(pack, opts, held)
     local deps, world = require("quests.lib.questworld").make(opts)
     if held then world.journal.give(held, { "a line" }) end

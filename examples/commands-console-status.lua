@@ -1,15 +1,15 @@
--- Type an eb command
+-- EB tested example: Type an eb command
+-- commands-console-status | snippet | topics: commands, helpers
 --
--- Boot EB for InnerSpace offline and run console lines through the one command registry.
+-- What it does:  Boot EB for InnerSpace offline and run console lines through the one command registry.
+-- Tested:        eb status crew answers with this box's crew line; a word that is not a command is refused plainly.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    eb status crew answers with this box's crew line; a word that is not a command is refused plainly.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.registry, eb.app
--- id:        commands-console-status
-
 -- offline stand-in: the whole of EB for InnerSpace booted by its real boot (in game you type in the console)
 local a = DOCS.app()
 

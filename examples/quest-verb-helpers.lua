@@ -1,15 +1,18 @@
--- The verb registry's parsers and its refusals
+-- EB tested example: The verb registry's parsers and its refusals
+-- quest-verb-helpers | snippet | topics: quests
 --
--- The helpers every verb's arguments go through: flags takes the -flag words out of a hail, splitFields keeps a ${...} condition whole, isComment spots a note line. dispatch runs one parsed line through its verb and turns a refused verb, or one nobody registered, into a final "blocked" with the reason - a pack is never guessed at.
+-- What it does:  The helpers every verb's arguments go through: flags takes the -flag words out of a hail, splitFields keeps a
+--                ${...} condition whole, isComment spots a note line. dispatch runs one parsed line through its verb and turns a
+--                refused verb, or one nobody registered, into a final "blocked" with the reason - a pack is never guessed at.
+-- Tested:        The hail's -peaceful flag is found, the wait's condition stays one field, and both an unknown and a refused verb
+--                stop with a reason.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The hail's -peaceful flag is found, the wait's condition stays one field, and both an unknown and a refused verb stop with a reason.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.quest.verbs
--- id:        quest-verb-helpers
-
 require("eb.quest")                                   -- loads every verb family into the registry
 local verbs = require("eb.quest.verbs")
 

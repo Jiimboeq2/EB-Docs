@@ -1,15 +1,16 @@
--- Stay inside the per-frame read budget
+-- EB tested example: Stay inside the per-frame read budget
+-- game-read-budget | snippet | topics: game, perf
 --
--- Me(), Target() and Group() together cost two game reads in a frame, however often they are asked; GameDataReads() counts this frame's reads so a helper can stay under about 8.
+-- What it does:  Me(), Target() and Group() together cost two game reads in a frame, however often they are asked;
+--                GameDataReads() counts this frame's reads so a helper can stay under about 8.
+-- Tested:        Asking for you, your target and your group five times each in one frame still costs two reads.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Asking for you, your target and your group five times each in one frame still costs two reads.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        game-read-budget
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.addMember({ name = "Tankfixture", id = 11, class = "guardian", healthPct = 90, powerPct = 70, inZone = true })

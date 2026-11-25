@@ -1,15 +1,16 @@
--- Cast a heal on a group member by name
+-- EB tested example: Cast a heal on a group member by name
+-- game-cast-on-player | snippet | topics: game, combat, crew, helpers
 --
--- Cast(name, { name = who }) uses a beneficial ability on a player without changing your target - the way a healer helper casts on the most hurt member.
+-- What it does:  Cast(name, { name = who }) uses a beneficial ability on a player without changing your target - the way a healer
+--                helper casts on the most hurt member.
+-- Tested:        The heal goes out on the hurt member by name and your target stays on the mob.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The heal goes out on the hurt member by name and your target stays on the mob.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        game-cast-on-player
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.addAbility({ id = 5004, name = "Fixture Mend", ready = true })

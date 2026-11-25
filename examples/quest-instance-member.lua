@@ -1,15 +1,16 @@
--- A quest that goes into an instance, in a group
+-- EB tested example: A quest that goes into an instance, in a group
+-- quest-instance-member | snippet | topics: quests, instances, crew
 --
--- When a pack's CheckZone names an instance and the box is a group member (not the driver), it waits in the hub at a barrier for the tank to zone the group in. It never walks the instance's route itself. The driver goes on.
+-- What it does:  When a pack's CheckZone names an instance and the box is a group member (not the driver), it waits in the hub at
+--                a barrier for the tank to zone the group in. It never walks the instance's route itself. The driver goes on.
+-- Tested:        The member answers working and waits at the hub barrier; the driver's same step goes on.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The member answers working and waits at the hub barrier; the driver's same step goes on.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.quest
--- id:        quest-instance-member
-
 local PACK = { schema = "eb-quest/1", quest_name = "Fixture Depths",
                steps = { { type = "command", command = 'CheckZone "Fixture Hollow: Heroic"' } } }
 

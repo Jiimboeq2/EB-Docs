@@ -1,15 +1,17 @@
--- Change combat for one zone
+-- EB tested example: Change combat for one zone
+-- combat-zone-override | snippet | topics: combat, instances
 --
--- Register an override for a zone (no AE in the vault); it applies only while the context matches, and needs no change to the cast stack.
+-- What it does:  Register an override for a zone (no AE in the vault); it applies only while the context matches, and needs no
+--                change to the cast stack.
+-- Tested:        Inside the vault the override skips the AE (it is ready, and still not cast) and the single-target art is cast;
+--                outside it the AE goes out.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Inside the vault the override skips the AE (it is ready, and still not cast) and the single-target art is cast; outside it the AE goes out.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat
--- id:        combat-zone-override
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

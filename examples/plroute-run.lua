@@ -1,15 +1,19 @@
--- Run a power-level route, step by step
+-- EB tested example: Run a power-level route, step by step
+-- plroute-run | snippet | topics: tasks, nav, combat
 --
--- A power-level route is a list of STEPS: travel, hunt, actions and instance. Bind the route runner to its adapters, load a route table, and call runner:step(run) once per tick; like the quest runner it answers working, step_done, need_combat, need_loot, need_travel, complete or blocked. Travel and walks are mounted on the mesh, pulls are closest first, and a route never mentors down.
+-- What it does:  A power-level route is a list of STEPS: travel, hunt, actions and instance. Bind the route runner to its
+--                adapters, load a route table, and call runner:step(run) once per tick; like the quest runner it answers working,
+--                step_done, need_combat, need_loot, need_travel, complete or blocked. Travel and walks are mounted on the mesh,
+--                pulls are closest first, and a route never mentors down.
+-- Tested:        The route travels mounted, hails the camp master, then hunts with closest-first pulls until level 12 and
+--                completes.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The route travels mounted, hails the camp master, then hunts with closest-first pulls until level 12 and completes.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.plroutes
--- id:        plroute-run
-
 local ROUTE = {
     schema = "eb-plroute/1", name = "Fixture warm-up", level_of = "lowest",
     breaks = { hp = 50, power = 30, resume = 90, dead = true },

@@ -1,15 +1,15 @@
--- Tab-complete a command line
+-- EB tested example: Tab-complete a command line
+-- commands-tab-complete | snippet | topics: commands, ui
 --
--- reg:complete(line, opts) returns the words that could come next and the line advanced to them.
+-- What it does:  reg:complete(line, opts) returns the words that could come next and the line advanced to them.
+-- Tested:        pau completes to pause; after "to" it offers box ids; an onoff argument offers on and off.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    pau completes to pause; after "to" it offers box ids; an onoff argument offers on and off.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.registry
--- id:        commands-tab-complete
-
 -- your script
 local reg = assert(require("eb.registry").default({ root = ".", fresh = true }))
 local cands, line = reg:complete("eb pau")               -- one candidate: the line gets the word and a space

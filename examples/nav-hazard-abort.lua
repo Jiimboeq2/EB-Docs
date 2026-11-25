@@ -1,15 +1,16 @@
--- Catch health lost out of combat and back out
+-- EB tested example: Catch health lost out of combat and back out
+-- nav-hazard-abort | snippet | topics: nav, helpers
 --
--- Run the walker's hazard watch over your own samples: health falls 15 points in three seconds with no fight on, the watch calls it a hazard, and the way back to the last safe spot is the track walked in reverse.
+-- What it does:  Run the walker's hazard watch over your own samples: health falls 15 points in three seconds with no fight on,
+--                the watch calls it a hazard, and the way back to the last safe spot is the track walked in reverse.
+-- Tested:        The losing rule fires; the safe spot is the last dry, unhurt sample at least 6 m back; the way back leads to it.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The losing rule fires; the safe spot is the last dry, unhurt sample at least 6 m back; the way back leads to it.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav_hazard
--- id:        nav-hazard-abort
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game a walk samples you twice a second)
 local w = DOCS.world()
 

@@ -1,15 +1,17 @@
--- Ride the zone's own transit
+-- EB tested example: Ride the zone's own transit
+-- nav-transit-pads | snippet | topics: nav
 --
--- eb.transit plans hops over a zone's griffon / flight-path pads; each hop is walked to on the mesh, then the pad is opened. Never fast travel.
+-- What it does:  eb.transit plans hops over a zone's griffon / flight-path pads; each hop is walked to on the mesh, then the pad
+--                is opened. Never fast travel.
+-- Tested:        The preview is one griffon hop; the walk reaches the North Post on the mesh; with no tamer wired the ride stops
+--                and says why.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The preview is one griffon hop; the walk reaches the North Post on the mesh; with no tamer wired the ride stops and says why.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.transit, eb.transit_ride, eb.nav
--- id:        nav-transit-pads
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the transit data is EB's own)
 local w = DOCS.world({ me = { x = -20, y = 0, z = 0 } })
 local NW = require("nav.lib.navworld")

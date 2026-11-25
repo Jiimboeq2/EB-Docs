@@ -1,15 +1,16 @@
--- Read several Me members in ONE read
+-- EB tested example: Read several Me members in ONE read
+-- tlo-me-batched-read | snippet | topics: tlos, perf
 --
--- A data sequence with several ${} in it is ONE game read, however many members it names. Batch the members you need into one IS.Parse instead of one read each.
+-- What it does:  A data sequence with several ${} in it is ONE game read, however many members it names. Batch the members you
+--                need into one IS.Parse instead of one read each.
+-- Tested:        One read answers four members; the values arrive as text and are converted with tonumber.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    One read answers four members; the values arrive as text and are converted with tonumber.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        tlo-me-batched-read
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { healthPct = 64, powerPct = 80 } })
 

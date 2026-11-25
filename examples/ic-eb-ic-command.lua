@@ -1,15 +1,14 @@
--- eb ic from the console and from a script
+-- EB tested example: eb ic from the console and from a script
+-- ic-eb-ic-command | snippet | topics: instances, commands
 --
--- On a running box, eb ic run / loop / stop / status drive the instance runner as an EB task. Type the line, or call the same launcher from a script through eb.app.ic: status says what runs, a file name that is not installed is refused with the reason.
+-- What it does:  On a running box, eb ic run / loop / stop / status drive the instance runner as an EB task. Type the line, or
+--                call the same launcher from a script through eb.app.ic: status says what runs, a file name that is not installed
+--                is refused with the reason.
+-- Tested:        eb ic status answers idle; an unknown IC name is refused and nothing starts.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    eb ic status answers idle; an unknown IC name is refused and nothing starts.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.app.ic
--- id:        ic-eb-ic-command
-
 -- offline stand-in: EB for InnerSpace booted by its real boot (in game you type in the console)
 local a = DOCS.app()
 

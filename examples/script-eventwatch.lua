@@ -1,16 +1,17 @@
--- Event watcher (complete script)
+-- EB tested example: Event watcher (complete script)
+-- script-eventwatch | complete script | topics: events, helpers, recipes
 --
--- A drop-in script that reacts to the game's own events the safe way: each handler only queues, and the main loop logs zoning, loot windows and incoming text - and pauses the crew when a line you name appears.
+-- What it does:  A drop-in script that reacts to the game's own events the safe way: each handler only queues, and the main loop
+--                logs zoning, loot windows and incoming text - and pauses the crew when a line you name appears.
+-- Where it goes: InnerSpace/Scripts/eb_eventwatch.lua (save it as eb_eventwatch.lua)
+-- Run it:        lua eb_eventwatch "The ground shakes"
+--                endlua eb_eventwatch
+-- Needs:         - EB for InnerSpace running in this session (eb status answers) for the crew pause
+-- Tested:        Logs the zone after a zone load, the loot window's items, and pauses the crew on the named text.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_eventwatch.lua
--- run:       lua eb_eventwatch "The ground shakes"
---            endlua eb_eventwatch
--- needs:     EB for InnerSpace running in this session (eb status answers) for the crew pause
--- expect:    Logs the zone after a zone load, the loot window's items, and pauses the crew on the named text.
--- verified:  on the offline stand-in for the game
--- id:        script-eventwatch
-
 -- eb_eventwatch.lua - react to the game's events: zoning, loot windows, incoming text.
 --
 --   lua eb_eventwatch ["<text>"]     start it; when a line of game text contains <text>, the crew pauses

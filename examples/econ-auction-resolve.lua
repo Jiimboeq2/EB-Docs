@@ -1,15 +1,18 @@
--- Give a gear drop to the member who gains the most
+-- EB tested example: Give a gear drop to the member who gains the most
+-- econ-auction-resolve | snippet | topics: items, crew, loot
 --
--- The Resolve auction (opt-in: cfg.loot.resolveAuction = true): an equipment drop in a leader's loot window goes to the member who gains the most Resolve over what they wear in that slot. Each member's bid comes from the group's gear exports. auction.bid / auction.winner are the pure rule; eco.auction:award(item, roster) picks the winner from the exports.
+-- What it does:  The Resolve auction (opt-in: cfg.loot.resolveAuction = true): an equipment drop in a leader's loot window goes
+--                to the member who gains the most Resolve over what they wear in that slot. Each member's bid comes from the
+--                group's gear exports. auction.bid / auction.winner are the pure rule; eco.auction:award(item, roster) picks the
+--                winner from the exports.
+-- Tested:        The tank gains 40 Resolve, the healer 10: the breastplate goes to the tank. With the auction off, nobody.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The tank gains 40 Resolve, the healer 10: the breastplate goes to the tank. With the auction off, nobody.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.auction
--- id:        econ-auction-resolve
-
 -- offline stand-in for the game's windows (in game EB builds the drive and reads the group's exports)
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world()

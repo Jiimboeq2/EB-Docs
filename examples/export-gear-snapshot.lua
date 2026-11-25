@@ -1,15 +1,17 @@
--- Snapshot a character's gear for a group decision
+-- EB tested example: Snapshot a character's gear for a group decision
+-- export-gear-snapshot | snippet | topics: items, crew
 --
--- gearexport.snapshot reads worn gear, bags and bank through a host and builds the gear export the group loot auction and gear matching compare. Bags keep only what can be worn or is Lore, a ring's slot family becomes every ring slot, and the result is rebuilt from a field whitelist so nothing else a host attaches survives.
+-- What it does:  gearexport.snapshot reads worn gear, bags and bank through a host and builds the gear export the group loot
+--                auction and gear matching compare. Bags keep only what can be worn or is Lore, a ring's slot family becomes
+--                every ring slot, and the result is rebuilt from a field whitelist so nothing else a host attaches survives.
+-- Tested:        The worn piece keeps its slot, the bag ring fits both fingers, the junk is dropped and a stray field is gone.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The worn piece keeps its slot, the bag ring fits both fingers, the junk is dropped and a stray field is gone.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.exports.gearexport
--- id:        export-gear-snapshot
-
 local gearexport = require("eb.exports.gearexport")
 
 -- a host over the game's item reads (offline: invented items)

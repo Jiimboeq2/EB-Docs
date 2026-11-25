@@ -1,17 +1,18 @@
--- Food and drink keeper (complete script)
+-- EB tested example: Food and drink keeper (complete script)
+-- script-foodkeeper | complete script | topics: items, helpers
 --
--- A drop-in script that keeps auto-consume on for your food and drink slots and warns once when a stack gets low, reading both slots in one read every five seconds.
+-- What it does:  A drop-in script that keeps auto-consume on for your food and drink slots and warns once when a stack gets low,
+--                reading both slots in one read every five seconds.
+-- Where it goes: InnerSpace/Scripts/eb_foodkeeper.lua (save it as eb_foodkeeper.lua)
+-- Run it:        lua eb_foodkeeper 5
+--                endlua eb_foodkeeper
+-- Needs:         - EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
+--                - food in your food slot and drink in your drink slot
+-- Tested:        Turns auto-consume back on for the slot that had it off, and warns once (not every check) about the low stack.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_foodkeeper.lua
--- run:       lua eb_foodkeeper 5
---            endlua eb_foodkeeper
--- needs:     EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
---            food in your food slot and drink in your drink slot
--- expect:    Turns auto-consume back on for the slot that had it off, and warns once (not every check) about the low stack.
--- verified:  on the offline stand-in for the game
--- id:        script-foodkeeper
-
 -- eb_foodkeeper.lua - keep eating and drinking. Every five seconds it reads your food and drink slots in ONE read: a
 -- slot whose auto-consume is off gets it turned back on, and a stack at or under the low mark is called out once in
 -- the console (again only after it was refilled and ran low again). It reads only members EB has verified to work.

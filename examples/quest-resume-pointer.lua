@@ -1,15 +1,17 @@
--- Save where a quest is, and resume there
+-- EB tested example: Save where a quest is, and resume there
+-- quest-resume-pointer | snippet | topics: quests, data
 --
--- After a step finishes, quests.pointer(run) is the resume point to keep: { step, zone, x, y, z }. quests.resume(handle, pointer) starts a fresh run at that step, so a restart never repeats the steps already done.
+-- What it does:  After a step finishes, quests.pointer(run) is the resume point to keep: { step, zone, x, y, z }.
+--                quests.resume(handle, pointer) starts a fresh run at that step, so a restart never repeats the steps already
+--                done.
+-- Tested:        The pointer after two steps is step 3; the resumed run walks only the last waypoint.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The pointer after two steps is step 3; the resumed run walks only the last waypoint.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.quest
--- id:        quest-resume-pointer
-
 local PACK = {
     schema = "eb-quest/1", quest_name = "Fixture Rounds",
     steps = {

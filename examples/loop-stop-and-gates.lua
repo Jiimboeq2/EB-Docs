@@ -1,15 +1,18 @@
--- A chore loop's stop flag and coin gate
+-- EB tested example: A chore loop's stop flag and coin gate
+-- loop-stop-and-gates | snippet | topics: tasks, helpers
 --
--- Every chore loop checks its stop predicate first, on every tick: when it answers true the goal ends at once, before any action. Coin-spending steps (the overseer's buy, a mercenary hire) run only behind an explicit flag. Drive a goal yourself by calling goal:advance(brain, snapshot) once per tick.
+-- What it does:  Every chore loop checks its stop predicate first, on every tick: when it answers true the goal ends at once,
+--                before any action. Coin-spending steps (the overseer's buy, a mercenary hire) run only behind an explicit flag.
+--                Drive a goal yourself by calling goal:advance(brain, snapshot) once per tick.
+-- Tested:        The stopped goal ends on its first tick with nothing done; the mercenary goal unsuspends a suspended merc and
+--                never hires without allowHire.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The stopped goal ends on its first tick with nothing done; the mercenary goal unsuspends a suspended merc and never hires without allowHire.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.loops
--- id:        loop-stop-and-gates
-
 local Loops = require("eb.loops")
 
 -- a minimal brain for driving a goal by hand: b.sub.* adapters, b:log, b:markPointer

@@ -1,15 +1,16 @@
--- Open the door a route goes through
+-- EB tested example: Open the door a route goes through
+-- nav-door-on-route | snippet | topics: nav, helpers
 --
--- The zone's door lines say where its doors are and the verb each takes; nav.tryDoor clicks the known door in reach through nav.doorDeps, never a teleporter, and never the same door twice in a few seconds.
+-- What it does:  The zone's door lines say where its doors are and the verb each takes; nav.tryDoor clicks the known door in
+--                reach through nav.doorDeps, never a teleporter, and never the same door twice in a few seconds.
+-- Tested:        The gate 2 m away is clicked with its own verb; a second try at once is refused; the teleporter is vetoed.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The gate 2 m away is clicked with its own verb; a second try at once is refused; the teleporter is vetoed.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav, eb.nav_doors, eb.nav_store
--- id:        nav-door-on-route
-
 -- offline stand-in for the game and its mesh, with EB's nav data kept in memory (in game: EB's mesh store)
 local w = DOCS.world({ me = { x = 8, y = 0, z = 5 } })
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

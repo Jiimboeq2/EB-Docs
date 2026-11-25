@@ -1,15 +1,16 @@
--- Read the items in an open loot window
+-- EB tested example: Read the items in an open loot window
+-- tlo-loot-items | snippet | topics: tlos, items, loot
 --
--- LootWindow.NumItems and LootWindow.Item[n].Name read an OPEN loot window. Read them only after the game's loot event (or game.LootWindow()) says one is up: asking with none open is slow.
+-- What it does:  LootWindow.NumItems and LootWindow.Item[n].Name read an OPEN loot window. Read them only after the game's loot
+--                event (or game.LootWindow()) says one is up: asking with none open is slow.
+-- Tested:        Waits for game.LootWindow() to report the window, then reads both item names in one read.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Waits for game.LootWindow() to report the window, then reads both item names in one read.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        tlo-loot-items
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local game = require("eb.platform").game()

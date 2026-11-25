@@ -1,15 +1,18 @@
--- Top up your ammo from the ammo depot
+-- EB tested example: Top up your ammo from the ammo depot
+-- econ-quiver-fill | snippet | topics: items
 --
--- Count the ammo you hold, work out the shortfall, and pull it with eco.depot:withdraw(name, qty, "ammo"), which opens the ammo depot in reach, withdraws and closes it. eco.inventory:quiver{ ammo, target } answers "blocked" with the reason when no ammo depot is open; in this build its pull step loses the count, so a script withdraws the shortfall itself as shown.
+-- What it does:  Count the ammo you hold, work out the shortfall, and pull it with eco.depot:withdraw(name, qty, "ammo"), which
+--                opens the ammo depot in reach, withdraws and closes it. eco.inventory:quiver{ ammo, target } answers "blocked"
+--                with the reason when no ammo depot is open; in this build its pull step loses the count, so a script withdraws
+--                the shortfall itself as shown.
+-- Tested:        quiver refuses with no depot open; the withdraw pulls the 150 arrows that make 200.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    quiver refuses with no depot open; the withdraw pulls the 150 arrows that make 200.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.inventory, eb.economy.depot
--- id:        econ-quiver-fill
-
 -- offline stand-in for the game's windows (in game EB builds the drive)
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world({ bags = { { name = "Fixture Arrow", qty = 50 } }, depots = { ammo = { ["Fixture Arrow"] = 900 } } })

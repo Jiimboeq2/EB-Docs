@@ -1,15 +1,18 @@
--- What an ability asks for and what it does
+-- EB tested example: What an ability asks for and what it does
+-- export-ability-labels | snippet | topics: combat, data
 --
--- The label engine reads an ability's effect lines and flags: a position it must be cast from, stealth, a stun or a group target, a threat increase. classify returns the whole picture; tags_of, tokensOf and to_json give it as text or a small table, and is_enhance / is_tradeskill sort out upgrades and tradeskill abilities.
+-- What it does:  The label engine reads an ability's effect lines and flags: a position it must be cast from, stealth, a stun or
+--                a group target, a threat increase. classify returns the whole picture; tags_of, tokensOf and to_json give it as
+--                text or a small table, and is_enhance / is_tradeskill sort out upgrades and tradeskill abilities.
+-- Tested:        The backstab asks for behind and stealth; the taunt is a group threat increase with a stun; the upgrade and the
+--                crafting ability are recognized.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The backstab asks for behind and stealth; the taunt is a group threat increase with a stun; the upgrade and the crafting ability are recognized.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.exports.csreq
--- id:        export-ability-labels
-
 local csreq = require("eb.exports.csreq")
 
 -- two ability records in the record layout (offline: invented abilities)

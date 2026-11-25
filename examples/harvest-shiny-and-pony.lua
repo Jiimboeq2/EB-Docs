@@ -1,15 +1,17 @@
--- Track shinies and send the pack pony out
+-- EB tested example: Track shinies and send the pack pony out
+-- harvest-shiny-and-pony | snippet | topics: items, helpers, crew, harvest
 --
--- eco.harvest:trackShiny{ color } reports each NEW shiny once (with its spot, and one line to the crew); eco.harvest:packPony{ answers } summons the pack pony, hails it and answers its questions.
+-- What it does:  eco.harvest:trackShiny{ color } reports each NEW shiny once (with its spot, and one line to the crew);
+--                eco.harvest:packPony{ answers } summons the pack pony, hails it and answers its questions.
+-- Tested:        The silver shiny is reported on the first call only and the crew hears one line; the pony's three questions are
+--                answered with the chosen options.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The silver shiny is reported on the first call only and the crew hears one line; the pony's three questions are answered with the chosen options.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.harvest, eb.economy
--- id:        harvest-shiny-and-pony
-
 -- offline stand-in: one silver shiny nearby, and a crew relay that only records
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({ nodes = { { id = 7, name = "a fixture glint", color = "silver", shiny = true,

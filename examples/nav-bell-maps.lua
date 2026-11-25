@@ -1,15 +1,17 @@
--- Remember what a bell's map offers
+-- EB tested example: Remember what a bell's map offers
+-- nav-bell-maps | snippet | topics: nav, helpers
 --
--- A bell's travel map may offer less than the network on file, and a city bell offers its reader's own side only. Keep each ring in a bell map memory per side, ask it before ringing, and judge an open map read by read.
+-- What it does:  A bell's travel map may offer less than the network on file, and a city bell offers its reader's own side only.
+--                Keep each ring in a bell map memory per side, ask it before ringing, and judge an open map read by read.
+-- Tested:        For a good character the port's bell offers the steppe and lacks the isle; a character of no known side gets no
+--                verdict; the open map is a miss for the isle and offers the steppe.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    For a good character the port's bell offers the steppe and lacks the isle; a character of no known side gets no verdict; the open map is a miss for the isle and offers the steppe.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav_bellmaps
--- id:        nav-bell-maps
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game EB keeps this memory in its own file)
 local w = DOCS.world()
 

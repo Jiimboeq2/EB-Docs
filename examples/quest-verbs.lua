@@ -1,15 +1,17 @@
--- What a pack can say: the verb list
+-- EB tested example: What a pack can say: the verb list
+-- quest-verbs | snippet | topics: quests, helpers
 --
--- eb.quest knows every verb a pack may use. supported(verb) answers yes or no, ported() lists each verb with what it does and its group, refused() lists the verbs EB refuses on purpose with the reason. A line with a verb nobody handles stops the run with a clear reason; it is never guessed or skipped.
+-- What it does:  eb.quest knows every verb a pack may use. supported(verb) answers yes or no, ported() lists each verb with what
+--                it does and its group, refused() lists the verbs EB refuses on purpose with the reason. A line with a verb
+--                nobody handles stops the run with a clear reason; it is never guessed or skipped.
+-- Tested:        HailActor is supported, a made-up verb is not, and running it stops the pack with "not handled".
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    HailActor is supported, a made-up verb is not, and running it stops the pack with "not handled".
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.quest
--- id:        quest-verbs
-
 local Q = require("eb.quest")
 local ported, refused = Q.ported(), Q.refused()
 local groups = {}

@@ -1,15 +1,15 @@
--- Answer an eb command with your own handler
+-- EB tested example: Answer an eb command with your own handler
+-- commands-attach-handler | snippet | topics: commands, helpers
 --
--- Attach a handler to a command the schema declares, then run lines through the registry like typed ones.
+-- What it does:  Attach a handler to a command the schema declares, then run lines through the registry like typed ones.
+-- Tested:        The handler gets the parsed state argument; a second owner is refused unless it asks to replace.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The handler gets the parsed state argument; a second owner is refused unless it asks to replace.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.registry
--- id:        commands-attach-handler
-
 -- your script
 local R = require("eb.registry")
 local reg = assert(R.default({ root = ".", fresh = true }))      -- data/eb/commands.json, the customer schema

@@ -1,15 +1,19 @@
--- Where to stand, and line of sight
+-- EB tested example: Where to stand, and line of sight
+-- combat-positioning | snippet | topics: combat, nav, fights
 --
--- Ask the engine to position behind the mob: every decision then carries where it would stand - EB does not move in a fight for it yet (moves = false, said once in the console). A positional entry waits for its angle when the angle can be read, and the line-of-sight gate holds casts through a wall.
+-- What it does:  Ask the engine to position behind the mob: every decision then carries where it would stand - EB does not move
+--                in a fight for it yet (moves = false, said once in the console). A positional entry waits for its angle when the
+--                angle can be read, and the line-of-sight gate holds casts through a wall.
+-- Tested:        The decision says it would stand "behind" at 3 m and that nothing moves the box (moves = false); an unreadable
+--                angle never blocks; with the angle read as "front", a behind-only art waits; with the line blocked and the gate
+--                on, nothing is cast.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The decision says it would stand "behind" at 3 m and that nothing moves the box (moves = false); an unreadable angle never blocks; with the angle read as "front", a behind-only art waits; with the line blocked and the gate on, nothing is cast.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat.combat_pos, eb.combat.overrides, eb.combat
--- id:        combat-positioning
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

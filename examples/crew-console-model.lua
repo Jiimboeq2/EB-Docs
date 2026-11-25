@@ -1,15 +1,15 @@
--- Drive the console from a script
+-- EB tested example: Drive the console from a script
+-- crew-console-model | snippet | topics: crew, ui
 --
--- eb.console is the console window's model: scoped lines through the relay, history, search and completion.
+-- What it does:  eb.console is the console window's model: scoped lines through the relay, history, search and completion.
+-- Tested:        A scoped line goes to the crew and the other box's dispatcher runs it; history and search see it.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A scoped line goes to the crew and the other box's dispatcher runs it; history and search see it.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.console, eb.relay, eb.relay.events
--- id:        crew-console-model
-
 -- offline stand-in: an offline relay bus between two boxes
 local bus = require("eb.relay.events").bus()
 

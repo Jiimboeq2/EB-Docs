@@ -1,15 +1,18 @@
--- Answer the economy's commands from your own economy
+-- EB tested example: Answer the economy's commands from your own economy
+-- econ-commands-layer | snippet | topics: items, commands
 --
--- eb.economy.commands attaches the economy's command handlers to a registry for an economy you built: rows() are the command rows it needs, handlers(eco) the handler table, attach(reg, eco) declares any row the registry lacks and attaches every handler.
+-- What it does:  eb.economy.commands attaches the economy's command handlers to a registry for an economy you built: rows() are
+--                the command rows it needs, handlers(eco) the handler table, attach(reg, eco) declares any row the registry lacks
+--                and attaches every handler.
+-- Tested:        After attach, "eb tse" runs the economy's bulk transmute and is refused with its reason (no T.S.E is set up, so
+--                the pick names nothing), and "eb tse give" is understood and asks for the leader's name.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    After attach, "eb tse" runs the economy's bulk transmute and is refused with its reason (no T.S.E is set up, so the pick names nothing), and "eb tse give" is understood and asks for the leader's name.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.commands, eb.economy, eb.registry
--- id:        econ-commands-layer
-
 -- offline: an economy over the offline stand-in, and a fresh command registry
 local CW = require("crafting.lib.craftworld")
 local eco = CW.economy(CW.world())

@@ -1,15 +1,19 @@
--- Build a loop's provider and see what is missing
+-- EB tested example: Build a loop's provider and see what is missing
+-- loop-provider | snippet | topics: tasks, helpers
 --
--- A chore loop acts through an activities provider: overseer, trainer, mercenary and city-writ drivers plus the economy's writs and collections. eb.loops.providers.build fills every verb you do not supply with a stub that says "needs a live window" the first time it is hit, so a loop runs end to end while you bring a driver up; gaps lists what is still missing.
+-- What it does:  A chore loop acts through an activities provider: overseer, trainer, mercenary and city-writ drivers plus the
+--                economy's writs and collections. eb.loops.providers.build fills every verb you do not supply with a stub that
+--                says "needs a live window" the first time it is hit, so a loop runs end to end while you bring a driver up; gaps
+--                lists what is still missing.
+-- Tested:        The partial trainer driver validates as incomplete, the gaps list names its missing verbs, and a stubbed verb
+--                reports itself once.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The partial trainer driver validates as incomplete, the gaps list names its missing verbs, and a stubbed verb reports itself once.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.loops.providers, eb.loops.interface
--- id:        loop-provider
-
 local Providers = require("eb.loops.providers")
 local Interface = require("eb.loops.interface")
 

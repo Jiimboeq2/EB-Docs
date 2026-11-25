@@ -1,15 +1,17 @@
--- Keep a set amount of coin on you
+-- EB tested example: Keep a set amount of coin on you
+-- econ-bank-coin-purse | snippet | topics: items
 --
--- eco.bank:coin{ keepCopper = N } opens the bank and deposits what you carry over N, or withdraws the shortfall when you carry less. Coin is counted in copper: 100 copper = 1 silver, 100 silver = 1 gold, 100 gold = 1 platinum. ledgermodel.coin turns copper into the game's words ("4p 0g 0s 0c").
+-- What it does:  eco.bank:coin{ keepCopper = N } opens the bank and deposits what you carry over N, or withdraws the shortfall
+--                when you carry less. Coin is counted in copper: 100 copper = 1 silver, 100 silver = 1 gold, 100 gold = 1
+--                platinum. ledgermodel.coin turns copper into the game's words ("4p 0g 0s 0c").
+-- Tested:        5 platinum carried, 1 kept: 4 platinum go to the bank.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    5 platinum carried, 1 kept: 4 platinum go to the bank.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.bank, eb.economy.ledgermodel
--- id:        econ-bank-coin-purse
-
 -- offline stand-in for the game's windows (in game EB builds the drive)
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world({ coin = { bank = 0, carried = 5000000 } })

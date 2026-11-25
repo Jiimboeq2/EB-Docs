@@ -1,15 +1,16 @@
--- Plan a multi-zone trip by bell and spire, by your side
+-- EB tested example: Plan a multi-zone trip by bell and spire, by your side
+-- nav-travel-multizone | snippet | topics: nav, recipes
 --
--- A trip of several hops over the game's own networks: a bell to the steppe, then a wizard spire to the isle. City bells never cross sides, so a good character's trip to an evil city is left out and the planner says why.
+-- What it does:  A trip of several hops over the game's own networks: a bell to the steppe, then a wizard spire to the isle. City
+--                bells never cross sides, so a good character's trip to an evil city is left out and the planner says why.
+-- Tested:        Two hops (bell, spire) to the isle; the evil city has no route for a character bound in a good city.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Two hops (bell, spire) to the isle; the evil city has no route for a character bound in a good city.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav_travel, eb.nav_side
--- id:        nav-travel-multizone
-
 -- offline stand-in: the travel network and the cities' sides as data (in game: EB's own travel data)
 local w = DOCS.world()
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

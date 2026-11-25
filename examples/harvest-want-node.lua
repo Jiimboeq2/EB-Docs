@@ -1,15 +1,17 @@
--- Decide which harvest nodes to take
+-- EB tested example: Decide which harvest nodes to take
+-- harvest-want-node | snippet | topics: items, helpers, harvest
 --
--- eco.harvest:wantNode(node) is the node rule: never a blacklisted resource, never a tier above your level band (one tier per ten levels), and only the preferred categories when you set any.
+-- What it does:  eco.harvest:wantNode(node) is the node rule: never a blacklisted resource, never a tier above your level band
+--                (one tier per ten levels), and only the preferred categories when you set any.
+-- Tested:        At level 45 a tier-5 node is taken and a tier-6 one left; a blacklisted node and a node outside the preferred
+--                categories are left with their reasons.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    At level 45 a tier-5 node is taken and a tier-6 one left; a blacklisted node and a node outside the preferred categories are left with their reasons.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.harvest, eb.economy
--- id:        harvest-want-node
-
 -- offline: the economy facade with a harvest config (wantNode reads only the config and your level)
 local eco = require("eb.economy").new({ drive = {}, me = { level = 45 },
     cfg = { harvest = { blacklist = { ["a fixture weed"] = true }, categories = { ore = true, wood = true } } } })

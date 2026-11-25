@@ -1,15 +1,17 @@
--- Answer a purchase question only for your own item
+-- EB tested example: Answer a purchase question only for your own item
+-- econ-purchase-confirm | snippet | topics: items, helpers, dialogs
 --
--- The game asks "Are you sure you want to purchase X?" on some buys. confirm.asksFor(question, item) is true only when the question names exactly the item you are buying - the rule for pressing Yes; anything else is answered No or left alone.
+-- What it does:  The game asks "Are you sure you want to purchase X?" on some buys. confirm.asksFor(question, item) is true only
+--                when the question names exactly the item you are buying - the rule for pressing Yes; anything else is answered
+--                No or left alone.
+-- Tested:        The question about our own item matches; a question about another item does not.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The question about our own item matches; a question about another item does not.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.confirm
--- id:        econ-purchase-confirm
-
 -- your script
 local C = require("eb.economy.confirm")
 local q = "Are you sure you want to purchase Fixture Stone?  This cannot be undone."

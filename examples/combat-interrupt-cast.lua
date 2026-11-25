@@ -1,15 +1,16 @@
--- Interrupt a listed cast
+-- EB tested example: Interrupt a listed cast
+-- combat-interrupt-cast | snippet | topics: combat, fights
 --
--- Give the engine the spell names worth stopping; when your target starts one, the next step casts the stack's interrupt art (tagged INTERRUPT) before anything else.
+-- What it does:  Give the engine the spell names worth stopping; when your target starts one, the next step casts the stack's
+--                interrupt art (tagged INTERRUPT) before anything else.
+-- Tested:        While the brute casts nothing the engine nukes; once it starts Fixture Blast the engine sends the interrupt.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    While the brute casts nothing the engine nukes; once it starts Fixture Blast the engine sends the interrupt.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat, game
--- id:        combat-interrupt-cast
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

@@ -1,15 +1,18 @@
--- Work out which recipe a work-order step asks for
+-- EB tested example: Work out which recipe a work-order step asks for
+-- writ-resolve-recipe | snippet | topics: items
 --
--- eb.economy.writs.stripVerb drops the step's leading verb and its progress; resolve() then finds the recipe: a learned answer, a known spelling fix, the exact book name, a partial fix, the name without its article, and last a loose match only when exactly one recipe fits.
+-- What it does:  eb.economy.writs.stripVerb drops the step's leading verb and its progress; resolve() then finds the recipe: a
+--                learned answer, a known spelling fix, the exact book name, a partial fix, the name without its article, and last
+--                a loose match only when exactly one recipe fits.
+-- Tested:        Each kind of step text resolves the way the rules say; two loose fits pick nothing; with no book read the text
+--                itself is tried once ("unverified").
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Each kind of step text resolves the way the rules say; two loose fits pick nothing; with no book read the text itself is tried once ("unverified").
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.writs
--- id:        writ-resolve-recipe
-
 -- your script (pure: give it the step text and the recipe book rows)
 local Writs = require("eb.economy.writs")
 local book = {

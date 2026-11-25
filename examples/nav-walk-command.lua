@@ -1,15 +1,16 @@
--- Walk with an eb command
+-- EB tested example: Walk with an eb command
+-- nav-walk-command | snippet | topics: nav, commands
 --
--- The same walk as a console line: eb walk x,y,z goes through the command registry, starts the walk on the pulse and answers at once.
+-- What it does:  The same walk as a console line: eb walk x,y,z goes through the command registry, starts the walk on the pulse
+--                and answers at once.
+-- Tested:        The command answers "issued" at once; a few seconds later the walk has arrived; eb route previews a trip.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The command answers "issued" at once; a few seconds later the walk has arrived; eb route previews a trip.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.registry, eb.nav_register, eb.nav
--- id:        nav-walk-command
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game EB wires the commands at start)
 local w = DOCS.world({ me = { x = 0, y = 0, z = 0 } })
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

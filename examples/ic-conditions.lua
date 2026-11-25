@@ -1,15 +1,17 @@
--- Encounter conditions, and how they fail closed
+-- EB tested example: Encounter conditions, and how they fail closed
+-- ic-conditions | snippet | topics: instances, fights
 --
--- Evaluate when / done conditions against the runner's world facade: actor_present, actor_dead, actor_count, health_below, the all / any / not_ combinators, and a function. A condition the runner does not know is always false.
+-- What it does:  Evaluate when / done conditions against the runner's world facade: actor_present, actor_dead, actor_count,
+--                health_below, the all / any / not_ combinators, and a function. A condition the runner does not know is always
+--                false.
+-- Tested:        Each condition reads the fake world as expected; the misspelled one is false, never a silent true.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Each condition reads the fake world as expected; the misspelled one is false, never a silent true.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.ic
--- id:        ic-conditions
-
 local env = require("instances.lib.icworld").make({ start = "copy",
     alive = { ["Captain Fixturo"] = 100 }, packs = { ["a hollow skitter"] = 2 } })
 local runner = require("eb.ic").new(env)

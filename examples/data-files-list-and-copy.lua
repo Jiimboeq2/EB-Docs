@@ -1,15 +1,15 @@
--- Read, write, copy and list your helper's files
+-- EB tested example: Read, write, copy and list your helper's files
+-- data-files-list-and-copy | snippet | topics: data
 --
--- Every files host has the same calls: read, write, exists, copy and list, each answering a reason on failure.
+-- What it does:  Every files host has the same calls: read, write, exists, copy and list, each answering a reason on failure.
+-- Tested:        A write, a one-per-file backup copy and a pattern list all work; a missing file reads nil with the reason.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A write, a one-per-file backup copy and a pattern list all work; a missing file reads nil with the reason.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.platform
--- id:        data-files-list-and-copy
-
 -- offline stand-in: the platform's files service over a disk in a table (in game: the real EB folder)
 local w = DOCS.world()
 local disk = require("data.lib.memdisk").install()

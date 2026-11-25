@@ -1,15 +1,16 @@
--- Exactly one box cures
+-- EB tested example: Exactly one box cures
+-- coord-arbiter-one-cure | snippet | topics: crew, combat, helpers
 --
--- Two healers want the same cure: each lays a bid, the claim window closes, the same winner is picked on both boxes, the winner casts and reports it landed.
+-- What it does:  Two healers want the same cure: each lays a bid, the claim window closes, the same winner is picked on both
+--                boxes, the winner casts and reports it landed.
+-- Tested:        is1 waits out the claim window; is2 has already heard the better bid and stands down; then is1 gets go.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    is1 waits out the claim window; is2 has already heard the better bid and stands down; then is1 gets go.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.coord.arbiter, eb.coord.relaylink
--- id:        coord-arbiter-one-cure
-
 -- offline stand-in: an in-memory relay between two boxes
 local bus = require("eb.relay.events").bus()
 local now = 0

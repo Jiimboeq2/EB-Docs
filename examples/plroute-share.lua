@@ -1,15 +1,17 @@
--- Share a route: the scrub and the short code
+-- EB tested example: Share a route: the scrub and the short code
+-- plroute-share | snippet | topics: tasks, data, crew
 --
--- eb.plroutes.share makes a route safe to hand to a friend: scrubForShare replaces a camp puller's character name with "me" (roles stay) and says what it removed; shortCode gives the same PL- code for the same plan every time, so two copies of a plan can be told apart from two different plans.
+-- What it does:  eb.plroutes.share makes a route safe to hand to a friend: scrubForShare replaces a camp puller's character name
+--                with "me" (roles stay) and says what it removed; shortCode gives the same PL- code for the same plan every time,
+--                so two copies of a plan can be told apart from two different plans.
+-- Tested:        The puller's name is scrubbed to me, the code is stable, and changing one step changes the code.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The puller's name is scrubbed to me, the code is stable, and changing one step changes the code.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.plroutes.share, eb.plroutes.route
--- id:        plroute-share
-
 local Share = require("eb.plroutes.share")
 local Route = require("eb.plroutes.route")
 

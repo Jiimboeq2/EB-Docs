@@ -1,15 +1,16 @@
--- The coordination messages and the tie-break
+-- EB tested example: The coordination messages and the tie-break
+-- coord-wire-and-tiebreak | snippet | topics: crew, data
 --
--- A tag and a claim as relay fields and back, the one claim key, and the tie-break every box computes the same way.
+-- What it does:  A tag and a claim as relay fields and back, the one claim key, and the tie-break every box computes the same
+--                way.
+-- Tested:        Both messages survive the round trip; the lower rank wins, a tie goes to the smaller box id.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Both messages survive the round trip; the lower rank wins, a tie goes to the smaller box id.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.coord.cowire
--- id:        coord-wire-and-tiebreak
-
 -- your script
 local W = require("eb.coord.cowire")
 local tag = W.decodeTag(W.encodeTag({ from = "is1", seq = 7, scope = "group", phase = "raise", tag = "Hold Fire",

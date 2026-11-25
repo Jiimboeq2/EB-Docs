@@ -1,15 +1,18 @@
--- Apply an adornment profile
+-- EB tested example: Apply an adornment profile
+-- adorn-apply-profile | snippet | topics: items
 --
--- eco.adornments:applyProfile(profile, opts) gets each missing adornment - from the bags, else the adornment depot in reach, else (opts.broker = true) the broker under opts.maxCopper - and applies it to the slot's worn piece. A slot with nothing worn is skipped.
+-- What it does:  eco.adornments:applyProfile(profile, opts) gets each missing adornment - from the bags, else the adornment depot
+--                in reach, else (opts.broker = true) the broker under opts.maxCopper - and applies it to the slot's worn piece. A
+--                slot with nothing worn is skipped.
+-- Tested:        The rune comes from the bags, the glyph from the adornment depot, both are applied; the feet are skipped because
+--                nothing is worn there.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The rune comes from the bags, the glyph from the adornment depot, both are applied; the feet are skipped because nothing is worn there.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.adornments, eb.economy
--- id:        adorn-apply-profile
-
 -- offline stand-in: two worn pieces, one adornment in the bags, one in the adornment depot
 local CW = require("crafting.lib.craftworld")
 local world = CW.world({

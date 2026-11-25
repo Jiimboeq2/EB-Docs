@@ -1,15 +1,15 @@
--- Keep a helper's own config in a JSON file
+-- EB tested example: Keep a helper's own config in a JSON file
+-- data-helper-config-file | snippet | topics: data, helpers
 --
--- Read your helper's file once at start, keep it in a table, and queue a save when it changes.
+-- What it does:  Read your helper's file once at start, keep it in a table, and queue a save when it changes.
+-- Tested:        The config loads with defaults for missing keys; a change is saved by the next flush, not in the frame.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The config loads with defaults for missing keys; a change is saved by the next flush, not in the frame.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.platform, ebkit.jsontable
--- id:        data-helper-config-file
-
 -- offline stand-in: the platform's files service over a disk in a table, and the flush job EB's boot runs for you
 local w = DOCS.world()
 local disk = require("data.lib.memdisk").install({ ["helper/lowhp.json"] = '{"threshold":40}' })

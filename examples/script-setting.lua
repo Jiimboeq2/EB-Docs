@@ -1,19 +1,21 @@
--- Change an EB setting (complete script)
+-- EB tested example: Change an EB setting (complete script)
+-- script-setting | complete script | topics: settings, helpers, data
 --
--- A drop-in script that changes one key in EB's settings file while EB is stopped (EB has no in-game set command yet): it checks EB's heartbeat, finds the file through EB's install, and checks the key, its kind and its range against EB's own settings catalog before it writes.
+-- What it does:  A drop-in script that changes one key in EB's settings file while EB is stopped: it checks EB's heartbeat, finds
+--                the file through EB's install, and checks the key, its kind and its range against EB's own settings catalog
+--                before it writes.
+-- Where it goes: InnerSpace/Scripts/eb_setting.lua (save it as eb_setting.lua)
+-- Run it:        eb stop
+--                lua eb_setting followDistance 12
+--                lua EBIS/eb_isx_boot
+-- Needs:         - EB for InnerSpace installed by EB Setup (it finds EB through InnerSpace/Scripts/EBIS/boot.json)
+--                - EB stopped in this session while the file changes (eb stop); start it again afterwards
+-- Tested:        Refuses while EB runs; with EB stopped it writes followDistance = 12, keeps every other key, refuses an unknown
+--                key, pulls a number outside the range to the nearest allowed value, and reads a key back.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_setting.lua
--- run:       eb stop
---            lua eb_setting followDistance 12
---            lua EBIS/eb_isx_boot
--- needs:     EB for InnerSpace installed by EB Setup (it finds EB through InnerSpace/Scripts/EBIS/boot.json)
---            EB stopped in this session while the file changes (eb stop); start it again afterwards
--- expect:    Refuses while EB runs; with EB stopped it writes followDistance = 12, keeps every other key, refuses an unknown key, pulls a number outside the range to the nearest allowed value, and reads a key back.
--- verified:  on the offline stand-in for the game
--- modules:   eb.ui.settings.settings
--- id:        script-setting
-
 -- eb_setting.lua - change one of EB's settings, or read one. EB reads its settings file (eb-settings.json in the EB
 -- folder) when it starts, so the file changes only while EB is stopped:
 --   1. EB's heartbeat - the LavishScript variable EBISX_Beat EB rewrites several times a second - must stand still;

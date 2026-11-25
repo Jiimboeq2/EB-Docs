@@ -1,15 +1,16 @@
--- Hold an ability for a while
+-- EB tested example: Hold an ability for a while
+-- coord-embargo-hold | snippet | topics: crew, fights, combat
 --
--- An embargo rule puts an ability on hold for 20 seconds when a line is said; the cast stack asks holdsCast before casting, and the hold ends on its own.
+-- What it does:  An embargo rule puts an ability on hold for 20 seconds when a line is said; the cast stack asks holdsCast before
+--                casting, and the hold ends on its own.
+-- Tested:        Fixture Blast is held after the warning line, still held at 19 s, free again at 21 s; a lift ends a hold early.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Fixture Blast is held after the warning line, still held at 19 s, free again at 21 s; a lift ends a hold early.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.coord.rules
--- id:        coord-embargo-hold
-
 -- your script
 local Coord = require("eb.coord.rules")
 local now = 0

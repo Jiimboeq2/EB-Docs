@@ -1,15 +1,17 @@
--- The combat plane, its facade and the follower view
+-- EB tested example: The combat plane, its facade and the follower view
+-- combat-facade-views | snippet | topics: combat, instances, crew
 --
--- Build the combat plane the way EB does, see its one step throttle, record an encounter's damage rules on the facade, and run an instance's pull / clear / engage through the follower-aware view.
+-- What it does:  Build the combat plane the way EB does, see its one step throttle, record an encounter's damage rules on the
+--                facade, and run an instance's pull / clear / engage through the follower-aware view.
+-- Tested:        Two steps in the same moment answer one decision; a follower never pulls or clears, and its engage waits until
+--                the lead's target is down; the facade records the damage rules.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Two steps in the same moment answer one decision; a follower never pulls or clears, and its engage waits until the lead's target is down; the facade records the damage rules.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.app.combat, eb.wiring.combat_facade
--- id:        combat-facade-views
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

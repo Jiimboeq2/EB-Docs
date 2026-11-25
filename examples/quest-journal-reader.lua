@@ -1,15 +1,18 @@
--- Read a quest's journal lines
+-- EB tested example: Read a quest's journal lines
+-- quest-journal-reader | snippet | topics: quests, helpers
 --
--- eb.quest.journal reads the quest tracker the way packs need it: lineState(text, quest) answers open, done, gone (the quest is up but its stage moved on) or nil (not on the tracker). A line matches its text inside the objective, else word by word with small typos forgiven.
+-- What it does:  eb.quest.journal reads the quest tracker the way packs need it: lineState(text, quest) answers open, done, gone
+--                (the quest is up but its stage moved on) or nil (not on the tracker). A line matches its text inside the
+--                objective, else word by word with small typos forgiven.
+-- Tested:        The open, done and gone lines read as such; a slightly misspelled line still matches; an untracked quest reads
+--                nil.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The open, done and gone lines read as such; a slightly misspelled line still matches; an untracked quest reads nil.
--- verified:  on the offline stand-in for the game
--- in game:   leave out the lines that use DOCS: they build the test world and check the result,
---            and DOCS exists only in the docs test runner.
--- modules:   eb.quest.journal
--- id:        quest-journal-reader
-
 local Journal = require("eb.quest.journal")
 
 -- a reader: the game's quest tracker rows (EB's game layer supplies these in game)

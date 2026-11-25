@@ -1,15 +1,16 @@
--- Understand a group loot method however it is typed
+-- EB tested example: Understand a group loot method however it is typed
+-- econ-group-loot-words | snippet | topics: items, crew, loot
 --
--- grouploot.findMethod(words) and findRarity(words) accept every spelling a person types ("lol", "Leader Only", "need before greed", "fabled and above"); said(method, rarity) gives the game's own words.
+-- What it does:  grouploot.findMethod(words) and findRarity(words) accept every spelling a person types ("lol", "Leader Only",
+--                "need before greed", "fabled and above"); said(method, rarity) gives the game's own words.
+-- Tested:        Two spellings name the same method, and the method plus a rarity reads back in the game's words.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Two spellings name the same method, and the method plus a rarity reads back in the game's words.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.grouploot
--- id:        econ-group-loot-words
-
 -- your script
 local GL = require("eb.economy.grouploot")
 local m1, m2 = GL.findMethod("lol"), GL.findMethod("Leader Only")

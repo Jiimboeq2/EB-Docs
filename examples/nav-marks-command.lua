@@ -1,15 +1,16 @@
--- Marks and blacklists from the console
+-- EB tested example: Marks and blacklists from the console
+-- nav-marks-command | snippet | topics: nav, commands
 --
--- eb marks set / list / go / del keep named spots, and eb bl / eb gl blacklist or greenlight the spot you stand on - the same work eb.nav_marks and eb.nav_places do, as console lines a script can send.
+-- What it does:  eb marks set / list / go / del keep named spots, and eb bl / eb gl blacklist or greenlight the spot you stand on
+--                - the same work eb.nav_marks and eb.nav_places do, as console lines a script can send.
+-- Tested:        The mark is set and listed, eb marks go walks back to it, eb bl puts a circle where you stand, eb gl lifts it.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The mark is set and listed, eb marks go walks back to it, eb bl puts a circle where you stand, eb gl lifts it.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   commands.nav, eb.nav_register, eb.nav_marks, eb.nav_places
--- id:        nav-marks-command
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game EB wires the commands at start)
 local w = DOCS.world({ me = { x = 4, y = 0, z = 4 } })
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

@@ -1,15 +1,16 @@
--- Spot the named in the fight
+-- EB tested example: Spot the named in the fight
+-- game-engaged-named | snippet | topics: game, fights, combat
 --
--- EngagedNamed(radius, ours) answers a named NPC in combat that is on one of yours (a set of ids) or aggro on you; EngagedMobs(radius, ours) lists every mob on your side's members.
+-- What it does:  EngagedNamed(radius, ours) answers a named NPC in combat that is on one of yours (a set of ids) or aggro on you;
+--                EngagedMobs(radius, ours) lists every mob on your side's members.
+-- Tested:        Finds the named on the tank and lists the two mobs engaged with the group.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Finds the named on the tank and lists the two mobs engaged with the group.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        game-engaged-named
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.addActor({ id = 11, name = "Tankfixture", type = "PC", isNPC = false, distance = 4 })

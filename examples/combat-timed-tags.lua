@@ -1,15 +1,17 @@
--- Timed tags and a pre-cast
+-- EB tested example: Timed tags and a pre-cast
+-- combat-timed-tags | snippet | topics: combat, fights
 --
--- An allow row casts only while its tag is raised, an embargo row is held while its tag is raised, and a pre-cast goes out right before the ability it belongs to - all on the engine's own clock.
+-- What it does:  An allow row casts only while its tag is raised, an embargo row is held while its tag is raised, and a pre-cast
+--                goes out right before the ability it belongs to - all on the engine's own clock.
+-- Tested:        The burn row waits for its tag, casts while it is raised for 2 seconds, and waits again after; the slow row
+--                stays held while SLOW is raised; Fixture Focus goes out right before Fixture Strike.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The burn row waits for its tag, casts while it is raised for 2 seconds, and waits again after; the slow row stays held while SLOW is raised; Fixture Focus goes out right before Fixture Strike.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat, eb.combat.tags
--- id:        combat-timed-tags
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

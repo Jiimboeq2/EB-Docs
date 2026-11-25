@@ -1,15 +1,17 @@
--- Reload a cast stack when its file changes
+-- EB tested example: Reload a cast stack when its file changes
+-- stack-loader-reload | snippet | topics: combat, data
 --
--- Join a loader to the combat plane, pin the server for a name, and let a changed profile file reload the stack - through refresh (a stamp check) or the plane's own reload - with the loader telling you each time.
+-- What it does:  Join a loader to the combat plane, pin the server for a name, and let a changed profile file reload the stack -
+--                through refresh (a stamp check) or the plane's own reload - with the loader telling you each time.
+-- Tested:        The pinned server picks the profile; the plane casts from the loader's stack; after the file changes, refresh
+--                reloads it (two rows now) and the change callback hears it; an unchanged stamp does nothing.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The pinned server picks the profile; the plane casts from the loader's stack; after the file changes, refresh reloads it (two rows now) and the change callback hears it; an unchanged stamp does nothing.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.caststack.loader, eb.app.combat
--- id:        stack-loader-reload
-
 -- offline stand-in: the profiles folder, in a files host of your own (in game: EB's files service and your profiles)
 local w = DOCS.world()
 local function profile(names)

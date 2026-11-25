@@ -1,15 +1,21 @@
--- The utility commands in this release
+-- EB tested example: The utility commands in this release
+-- commands-utility-commands | snippet | topics: commands, data
 --
--- Types the utility commands on a booted EB: settings by command (eb set reads a value; eb preset and eb alias list theirs), seeing what EB does (eb debug, eb fps, eb uiscan, eb tlocheck), the timers, the keep-alive and the voice (eb tts) answer at once - eb tts says why when the overlay that speaks is not there - and a script can always use the settings store.
+-- What it does:  Types the utility commands on a booted EB: settings by command (eb set reads a value; eb preset and eb alias
+--                list theirs), seeing what EB does (eb debug, eb fps, eb uiscan, eb tlocheck), the timers, the keep-alive and the
+--                voice (eb tts) answer at once - eb tts says why when the overlay that speaks is not there - and a script can
+--                always use the settings store.
+-- Tested:        eb set reads what the store holds; every utility command typed answers - none says "does not answer on this box
+--                yet". (eb set <key> <value>, eb export, eb dumplog and eb debugreport answer too, but they write the user's own
+--                files, and eb grabloc puts down the house item on your cursor in the game, so a doc example does not press
+--                them.)
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    eb set reads what the store holds; every utility command typed answers - none says "does not answer on this box yet". (eb set <key> <value>, eb export, eb dumplog and eb debugreport answer too, but they write the user's own files, and eb grabloc puts down the house item on your cursor in the game, so a doc example does not press them.)
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   commands.util, commands.core
--- id:        commands-utility-commands
-
 -- offline stand-in: the whole of EB for InnerSpace booted by its real boot
 local a = DOCS.app()
 

@@ -1,18 +1,20 @@
--- Harvest the nodes in reach (complete script)
+-- EB tested example: Harvest the nodes in reach (complete script)
+-- script-harvest | complete script | topics: harvest, helpers
 --
--- A drop-in script that harvests the nodes within reach whose names you list, nearest first: double-click, wait for the harvest to finish, again until the node is gone, then the next. It never walks.
+-- What it does:  A drop-in script that harvests the nodes within reach whose names you list, nearest first: double-click, wait
+--                for the harvest to finish, again until the node is gone, then the next. It never walks.
+-- Where it goes: InnerSpace/Scripts/eb_harvest.lua (save it as eb_harvest.lua)
+-- Run it:        lua eb_harvest "ore vein" "root cluster" reach=8
+--                endlua eb_harvest
+-- Needs:         - EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
+--                - you stand within reach of the nodes (the script never moves you)
+--                - words from the nodes' names (any part of the name, any case)
+-- Tested:        Empties the two listed nodes in reach, leaves the lever and the node out of reach alone, and stops trying a node
+--                that never goes away.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      complete script
--- file:      InnerSpace/Scripts/eb_harvest.lua
--- run:       lua eb_harvest "ore vein" "root cluster" reach=8
---            endlua eb_harvest
--- needs:     EB for InnerSpace's session (ISXEQ2 and ISXLUA loaded); EB itself does not have to run
---            you stand within reach of the nodes (the script never moves you)
---            words from the nodes' names (any part of the name, any case)
--- expect:    Empties the two listed nodes in reach, leaves the lever and the node out of reach alone, and stops trying a node that never goes away.
--- verified:  on the offline stand-in for the game
--- id:        script-harvest
-
 -- eb_harvest.lua - harvest the nodes around you. Twice a second, when you are not fighting, casting or moving, it
 -- asks the game for the interactable actors within reach (one query into this script's own index variable, then one
 -- read of the rows), picks the nearest whose name holds one of your words, and double-clicks it. It waits for the

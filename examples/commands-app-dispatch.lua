@@ -1,15 +1,15 @@
--- Run a command from a script in a running EB
+-- EB tested example: Run a command from a script in a running EB
+-- commands-app-dispatch | snippet | topics: commands, helpers
 --
--- The running EB is eb.app; eb.dispatch(line) runs a line through the same registry a typed one uses.
+-- What it does:  The running EB is eb.app; eb.dispatch(line) runs a line through the same registry a typed one uses.
+-- Tested:        eb.dispatch answers eb status; app.status() says what came up; pause and resume flip the brain.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    eb.dispatch answers eb status; app.status() says what came up; pause and resume flip the brain.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.app, eb.registry
--- id:        commands-app-dispatch
-
 -- offline stand-in: the whole of EB for InnerSpace booted by its real boot (in game it is already running)
 local a = DOCS.app()
 

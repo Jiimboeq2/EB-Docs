@@ -1,15 +1,17 @@
--- Cure only who carries the detriment
+-- EB tested example: Cure only who carries the detriment
+-- combat-cure-detriment | snippet | topics: combat, crew, fights
 --
--- A cure entry for noxious detriments fires only on the member who carries one; an override's cure scope can rule group cures out for an encounter.
+-- What it does:  A cure entry for noxious detriments fires only on the member who carries one; an override's cure scope can rule
+--                group cures out for an encounter.
+-- Tested:        Member2 (noxious) is cured, Member1 (arcane only) is not a candidate; with the scope set to single, the group
+--                cure stays quiet.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Member2 (noxious) is cured, Member1 (arcane only) is not a candidate; with the scope set to single, the group cure stays quiet.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat.heals, eb.combat.overrides, eb.combat
--- id:        combat-cure-detriment
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

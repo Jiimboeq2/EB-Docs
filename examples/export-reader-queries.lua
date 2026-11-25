@@ -1,15 +1,18 @@
--- Ask an ability export what a character can do
+-- EB tested example: Ask an ability export what a character can do
+-- export-reader-queries | snippet | topics: data, combat, helpers
 --
--- Wrap an export with reader.load (or read a saved one back with reader.loadText) and ask it by name - any rank finds the line - by group, by label, or for the cast-stack shortlist. Here the export is converted from a few invented records, saved as text and read back the way a helper would read a file.
+-- What it does:  Wrap an export with reader.load (or read a saved one back with reader.loadText) and ask it by name - any rank
+--                finds the line - by group, by label, or for the cast-stack shortlist. Here the export is converted from a few
+--                invented records, saved as text and read back the way a helper would read a file.
+-- Tested:        The heal is found by a rank name, its labels say heal, the passive is left off the shortlist, and the saved text
+--                reads back the same.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The heal is found by a rank name, its labels say heal, the passive is left off the shortlist, and the saved text reads back the same.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.exports.reader, eb.exports.util
--- id:        export-reader-queries
-
 local reader = require("eb.exports.reader")
 local util = require("eb.exports.util")
 

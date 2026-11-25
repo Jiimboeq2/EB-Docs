@@ -1,15 +1,16 @@
--- Follow an actor
+-- EB tested example: Follow an actor
+-- nav-follow-actor | snippet | topics: nav, crew
 --
--- Follow a named actor over the mesh with eb.nav.follow; with once = true it returns as soon as you have caught up.
+-- What it does:  Follow a named actor over the mesh with eb.nav.follow; with once = true it returns as soon as you have caught
+--                up.
+-- Tested:        You end within the follow range (4 m) of the courier, and eb.actor.locOf found it by its exact name.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    You end within the follow range (4 m) of the courier, and eb.actor.locOf found it by its exact name.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav, eb.actor
--- id:        nav-follow-actor
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { x = 0, y = 0, z = 0 } })
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

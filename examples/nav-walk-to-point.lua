@@ -1,15 +1,17 @@
--- Walk to a point over the mesh
+-- EB tested example: Walk to a point over the mesh
+-- nav-walk-to-point | snippet | topics: nav, helpers
 --
--- Walk to an x,y,z in this zone with eb.nav.goPoint inside a pulse task - a route on the zone's mesh, EB's one mover - and check the arrival and how the walk ended. A spot the mesh has no route to fails instead, and says why (nav-no-route).
+-- What it does:  Walk to an x,y,z in this zone with eb.nav.goPoint inside a pulse task - a route on the zone's mesh, EB's one
+--                mover - and check the arrival and how the walk ended. A spot the mesh has no route to fails instead, and says
+--                why (nav-no-route).
+-- Tested:        The walk arrives within 2 m of the point; nav.last says it ended well; every key is let go.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The walk arrives within 2 m of the point; nav.last says it ended well; every key is let go.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav, eb.move
--- id:        nav-walk-to-point
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { x = 0, y = 0, z = 0, heading = 0 } })
 require("nav.lib.navworld").attach(w, { zone = "fixture_hollow" })

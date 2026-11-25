@@ -1,15 +1,17 @@
--- Readiness costs one read a frame
+-- EB tested example: Readiness costs one read a frame
+-- combat-ready-one-read | snippet | topics: combat, perf
 --
--- The abilities you ask about are remembered as a hot set: on the next frame one batched read answers all of them, and asking again in the same frame is free.
+-- What it does:  The abilities you ask about are remembered as a hot set: on the next frame one batched read answers all of them,
+--                and asking again in the same frame is free.
+-- Tested:        Five readiness asks in one frame after warm-up cost one read between them; the other four answer from the
+--                frame's cache.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Five readiness asks in one frame after warm-up cost one read between them; the other four answer from the frame's cache.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        combat-ready-one-read
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 local FW = require("combat.lib.fightworld")

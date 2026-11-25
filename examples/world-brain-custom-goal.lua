@@ -1,15 +1,15 @@
--- Give the brain your own goal
+-- EB tested example: Give the brain your own goal
+-- world-brain-custom-goal | snippet | topics: helpers, instances
 --
--- A goal is a phase machine the brain advances one bite per tick: return working, done or blocked; never wait.
+-- What it does:  A goal is a phase machine the brain advances one bite per tick: return working, done or blocked; never wait.
+-- Tested:        The goal steps through count -> report -> done over four brain ticks, then the brain is idle.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The goal steps through count -> report -> done over four brain ticks, then the brain is idle.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.brain
--- id:        world-brain-custom-goal
-
 -- offline stand-in: a world the brain can snapshot (in game EB builds the brain over eb.world itself)
 local world = { snapshot = function() return { inGame = true, name = "Tankard", class = "guardian", zone = "a_test_hall",
     hpPct = 100, powerPct = 100, x = 0, y = 0, z = 0, group = { count = 0, members = {} } } end }

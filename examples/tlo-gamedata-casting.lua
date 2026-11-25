@@ -1,15 +1,16 @@
--- Read the cast bars through GetGameData
+-- EB tested example: Read the cast bars through GetGameData
+-- tlo-gamedata-casting | snippet | topics: tlos, combat, fights
 --
--- Me.GetGameData[key].Label reads a value the game's own interface shows. Spells.Casting is your cast bar; ImpliedTarget.Casting is the spell your (implied) target is casting.
+-- What it does:  Me.GetGameData[key].Label reads a value the game's own interface shows. Spells.Casting is your cast bar;
+--                ImpliedTarget.Casting is the spell your (implied) target is casting.
+-- Tested:        Both labels read in one batch; the game layer's CastingName() and TargetCasting() answer the same.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Both labels read in one batch; the game layer's CastingName() and TargetCasting() answer the same.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        tlo-gamedata-casting
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.self.castingName = "Fixture Mend"

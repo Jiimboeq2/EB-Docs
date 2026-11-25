@@ -1,15 +1,16 @@
--- Keep a set of rules
+-- EB tested example: Keep a set of rules
+-- coord-manage-rules | snippet | topics: crew, data
 --
--- Add a saved set of rules at once, look one up, switch it off and on, remove it, and list what is left - what a rules window does.
+-- What it does:  Add a saved set of rules at once, look one up, switch it off and on, remove it, and list what is left - what a
+--                rules window does.
+-- Tested:        Three rules load; a switched-off rule does not act; the removed one is gone from the list.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Three rules load; a switched-off rule does not act; the removed one is gone from the list.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.coord.rules
--- id:        coord-manage-rules
-
 -- your script
 local Coord = require("eb.coord.rules")
 local coord = Coord.new({ me = { box = "is1", name = "Fixturae", role = "healer" }, clock = function() return 0 end })

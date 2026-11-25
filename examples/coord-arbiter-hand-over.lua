@@ -1,15 +1,17 @@
--- Hand a claim over at once
+-- EB tested example: Hand a claim over at once
+-- coord-arbiter-hand-over | snippet | topics: crew, combat
 --
--- A box that cannot cast at all calls fail() and the next box takes the cure straight away; a box whose need went away calls release(); claims can also be carried over your own transport with onClaim.
+-- What it does:  A box that cannot cast at all calls fail() and the next box takes the cure straight away; a box whose need went
+--                away calls release(); claims can also be carried over your own transport with onClaim.
+-- Tested:        After is1 fails, is2's next request is go; release clears the key; a claim fed by hand makes this box stand
+--                down.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    After is1 fails, is2's next request is go; release clears the key; a claim fed by hand makes this box stand down.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.coord.arbiter, eb.coord.cowire
--- id:        coord-arbiter-hand-over
-
 -- offline stand-in: an in-memory relay between two boxes
 local bus = require("eb.relay.events").bus()
 local now = 0

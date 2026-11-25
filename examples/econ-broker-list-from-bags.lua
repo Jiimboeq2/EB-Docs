@@ -1,15 +1,17 @@
--- Put bag items up on the broker
+-- EB tested example: Put bag items up on the broker
+-- econ-broker-list-from-bags | snippet | topics: items
 --
--- eco.broker:listFromBags() lists what CAN go up, each with a suggested price (its price default, else its merchant value); bound, protected, worthless and not-yet-read items are left out. Nothing goes up until you call eco.broker:addFromInventory(id, copper).
+-- What it does:  eco.broker:listFromBags() lists what CAN go up, each with a suggested price (its price default, else its
+--                merchant value); bound, protected, worthless and not-yet-read items are left out. Nothing goes up until you call
+--                eco.broker:addFromInventory(id, copper).
+-- Tested:        Only the ore is offered (suggested 30 copper); it goes up at 2500.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Only the ore is offered (suggested 30 copper); it goes up at 2500.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.broker
--- id:        econ-broker-list-from-bags
-
 -- offline stand-in for the game's windows (in game EB builds the drive)
 local Fake = require("economy.lib.drivefake")
 local W = Fake.world({ bags = {

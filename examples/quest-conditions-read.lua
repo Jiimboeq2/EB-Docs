@@ -1,15 +1,17 @@
--- Read a pack's condition text yourself
+-- EB tested example: Read a pack's condition text yourself
+-- quest-conditions-read | snippet | topics: quests
 --
--- eb.quest.cond reads the ${...} conditions packs carry, over a world snapshot: expand fills the terms, truth decides true, false or unknown, conditionExpr normalizes a bare condition first. A term EB cannot read is UNKNOWN - never a guess - and show() makes it readable (question marks).
+-- What it does:  eb.quest.cond reads the ${...} conditions packs carry, over a world snapshot: expand fills the terms, truth
+--                decides true, false or unknown, conditionExpr normalizes a bare condition first. A term EB cannot read is
+--                UNKNOWN - never a guess - and show() makes it readable (question marks).
+-- Tested:        The level and zone terms fill in, the comparison is true, and an unreadable term comes back unknown.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    The level and zone terms fill in, the comparison is true, and an unreadable term comes back unknown.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.quest.cond, eb.quest.quests
--- id:        quest-conditions-read
-
 local cond = require("eb.quest.cond")
 
 -- a world snapshot, as the runner hands one to every step

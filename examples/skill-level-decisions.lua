@@ -1,15 +1,17 @@
--- The levelling decisions, step by step
+-- EB tested example: The levelling decisions, step by step
+-- skill-level-decisions | snippet | topics: items
 --
--- eb.economy.skilllevel's pure rules: decide() says where a run starts (learn, unreadable, done, book or level); afterRound() says what a finished round comes to (done, again, buy, book or giveup); for Adorning, mostStockedTier() and roundFromStock() plan a round from what is on hand.
+-- What it does:  eb.economy.skilllevel's pure rules: decide() says where a run starts (learn, unreadable, done, book or level);
+--                afterRound() says what a finished round comes to (done, again, buy, book or giveup); for Adorning,
+--                mostStockedTier() and roundFromStock() plan a round from what is on hand.
+-- Tested:        Each case answers as the rules say; the best-stocked Adorning tier is 2 and a round dilutes 5 and distils 4.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Each case answers as the rules say; the best-stocked Adorning tier is 2 and a round dilutes 5 and distils 4.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.economy.skilllevel
--- id:        skill-level-decisions
-
 -- your script (pure)
 local L = require("eb.economy.skilllevel")
 local r = function(cur, max) return { ok = true, cur = cur, max = max } end

@@ -1,15 +1,16 @@
--- Heal whoever fell furthest
+-- EB tested example: Heal whoever fell furthest
+-- combat-heal-lowest | snippet | topics: combat, crew
 --
--- The engine weighs every heal entry by how far its member has fallen; an EMERGENCY heal jumps the queue. One step heals the lowest member with the heaviest choice.
+-- What it does:  The engine weighs every heal entry by how far its member has fallen; an EMERGENCY heal jumps the queue. One step
+--                heals the lowest member with the heaviest choice.
+-- Tested:        Member2 at 40% is healed with the emergency heal; the plain heal would weigh 80 against its 1080.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Member2 at 40% is healed with the emergency heal; the plain heal would weigh 80 against its 1080.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.combat, eb.combat.heals, game
--- id:        combat-heal-lowest
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world({ me = { healthPct = 95 } })
 local FW = require("combat.lib.fightworld")

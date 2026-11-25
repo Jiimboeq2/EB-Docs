@@ -1,15 +1,20 @@
--- A walk the mesh has no route for fails and says why
+-- EB tested example: A walk the mesh has no route for fails and says why
+-- nav-no-route | snippet | topics: nav, helpers
 --
--- EB moves a character only by walking a route on the zone's .nav mesh. A goal the mesh has no route to is not walked to - no straight line, no fallback, no swim across open water: nav.goPoint answers false with the reason in plain words, the character stays where it is, and whatever started the walk decides what to do next. The same for a zone with no mesh at all - even a six metre step.
+-- What it does:  EB moves a character only by walking a route on the zone's .nav mesh. A goal the mesh has no route to is not
+--                walked to - no straight line, no fallback, no swim across open water: nav.goPoint answers false with the reason
+--                in plain words, the character stays where it is, and whatever started the walk decides what to do next. The same
+--                for a zone with no mesh at all - even a six metre step.
+-- Tested:        A spot 60 m away when the mesh ends 20 m out answers false "no route on the .nav ... the mesh has no way to this
+--                spot" and nothing moves; a spot the mesh reaches is walked to; a zone with no mesh answers false "no mesh: ..."
+--                even for a 6 m step.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    A spot 60 m away when the mesh ends 20 m out answers false "no route on the .nav ... the mesh has no way to this spot" and nothing moves; a spot the mesh reaches is walked to; a zone with no mesh answers false "no mesh: ..." even for a 6 m step.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.nav, eb.navd
--- id:        nav-no-route
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real): a mesh that ends 20 m from you
 local w = DOCS.world({ me = { x = 0, y = 0, z = 0, heading = 0 } })
 local mesh = require("nav.lib.navworld").attach(w, { zone = "fixture_hollow", reach = 20 })

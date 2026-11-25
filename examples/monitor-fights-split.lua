@@ -1,15 +1,16 @@
--- One fight ends, the next begins
+-- EB tested example: One fight ends, the next begins
+-- monitor-fights-split | snippet | topics: combat
 --
--- A quiet gap longer than idleMs ends a fight; breakEncounter ends one on purpose (EB does on a zone change); snapshot lists the past fights, newest first.
+-- What it does:  A quiet gap longer than idleMs ends a fight; breakEncounter ends one on purpose (EB does on a zone change);
+--                snapshot lists the past fights, newest first.
+-- Tested:        Three fights: two split by the quiet gap, one by breakEncounter; the snapshot lists the two past fights.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Three fights: two split by the quiet gap, one by breakEncounter; the snapshot lists the two past fights.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   eb.ui.monitor.parser
--- id:        monitor-fights-split
-
 -- your script
 local Parser = require("eb.ui.monitor.parser")
 local parser = Parser.new({ me = "Fixturae", idleMs = 5000 })

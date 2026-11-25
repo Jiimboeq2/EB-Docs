@@ -1,15 +1,16 @@
--- Read a quest reward window
+-- EB tested example: Read a quest reward window
+-- game-reward-window | snippet | topics: game, quests, dialogs
 --
--- RewardWindow() tells a granted reward (no choice) from a pick-one reward and from a new quest offer; AcceptReward() takes it once EB has verified that click.
+-- What it does:  RewardWindow() tells a granted reward (no choice) from a pick-one reward and from a new quest offer;
+--                AcceptReward() takes it once EB has verified that click.
+-- Tested:        Reads a single granted reward; AcceptReward answers false with its reason while the click is held back.
+-- Verified:      fake-host (tested offline: run end to end on EB's offline stand-in for the game; not run in the live game yet,
+--                so try it on one box first)
+-- In a script:   this is the whole tested file: EB's offline stand-in for the game (up to the -- your script line), the script,
+--                and the checks (from the last -- check line, or the closing DOCS lines). A real script keeps only the script,
+--                without its lines that use DOCS, w. or a. (the offline test world).
+-- The docs:      https://github.com/Jiimboeq2/EB-Docs (EB_Scripting_Guide.md)
 --
--- kind:      snippet
--- expect:    Reads a single granted reward; AcceptReward answers false with its reason while the click is held back.
--- verified:  on the offline stand-in for the game
--- in game:   use the code under '-- your script'. The lines above it build the test world and the
---            lines under '-- check' check the result: DOCS exists only in the docs test runner.
--- modules:   game
--- id:        game-reward-window
-
 -- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
 local w = DOCS.world()
 w.setWindow("reward", { title = "Quest Complete", rewards = { { name = "a fixture trinket", linkId = 777 } } })

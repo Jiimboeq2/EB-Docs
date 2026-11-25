@@ -1,0 +1,44 @@
+-- Sell a list of items at a merchant
+--
+-- eco.vendor:sell() opens the merchant in reach, sells every bag item your sell list names, skips anything protected, closes the window and writes a ledger line per sale. Call it once a tick until it stops answering "working".
+--
+-- kind:      snippet
+-- expect:    The three pelts are sold (60 copper), the protected charm stays in the bags, and the ledger counts them.
+-- verified:  on the offline stand-in for the game
+-- in game:   use the code under '-- your script'. The lines above it build the test world and the
+--            lines under '-- check' check the result: DOCS exists only in the docs test runner.
+-- modules:   eb.economy, eb.economy.vendor, eb.economy.ledger
+-- id:        econ-vendor-sell-sweep
+
+-- offline stand-in for the game's windows (only the docs runner has it; in game EB builds the drive)
+local Fake = require("economy.lib.drivefake")
+local W = Fake.world({ bags = {
+    { name = "Fixture Pelt", qty = 3, value = 20 },
+    { name = "Fixture Charm", qty = 1, value = 500 },
+    { name = "Fixture Lantern", qty = 1, value = 90 },
+} })
+
+-- your script
+local eco = require("eb.economy").new({
+    drive = Fake.drive(W), me = W.me, wallNow = function() return 1763000000 end,
+    cfg = {
+        vendor = { sellList = { "Fixture Pelt", "Fixture Charm" } },       -- exact names this sweep may sell
+        protect = { names = { ["fixture charm"] = true } },               -- never sold, whatever a list says
+    },
+})
+local status
+for _ = 1, 20 do                       -- the brain calls it once a tick with the same arguments
+    status = eco.vendor:sell()
+    if status ~= "working" then break end
+end
+print("sell: " .. status)
+print(eco.ledger:status().text)
+
+-- check
+DOCS.eq(status, "done", "the sweep finished")
+DOCS.eq(W.merchant.coin, 60, "three pelts at 20 copper")
+local charm = false
+for _, it in ipairs(W.bags) do if it.name == "Fixture Charm" then charm = true end end
+DOCS.check(charm, "the protected charm was not sold")
+DOCS.has(eco.ledger:status().text, "3 sold", "the sale is in the ledger (counted in items)")
+DOCS.check(not W.merchant.open, "the merchant window was closed")

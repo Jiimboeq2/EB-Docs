@@ -1,0 +1,27 @@
+-- Read several Me members in ONE read
+--
+-- A data sequence with several ${} in it is ONE game read, however many members it names. Batch the members you need into one IS.Parse instead of one read each.
+--
+-- kind:      snippet
+-- expect:    One read answers four members; the values arrive as text and are converted with tonumber.
+-- verified:  on the offline stand-in for the game
+-- in game:   use the code under '-- your script'. The lines above it build the test world and the
+--            lines under '-- check' check the result: DOCS exists only in the docs test runner.
+-- modules:   game
+-- id:        tlo-me-batched-read
+
+-- offline stand-in for the game (only the docs runner has DOCS; in game the world is real)
+local w = DOCS.world({ me = { healthPct = 64, powerPct = 80 } })
+
+-- your script (EB for InnerSpace: IS is ISXLUA's bridge; the game layer's Me() already batches these for you)
+local before = w.host.stats.parse
+local raw = IS.Parse("${Me.Health}|${Me.Power}|${Me.Level}|${Me.SubClass}")
+local hp, power, level, sub = raw:match("^([^|]*)|([^|]*)|([^|]*)|([^|]*)$")
+hp, power, level = tonumber(hp), tonumber(power), tonumber(level)      -- every answer is text
+print(("hp %d power %d level %d %s in %d read"):format(hp, power, level, sub, w.host.stats.parse - before))
+
+-- check
+DOCS.eq(w.host.stats.parse - before, 1, "four members, one read")
+DOCS.eq(hp, 64, "Health is a percent")
+DOCS.eq(sub, "warden", "SubClass")
+DOCS.eq(level, require("eb.platform").game().Me().level, "the same answer the game layer gives")

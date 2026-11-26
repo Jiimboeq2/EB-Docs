@@ -1,6 +1,6 @@
 # EB console commands
 
-Every console command EB ships to every player (296), by group: the line, what it does, its other names, which crew words it takes, and each argument. In the game, eb help always matches the EB you run.
+Every console command EB ships to every player (299), by group: the line, what it does, its other names, which crew words it takes, and each argument. In the game, eb help always matches the EB you run.
 
 The same list is the Commands part of [EB_Scripting_Guide.md](EB_Scripting_Guide.md#commands), the one-file guide.
 
@@ -185,9 +185,9 @@ The fight: casting on and off, cures, rezzes, interrupts, heroic opportunities, 
   - Also typed as: `fightscan`.
   - This box only.
   - `cmd` (enum; optional; one of on | off | status | mark | clear | adds | lines; default status): on | off | status | mark | clear | adds | lines
-- `eb flag [name] [state]`: The fight's named switches (ae, pbae, encounter, nothreat, namedca, dumbfires, petassist, casting, cures, rez, interrupts, mez, ho, joust, face, hooffensive, dispel, combos, smartae, smartencounter, los, selectivecures, selectivegroupcures, autosetups, chatevents, queuenext, healinterrupt), any cast-stack tag, or one cast-stack row by its name: on, off, or what it is set to. dispel: the cast stack's dispel rows; combos: an ascension starter's combo goes next; smartae: a point-blank or targeted area attack waits until 2 or more mobs stand within its radius (around me, or around its target); smartencounter: an encounter attack waits until its target's encounter has 2 or more (the profile's own counts when it has them); los: the line-of-sight check before an attack; selectivecures / selectivegroupcures: single-target / group cures only for the types switched on (stcure_arcane ... groupcure_trauma; none on: that cure is not used); autosetups: every encounter setup installed is laid on, each while its named is the mob; chatevents: the coordination rules that answer a line someone says; queuenext: while a cast runs, the next ability of the cast stack is queued in the game so it fires the moment the cast ends (on; one queued at a time); healinterrupt: an attack of EB's that is casting is cancelled when a heal or a cure of the cast stack is needed now, and that heal or cure goes at once (off).
+- `eb flag [name] [state]`: The fight's named switches (ae, pbae, encounter, nothreat, namedca, dumbfires, petassist, casting, cures, rez, interrupts, mez, ho, joust, face, hooffensive, dispel, combos, smartae, smartencounter, los, selectivecures, selectivegroupcures, autosetups, chatevents, queuenext, healinterrupt), any cast-stack tag, or one cast-stack row by its name (an item's row as Item:\<item>, its name in the cast stack): on, off, or what it is set to. dispel: the cast stack's dispel rows; combos: an ascension starter's combo goes next; smartae: a point-blank or targeted area attack waits until 2 or more mobs stand within its radius (around me, or around its target); smartencounter: an encounter attack waits until its target's encounter has 2 or more (the profile's own counts when it has them); los: the line-of-sight check before an attack; selectivecures / selectivegroupcures: single-target / group cures only for the types switched on (stcure_arcane ... groupcure_trauma; none on: that cure is not used); autosetups: every encounter setup installed is laid on, each while its named is the mob; chatevents: the coordination rules that answer a line someone says; queuenext: while a cast runs, the next ability of the cast stack is queued in the game so it fires the moment the cast ends (on; one queued at a time); healinterrupt: an attack of EB's that is casting is cancelled when a heal or a cure of the cast stack is needed now, and that heal or cure goes at once (off).
   - This box only.
-  - `name` (string; optional): a switch, a tag or a row's name; nothing lists the switches
+  - `name` (string; optional): a switch, a tag, a row's name, or Item:\<item> for an item's row (in quotes when it has several words); nothing lists the switches
   - `state` (onoff; optional): on | off (nothing: say how it stands)
 - `eb cs [cmd] [arg]`: Your cast stack: show it, set the camp, clear it, import a cast stack file (new or old format, tags kept), filter, archive, share. profile \<name> switches the profile of this character's cast stack file EB casts from (EB's own pick, kept for this character: the file is never written; asked in a fight, it is taken once the fight is over), profile default goes back to the file's own, profile alone says which it casts from and which the file has. infuse swaps every Mount / Mercenary / Familiar Infusion row for the infusion this character holds now (one per kind, its Type and conditions kept) and saves; infuse all does it on every box, each with its own.
   - Also typed as: `caststack`.
@@ -231,6 +231,9 @@ The fight: casting on and off, cures, rezzes, interrupts, heroic opportunities, 
   - Also typed as: `aaslider`.
   - For the crew: `all`, `others`, `to`.
   - `value` (string; optional): 0-100 | on | off - nothing = 0: all XP to adventure levels
+- `eb marker <colour>`: The game's own coloured marker on what this box has targeted, for the group and the raid to see: red, yellow, green or blue; clear takes it off. Something targeted first. Held until its live proof (eb proof): until then it says so and nothing is sent.
+  - This box only.
+  - `colour` (enum; required; one of red | yellow | green | blue | clear): red | yellow | green | blue - or clear (the marker taken off)
 - `eb blockers [cmd]`: The group's AE blockers - each class's own group ward against area damage (a druid's Tortoise Shell, a bard's Bladedance, a swashbuckler's Advance Warning, a channeler's Shield of Blackwood). now: this box's own (eb all blockers: each box its own); cycle: the group's, one box after another, ten seconds apart, so one is up at a time; stop ends a cycle; status says who has one.
   - Also typed as: `aeblockers`, `cycleblockers`.
   - For the crew: `all`, `others`, `to`.
@@ -369,6 +372,10 @@ Moving inside a zone on the zone's mesh: walk to a spot, follow, hold a camp, do
   - For the crew: `all`, `others`, `to`.
 - `eb runwalk`: Run or walk: the game's own run / walk switch, one tap of your key for it (Shift+R unless you moved it: eb movekeys set run / walk \<key>) - the game's own command instead once its live proof lets it out. The same tap the fear walk makes.
   - For the crew: `all`, `others`, `to`.
+- `eb fly <dir> [secs]`: On a flying mount, up or down for a moment: the game's own fly-up / fly-down key (Home / End unless you moved them: eb movekeys) held that many seconds, then let go; stop lets every flight key go now. Not on a flying mount: it says so. Held until its live proof: until then it says so and holds no key.
+  - For the crew: `all`, `others`, `to`.
+  - `dir` (enum; required; one of up | down | stop): up | down | stop
+  - `secs` (int; optional): how many seconds the key is held: 1 to 10 (2 when left out)
 - `eb closer`: Follow closer: a metre nearer to the one this box follows now, each time (2 m at the nearest). Nothing is followed: it says so.
   - For the crew: `all`, `others`, `to`.
 - `eb farther`: Follow farther back: a metre farther from the one this box follows now, each time (20 m at the farthest). Nothing is followed: it says so.
@@ -388,10 +395,10 @@ Moving inside a zone on the zone's mesh: walk to a spot, follow, hold a camp, do
   - This box only.
   - `cmd` (enum; optional; one of list | set | reset; default list): list | set | reset
   - `what` (string; optional): set: the role (forward, back, turn left, turn right, strafe left, strafe right, jump, swim up, swim down, crouch, run / walk), then the key; reset: a role or all
-- `eb leash [cmd] [spot]`: Hold a camp: stay within some metres of a spot - where you stand, a point of this zone, or your own place on a ring round the box that sent it. A second number is how far off it gives up. Camp spots stack in tiers and the top one is held: rcs puts one on top (where you stand or at a point; tier \<n> names the tier), drop \[n\] lets the top (or tier n) go and the one below holds again; here / at / ring start a fresh camp. behind / front / right / left \<npc> \[m\] camps m metres (5 when left out) from a named NPC on that side of the way it faces - its front is where it looks, its right its own right hand; angle \<degrees> \<npc> \[m\] any side, clockwise from its face (0 front, 90 right, 180 behind, 270 left); for a crew line each box finds the NPC itself. off lets every tier go; status says where it holds.
+- `eb leash [cmd] [spot]`: Hold a camp: stay within some metres of a spot - where you stand, a point of this zone, or your own place on a ring round the box that sent it. A second number is how far off it gives up. Camp spots stack in tiers and the top one is held: rcs puts one on top (where you stand or at a point; tier \<n> names the tier), drop \[n\] lets the top (or tier n) go and the one below holds again; here / at / ring start a fresh camp. behind / front / right / left \<npc> \[m\] camps m metres (5 when left out) from a named NPC on that side of the way it faces - its front is where it looks, its right its own right hand; angle \<degrees> \<npc> \[m\] any side, clockwise from its face (0 front, 90 right, 180 behind, 270 left); for a crew line each box finds the NPC itself. on me camps where the box the line came from stands, on \<a crew box> where that box stands, in this zone - the line's crew word says whose camp it is (eb relay mygroup leash on me: your group camps on you). off lets every tier go; status says where it holds.
   - For the crew: `all`, `others`, `to`.
-  - `cmd` (enum; optional; one of here | at | ring | rcs | drop | off | status | behind | front | right | left | angle; default here): here | at | ring | rcs | drop | off | status | behind | front | right | left | angle
-  - `spot` (string; optional): \[x,y,z\] \[how many metres\] \[how far off it gives up\]; rcs: tier \<n> too; drop: the tier; behind / front / right / left: \<npc> \[metres from it\]; angle: \<degrees> \<npc> \[metres\]
+  - `cmd` (enum; optional; one of here | at | ring | rcs | drop | off | status | behind | front | right | left | angle | on; default here): here | at | ring | rcs | drop | off | status | behind | front | right | left | angle | on
+  - `spot` (string; optional): \[x,y,z\] \[how many metres\] \[how far off it gives up\]; rcs: tier \<n> too; drop: the tier; behind / front / right / left: \<npc> \[metres from it\]; angle: \<degrees> \<npc> \[metres\]; on: me (the box the line came from) or a crew box's name, then \[metres\] \[how far off it gives up\]
 - `eb gate [cmd] [name]`: Doors and gates: scan the ones nearby, open one, forget one EB learned. eb door is the same command.
   - Also typed as: `door`.
   - For the crew: `all`, `others`, `to`.
@@ -675,15 +682,20 @@ Instance runs: run one or a list of them, build one, the teams, lockouts and res
 
 Looting: corpses and chests, the loot rules, who gets what, coin.
 
-- `eb loot [cmd] [arg]`: Looting by itself: on, off, status; now loots the nearest corpse or chest in reach; rules and method set who gets what.
+- `eb loot [cmd] [arg]`: Looting by itself: on, off, status; now loots the nearest corpse or chest in reach; rules and method set who gets what; assign opens EB Loot Assign (the leader's loot window and the wishlist).
   - Also typed as: `lootrules`.
   - For the crew: `all`, `others`, `to`.
-  - `cmd` (enum; optional; one of on | off | status | rules | method | now; default status): on | off | status | rules | method | now
+  - `cmd` (enum; optional; one of on | off | status | rules | method | now | assign; default status): on | off | status | rules | method | now | assign
   - `arg` (string; optional): a rule, or a method (and a rarity)
 - `eb lootdistro [cmd] [arg]`: Who gets the loot: resolve (the member who gains most), assign, status - and the wish list: add / remove / skip an item, scan (this character checks itself), look \<item>, sync (the wishes from every check).
   - For the crew: `all`, `others`, `to`.
   - `cmd` (enum; optional; one of resolve | assign | status | add | remove | skip | scan | look | sync; default status): resolve | assign | status | add | remove | skip | scan | look | sync
   - `arg` (string; optional): add / remove / look: the item; skip: \<item> \<who>; scan: \<item>|\<item> to check too
+- `eb wishlist [cmd] [arg]`: This character's wishlist: the items it wants. A drop on it goes to this character - in EB Loot Assign and in EB's own looting (the first to wish for it first). add \<item>, remove \<item>, list (or list \<who> for another character on this PC), clear. A wish is done once this character gets the item.
+  - Also typed as: `wish`.
+  - For the crew: `all`, `others`, `to`.
+  - `cmd` (enum; optional; one of add | remove | list | clear; default list): add | remove | list | clear
+  - `arg` (string; optional): add / remove: the item's name; list: another character on this PC (nothing: this one)
 - `eb lootwin [cmd]`: The loot window: open it, claim what is in it, close it.
   - Also typed as: `lw`.
   - For the crew: `all`, `others`, `to`.

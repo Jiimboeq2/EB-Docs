@@ -4,7 +4,7 @@ EB is a private EverQuest II bot for a small group of testers. These files are i
 
 ## Give it to your AI
 
-1. Give it the one-file guide: [EB_Scripting_Guide.md](EB_Scripting_Guide.md) (2067 KB). Attach the file, or give it this link if it reads the web: https://raw.githubusercontent.com/Jiimboeq2/EB-Docs/main/EB_Scripting_Guide.md
+1. Give it the one-file guide: [EB_Scripting_Guide.md](EB_Scripting_Guide.md) (2070 KB). Attach the file, or give it this link if it reads the web: https://raw.githubusercontent.com/Jiimboeq2/EB-Docs/main/EB_Scripting_Guide.md
 2. Ask for the script you want: what it watches, what it does, and on which characters.
 3. Ask it to use only what the guide lists, and to say where each file goes, the line that starts it and what it needs.
 4. Try what it gives you on one box first.
@@ -15,8 +15,8 @@ If your AI cannot take a file that size, give it [llms.txt](https://eb.jiimbo.de
 
 | File | What it is |
 | --- | --- |
-| [EB_Scripting_Guide.md](EB_Scripting_Guide.md) | THE one file to give an AI: every guide, every tested example in full, the Lua library, the TLOs and the commands (2067 KB). |
-| [commands.md](commands.md) | every console command EB ships, by group (189 KB). |
+| [EB_Scripting_Guide.md](EB_Scripting_Guide.md) | THE one file to give an AI: every guide, every tested example in full, the Lua library, the TLOs and the commands (2070 KB). |
+| [commands.md](commands.md) | every console command EB ships, by group (192 KB). |
 | [examples/](examples/README.md) | the 406 tested examples (22 complete scripts), one .lua file each, with an index. |
 | [reference/lua_api.json](reference/lua_api.json) | the reference as data: modules, functions with their parameters and returns, the examples, the topics and the TLOs (2710 KB). |
 | [llms.txt](https://eb.jiimbo.dev/llms.txt) | the website's index of these files, in the llms.txt format, for an AI that reads the web; [llms-full.txt](https://eb.jiimbo.dev/llms-full.txt) is the one-file guide again. |
